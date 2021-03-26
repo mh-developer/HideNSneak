@@ -1,4 +1,4 @@
-image: node:lts-alpine
+image: docker:latest
 
 stages:
   - Build
@@ -6,7 +6,6 @@ stages:
 
 build-backend:
   stage: Build
-  image: docker:latest
   services:
     - docker:dind
   before_script:
@@ -19,7 +18,6 @@ build-backend:
 
 build-frontend:
   stage: Build
-  image: docker:latest
   services:
     - docker:dind
   before_script:
@@ -32,26 +30,24 @@ build-frontend:
 
 deploy-api:
   stage: Deploy
-  image: docker:latest
   services:
   - docker:dind
-  before_script:
-    - docker login --username "$HEROKU_ACC" --password "$HEROKU_API_KEY" registry.heroku.com
   script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker tag $CI_REGISTRY_IMAGE:latest-api registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest
+    - docker login --username "$HEROKU_ACC" --password "$HEROKU_API_KEY" registry.heroku.com
     - docker push registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest
   only:
     - master
 
 deploy-ui:
   stage: Deploy
-  image: docker:latest
   services:
   - docker:dind
-  before_script:
-    - docker login --username "$HEROKU_ACC" --password "$HEROKU_API_KEY" registry.heroku.com
   script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker tag $CI_REGISTRY_IMAGE:latest-ui registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest
+    - docker login --username "$HEROKU_ACC" --password "$HEROKU_API_KEY" registry.heroku.com
     - docker push registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest
   only:
     - master
