@@ -38,8 +38,8 @@ deploy-api:
   - docker:dind
   script:
     - docker login --username="$HEROKU_ACC" --password="$HEROKU_API_KEY" registry.heroku.com
-    - docker tag $CI_REGISTRY_IMAGE:latest-api registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_APP:latest
-    - docker push registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_APP:latest
+    - docker tag $CI_REGISTRY_IMAGE:latest-api registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest
+    - docker push registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest
   only:
     - master
 
@@ -49,7 +49,7 @@ deploy-ui:
   - docker:dind
   script:
     - docker login --username="$HEROKU_ACC" --password="$HEROKU_API_KEY" registry.heroku.com
-    - docker tag $CI_REGISTRY_IMAGE:latest-ui registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_UI:latest
-    - docker push registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_UI:latest
+    - docker tag $CI_REGISTRY_IMAGE:latest-ui registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest
+    - docker push registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest
   only:
     - master
