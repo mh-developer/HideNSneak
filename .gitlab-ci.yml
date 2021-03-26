@@ -8,38 +8,48 @@ stages:
 
 build-backend:
   stage: Build-Backend
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --context-sub-path ./HideNSneak.App --dockerfile $CI_PROJECT_DIR/HideNSneak.App/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-APP
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-api" ./HideNSneak.App
+    - docker push "$CI_REGISTRY_IMAGE:latest-api"
   only:
     - master
 
 build-frontend:
   stage: Build-Frontend
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --context-sub-path ./HideNSneak.UI --dockerfile $CI_PROJECT_DIR/HideNSneak.UI/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-UI
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-ui" ./HideNSneak.UI
+    - docker push "$CI_REGISTRY_IMAGE:latest-ui"
   only:
     - master
 
 deploy-api:
   stage: Deploy-API
-  image: ruby:alpine
+  services:
+  - docker:dind
   script:
-    - apk add ruby-dev && gem install dpl && dpl --provider=heroku --app=$HEROKU_HIDENSNEAK_APP --api-key=$HEROKU_API_KEY
+    - docker login --username="$HEROKU_ACC" --password="$HEROKU_API_KEY" registry.heroku.com
+    - docker tag $CI_REGISTRY_IMAGE:latest-api registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_APP:latest
+    - docker push registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_APP:latest
   only:
     - master
 
 deploy-ui:
   stage: Deploy-UI
-  image: ruby:alpine
+  services:
+  - docker:dind
   script:
-    - apk add ruby-dev && gem install dpl && dpl --provider=heroku --app=$HEROKU_HIDENSNEAK_UI --api-key=$HEROKU_API_KEY
+    - docker login --username="$HEROKU_ACC" --password="$HEROKU_API_KEY" registry.heroku.com
+    - docker tag $CI_REGISTRY_IMAGE:latest-ui registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_UI:latest
+    - docker push registry.heroku.com/$HEROKU_ACC/$HEROKU_HIDENSNEAK_UI:latest
   only:
     - master
