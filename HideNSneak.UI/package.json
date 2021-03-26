@@ -2,11 +2,11 @@
   "name": "HideNSneak.UI",
   "version": "0.0.1",
   "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "homepage": "https://hide-n-sneak-ui.herokuapp.com/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "ionic": "ionic serve",
+    "ionic": "ionic serve --external --port=3000",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
