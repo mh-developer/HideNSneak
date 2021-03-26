@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8100
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run ionic" ]
