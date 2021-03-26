@@ -38,6 +38,7 @@ deploy-api:
     - docker tag "$CI_REGISTRY_IMAGE:latest-api" "registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest"
     - docker login -u "$HEROKU_ACC" -p "$HEROKU_API_KEY" registry.heroku.com
     - docker push "registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest"
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_HIDENSNEAK_APP
   only:
     - master
 
@@ -51,5 +52,6 @@ deploy-ui:
     - docker tag "$CI_REGISTRY_IMAGE:latest-ui" "registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest"
     - docker login -u "$HEROKU_ACC" -p "$HEROKU_API_KEY" registry.heroku.com
     - docker push "registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest"
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_HIDENSNEAK_UI
   only:
     - master
