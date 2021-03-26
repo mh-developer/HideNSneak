@@ -1,0 +1,7 @@
+{
+  "name": "HideNSneak.UI",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
