@@ -44,14 +44,12 @@ deploy-api:
 
 deploy-ui:
   stage: Deploy
-  services:
-  - docker:dind
+  image: node:lts-alpine
   script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker pull "$CI_REGISTRY_IMAGE:latest-ui"
-    - docker tag "$CI_REGISTRY_IMAGE:latest-ui" "registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest"
-    - docker login -u "$HEROKU_ACC" -p "$HEROKU_API_KEY" registry.heroku.com
-    - docker push "registry.heroku.com/$HEROKU_HIDENSNEAK_UI/web:latest"
-    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_HIDENSNEAK_UI
+    - cd ./HideNSneak.UI
+    - npm install
+    - npm install -g firebase-tools
+    - npm run build:ionic
+    - firebase deploy --only hosting:hidensneak --token "$FIREBASE_TOKEN"
   only:
     - master
