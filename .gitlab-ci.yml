@@ -11,7 +11,7 @@ build-backend:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-api" ./HideNSneak.App
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-api" ./HideNSneak.Api
     - docker push "$CI_REGISTRY_IMAGE:latest-api"
   only:
     - master
@@ -35,10 +35,10 @@ deploy-api:
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker pull "$CI_REGISTRY_IMAGE:latest-api"
-    - docker tag "$CI_REGISTRY_IMAGE:latest-api" "registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest"
+    - docker tag "$CI_REGISTRY_IMAGE:latest-api" "registry.heroku.com/$HEROKU_HIDENSNEAK_API/web:latest"
     - docker login -u "$HEROKU_ACC" -p "$HEROKU_API_KEY" registry.heroku.com
-    - docker push "registry.heroku.com/$HEROKU_HIDENSNEAK_APP/web:latest"
-    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_HIDENSNEAK_APP
+    - docker push "registry.heroku.com/$HEROKU_HIDENSNEAK_API/web:latest"
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_HIDENSNEAK_API
   only:
     - master
 
