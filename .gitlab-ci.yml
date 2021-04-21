@@ -21,6 +21,18 @@ build-backend:
   only:
     - master
 
+build-development-backend:
+  stage: Build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-development-api" ./HideNSneak.Api
+    - docker push "$CI_REGISTRY_IMAGE:latest-development-api"
+  only:
+    - development
+
 build-frontend:
   stage: Build
   services:
@@ -33,6 +45,18 @@ build-frontend:
   only:
     - master
 
+build-development-frontend:
+  stage: Build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-development-ui" ./HideNSneak.UI
+    - docker push "$CI_REGISTRY_IMAGE:latest-development-ui"
+  only:
+    - development
+
 sonarcloud-check:
   stage: Test
   image:
@@ -44,8 +68,11 @@ sonarcloud-check:
       - .sonar/cache
   script:
     - sonar-scanner
+  allow_failure: true
   only:
+    - merge_requests
     - master
+    - development
 
 deploy-api:
   stage: Deploy
@@ -61,6 +88,20 @@ deploy-api:
   only:
     - master
 
+deploy-development-api:
+  stage: Deploy
+  services:
+  - docker:dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker pull "$CI_REGISTRY_IMAGE:latest-development-api"
+    - docker tag "$CI_REGISTRY_IMAGE:latest-development-api" "registry.heroku.com/$HEROKU_HIDENSNEAK_API/web:latest"
+    - docker login -u "$HEROKU_ACC" -p "$HEROKU_API_KEY" registry.heroku.com
+    - docker push "registry.heroku.com/$HEROKU_HIDENSNEAK_API/web:latest"
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $HEROKU_HIDENSNEAK_API
+  only:
+    - development
+
 deploy-ui:
   stage: Deploy
   image: node:lts-alpine
@@ -72,3 +113,4 @@ deploy-ui:
     - firebase deploy --only hosting:hidensneak --token "$FIREBASE_TOKEN"
   only:
     - master
+    - development
