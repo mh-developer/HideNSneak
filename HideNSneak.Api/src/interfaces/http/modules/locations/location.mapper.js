@@ -17,8 +17,8 @@ const Joi = require("joi");
  *         type: string
  */
 const locationMapper = Joi.object({
-    id: Joi.number(),
-    userId: Joi.number(),
+    id: Joi.string(),
+    userId: Joi.string(),
     lng: Joi.string().required(),
     lat: Joi.string().required(),
     timestamp: Joi.date().timestamp().required(),

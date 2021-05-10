@@ -1,28 +1,24 @@
 const unitOfWork = require("../../infra/unit-of-work");
 
-const getAll = () => {
-    // TODO
-    // return unitOfWork.Location.fetchAll();
+
+const getAll = async () => {
+    return await unitOfWork.locations.getAll();
 };
 
-const get = (id) => {
-    // TODO
-    // return unitOfWork.Location.where({ id: id }).fetch();
+const get = async (id) => {
+    return await unitOfWork.locations.get(id);
 };
 
-const create = (data) => {
-    // TODO
-    // return unitOfWork.Location.forge({ ...data, id: null }).save();
+const create = async (data) => {
+    return await unitOfWork.locations.create(data);
 };
 
-const update = (id, data) => {
-    // TODO
-    // return unitOfWork.Location.forge({ ...data, id }).save();
+const update = async (id, data) => {
+    return await unitOfWork.locations.update(id, data);
 };
 
-const remove = (id) => {
-    // TODO
-    // return unitOfWork.Location.forge({ id: id }).destroy();
+const remove = async (id) => {
+    return await unitOfWork.locations.remove(id);
 };
 
 const ping = () => {

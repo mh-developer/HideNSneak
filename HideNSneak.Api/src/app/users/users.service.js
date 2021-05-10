@@ -1,28 +1,23 @@
 const unitOfWork = require("../../infra/unit-of-work");
 
-const getAll = () => {
-    // TODO
-    // return unitOfWork.User.fetchAll();
+const getAll = async () => {
+    return await unitOfWork.users.getAll();
 };
 
-const get = (id) => {
-    // TODO
-    // return unitOfWork.User.where({ id: id }).fetch();
+const get = async (id) => {
+    return await unitOfWork.users.get(id);
 };
 
-const create = (data) => {
-    // TODO
-    // return unitOfWork.User.forge({ ...data, id: null }).save();
+const create = async (data) => {
+    return await unitOfWork.users.create(data);
 };
 
-const update = (id, data) => {
-    // TODO
-    // return unitOfWork.User.forge({ ...data, id }).save();
+const update = async (id, data) => {
+    return await unitOfWork.users.update(id, data);
 };
 
-const remove = (id) => {
-    // TODO
-    // return unitOfWork.User.forge({ id: id }).destroy();
+const remove = async (id) => {
+    return await unitOfWork.users.remove(id);
 };
 
 const usersService = {

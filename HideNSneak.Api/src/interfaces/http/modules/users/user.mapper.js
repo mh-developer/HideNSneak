@@ -15,7 +15,7 @@ const Joi = require("joi");
  *         type: string
  */
 const userMapper = Joi.object({
-    id: Joi.number(),
+    id: Joi.string(),
     name: Joi.string().required(),
     lastname: Joi.string().required(),
     email: Joi.string().required(),
