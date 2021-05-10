@@ -1,11 +1,12 @@
 const express = require("express");
 const logger = require("morgan");
+const helmet = require("helmet");
 const router = require("./interfaces/http/router");
 require("dotenv").config();
 
 const app = express();
 
-app.disable('x-powered-by')
+app.use(helmet());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
