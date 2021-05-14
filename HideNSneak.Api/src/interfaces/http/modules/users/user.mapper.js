@@ -3,7 +3,7 @@ const Joi = require('joi');
 /**
  * @swagger
  * definitions:
- *   location:
+ *   user:
  *     properties:
  *       id:
  *         type: string
