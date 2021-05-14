@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Status = require("http-status");
+const Status = require('http-status');
 
 /**
  * @swagger
@@ -17,8 +17,8 @@ const Status = require("http-status");
  *       500:
  *         description: Internal Server Error
  */
-router.get("/", (req, res) => {
-    res.status(Status.OK).send("Awyee, API Works!!!");
+router.get('/', (req, res) => {
+  res.status(Status.OK).send('Awyee, API Works!!!');
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
 /**
  * @swagger
@@ -15,10 +15,10 @@ const Joi = require("joi");
  *         type: string
  */
 const userMapper = Joi.object({
-    id: Joi.string(),
-    name: Joi.string().required(),
-    lastname: Joi.string().required(),
-    email: Joi.string().required(),
+  id: Joi.string(),
+  name: Joi.string().required(),
+  lastname: Joi.string().required(),
+  email: Joi.string().required()
 });
 
 module.exports = userMapper;

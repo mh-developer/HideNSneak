@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
 /**
  * @swagger
@@ -17,11 +17,11 @@ const Joi = require("joi");
  *         type: string
  */
 const locationMapper = Joi.object({
-    id: Joi.string(),
-    userId: Joi.string(),
-    lng: Joi.string().required(),
-    lat: Joi.string().required(),
-    timestamp: Joi.date().timestamp().required(),
+  id: Joi.string(),
+  userId: Joi.string(),
+  lng: Joi.string().required(),
+  lat: Joi.string().required(),
+  timestamp: Joi.date().timestamp().required()
 });
 
 module.exports = locationMapper;
