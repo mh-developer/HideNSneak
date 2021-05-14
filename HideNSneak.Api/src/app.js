@@ -1,8 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const logger = require("morgan");
 const helmet = require("helmet");
 const router = require("./interfaces/http/router");
-require("dotenv").config();
 
 const app = express();
 
