@@ -1,8 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Status = require("http-status");
-const userMapper = require("./user.mapper");
-const services = require("../../../../app/index");
+const Status = require('http-status');
+const userMapper = require('./user.mapper');
+const services = require('../../../../app/index');
 
 /**
  * @swagger
@@ -21,13 +21,13 @@ const services = require("../../../../app/index");
  *       400:
  *         description: Bad Request
  */
-router.get("/", async (req, res) => {
-    try {
-        const users = await services.usersService.getAll();
-        res.status(Status.OK).json(users);
-    } catch (error) {
-        res.status(Status.BAD_REQUEST).json(error);
-    }
+router.get('/', async (req, res) => {
+  try {
+    const users = await services.usersService.getAll();
+    res.status(Status.OK).json(users);
+  } catch (error) {
+    res.status(Status.BAD_REQUEST).json(error);
+  }
 });
 
 /**
@@ -47,18 +47,18 @@ router.get("/", async (req, res) => {
  *       400:
  *         description: Bad Request
  */
-router.get("/:id", async (req, res) => {
-    try {
-        const { id } = req.params,
-            user = await services.usersService.get(id);
-        if (user) {
-            res.status(Status.OK).json(user);
-        } else {
-            res.status(Status.NOT_FOUND).json(`User ${id} not found.`);
-        }
-    } catch (error) {
-        res.status(Status.BAD_REQUEST).json(error);
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params,
+      user = await services.usersService.get(id);
+    if (user) {
+      res.status(Status.OK).json(user);
+    } else {
+      res.status(Status.NOT_FOUND).json(`User ${id} not found.`);
     }
+  } catch (error) {
+    res.status(Status.BAD_REQUEST).json(error);
+  }
 });
 
 /**
@@ -79,27 +79,27 @@ router.get("/:id", async (req, res) => {
  *         description: Bad Request
  */
 router.post(
-    "/",
-    async (req, res, next) => {
-        try {
-            const { error } = await userMapper.validateAsync(req.body);
-            if (error) {
-                res.status(Status.BAD_REQUEST).json("Model validation error");
-            } else {
-                next();
-            }
-        } catch (error) {
-            res.status(Status.BAD_REQUEST).json(error);
-        }
-    },
-    async (req, res) => {
-        try {
-            const user = await services.usersService.create(req.body);
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(Status.BAD_REQUEST).json(error);
-        }
+  '/',
+  async (req, res, next) => {
+    try {
+      const { error } = await userMapper.validateAsync(req.body);
+      if (error) {
+        res.status(Status.BAD_REQUEST).json('Model validation error');
+      } else {
+        next();
+      }
+    } catch (error) {
+      res.status(Status.BAD_REQUEST).json(error);
     }
+  },
+  async (req, res) => {
+    try {
+      const user = await services.usersService.create(req.body);
+      res.status(201).json(user);
+    } catch (error) {
+      res.status(Status.BAD_REQUEST).json(error);
+    }
+  }
 );
 
 /**
@@ -120,37 +120,37 @@ router.post(
  *         description: Bad Request
  */
 router.put(
-    "/:id",
-    async (req, res, next) => {
-        try {
-            const { error } = await userMapper.validateAsync(req.body);
-            if (error) {
-                res.status(Status.BAD_REQUEST).json("Model validation error");
-            } else if (req.params.id != req.body.id) {
-                res.status(Status.BAD_REQUEST).json(
-                    "Model validation error. ID arguments not same."
-                );
-            } else {
-                next();
-            }
-        } catch (error) {
-            res.status(Status.BAD_REQUEST).json(error);
-        }
-    },
-    async (req, res) => {
-        try {
-            const { id } = req.params,
-                user = await services.usersService.get(id);
-            if (user) {
-                await services.usersService.update(id, req.body);
-                res.status(Status.NO_CONTENT).json();
-            } else {
-                res.status(Status.NOT_FOUND).json(`User ${id} not found.`);
-            }
-        } catch (error) {
-            res.status(Status.BAD_REQUEST).json(error);
-        }
+  '/:id',
+  async (req, res, next) => {
+    try {
+      const { error } = await userMapper.validateAsync(req.body);
+      if (error) {
+        res.status(Status.BAD_REQUEST).json('Model validation error');
+      } else if (req.params.id != req.body.id) {
+        res
+          .status(Status.BAD_REQUEST)
+          .json('Model validation error. ID arguments not same.');
+      } else {
+        next();
+      }
+    } catch (error) {
+      res.status(Status.BAD_REQUEST).json(error);
     }
+  },
+  async (req, res) => {
+    try {
+      const { id } = req.params,
+        user = await services.usersService.get(id);
+      if (user) {
+        await services.usersService.update(id, req.body);
+        res.status(Status.NO_CONTENT).json();
+      } else {
+        res.status(Status.NOT_FOUND).json(`User ${id} not found.`);
+      }
+    } catch (error) {
+      res.status(Status.BAD_REQUEST).json(error);
+    }
+  }
 );
 
 /**
@@ -170,19 +170,19 @@ router.put(
  *       400:
  *         description: Bad Request
  */
-router.delete("/:id", async (req, res) => {
-    try {
-        const { id } = req.params,
-            user = await services.usersService.get(id);
-        if (user) {
-            await services.usersService.remove(id);
-            res.status(Status.NO_CONTENT).json();
-        } else {
-            res.status(Status.NOT_FOUND).json(`User ${id} not found.`);
-        }
-    } catch (error) {
-        res.status(Status.BAD_REQUEST).json(error);
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params,
+      user = await services.usersService.get(id);
+    if (user) {
+      await services.usersService.remove(id);
+      res.status(Status.NO_CONTENT).json();
+    } else {
+      res.status(Status.NOT_FOUND).json(`User ${id} not found.`);
     }
+  } catch (error) {
+    res.status(Status.BAD_REQUEST).json(error);
+  }
 });
 
 module.exports = router;
