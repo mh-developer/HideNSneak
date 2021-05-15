@@ -7,6 +7,7 @@ variables:
 stages:
   - Build
   - Test
+  - Analysis
   - Deploy
 
 build-backend:
@@ -59,8 +60,24 @@ build-development-frontend:
   only:
     - development
 
-sonarcloud-check:
+test-backend:
   stage: Test
+  image: node:lts-alpine
+  script:
+    - cd ./HideNSneak.Api
+    - npm install
+    - npm run test
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - HideNSneak.Api/test-report.xml
+  only:
+    - merge_requests
+    - master
+    - development
+
+sonarcloud-check:
+  stage: Analysis
   image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
