@@ -9,9 +9,9 @@ const login = async user => {
   const accessToken = jwt.sign({ user: data }, accessTokenSecret, {
     expiresIn: '20m'
   });
-  const refreshToken = jwt.sign({ id: user.id }, refreshTokenSecret);
+  const refreshTokenJwt = jwt.sign({ id: user.id }, refreshTokenSecret);
 
-  return { access_token: accessToken, refresh_token: refreshToken };
+  return { access_token: accessToken, refresh_token: refreshTokenJwt };
 };
 
 const register = async data => {
@@ -20,12 +20,15 @@ const register = async data => {
 
 const logout = async refreshToken => {
   // TODO: remove saved refresh token
+  return new Promise((resolve, reject) => {
+    resolve(true);
+  });
 };
 
-const refreshToken = (user, refreshToken) => {
+const refreshToken = (user, oldRefreshToken) => {
   // TODO: refresh token should be saved and verified from db
 
-  jwt.verify(refreshToken, refreshTokenSecret, (err, token) => {
+  jwt.verify(oldRefreshToken, refreshTokenSecret, (err, token) => {
     if (err) {
       throw new Error('Forbidden');
     }
@@ -33,9 +36,9 @@ const refreshToken = (user, refreshToken) => {
     const accessToken = jwt.sign({ user: data }, accessTokenSecret, {
       expiresIn: '20m'
     });
-    const refreshToken = jwt.sign({ id: user.id }, refreshTokenSecret);
+    const refreshTokenJwt = jwt.sign({ id: user.id }, refreshTokenSecret);
 
-    return { access_token: accessToken, refresh_token: refreshToken };
+    return { access_token: accessToken, refresh_token: refreshTokenJwt };
   });
 };
 

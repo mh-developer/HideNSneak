@@ -132,10 +132,13 @@ router.post('/token', async (req, res) => {
 router.post('/logout', async (req, res) => {
   try {
     const { token } = req.body;
-    req.logout();
     const result = await services.authService.logout(token);
-
-    res.status(Status.OK).json();
+    if (result) {
+      req.logout();
+      res.status(Status.OK).json();
+    } else {
+      res.status(Status.BAD_REQUEST).json();
+    }
   } catch (e) {
     res.status(Status.BAD_REQUEST).json();
   }
