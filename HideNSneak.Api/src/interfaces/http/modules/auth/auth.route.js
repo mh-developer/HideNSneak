@@ -10,14 +10,24 @@ const services = require('../../../../app/index');
  *   post:
  *     tags:
  *       - Authentication
- *     description: Login in user
+ *     description: Authenticate user
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: User's credentials
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/loginDto'
  *     responses:
  *       200:
  *         description: Success login
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.post('/login', async (req, res, next) => {
   passport.authenticate('login', async (err, user, info) => {
@@ -56,13 +66,23 @@ router.post('/login', async (req, res, next) => {
  *     tags:
  *       - Authentication
  *     description: Register user
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: User's data
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/registerDto'
  *     responses:
  *       200:
  *         description: Success
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.post(
   '/register',
@@ -87,13 +107,23 @@ router.post(
  *     tags:
  *       - Authentication
  *     description: Refresh token
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: Refresh token
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/refreshTokenDto'
  *     responses:
  *       200:
  *         description: Success
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.post('/token', async (req, res) => {
   try {
@@ -127,7 +157,7 @@ router.post('/token', async (req, res) => {
  *       200:
  *         description: Success logout
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.post('/logout', async (req, res) => {
   try {
@@ -147,9 +177,9 @@ router.post('/logout', async (req, res) => {
 /**
  * @swagger
  * definitions:
- *   auth:
+ *   loginDto:
  *     properties:
- *       username:
+ *       email:
  *         type: string
  *       password:
  *         type: string
@@ -158,7 +188,22 @@ router.post('/logout', async (req, res) => {
 /**
  * @swagger
  * definitions:
- *   refreshToken:
+ *   registerDto:
+ *     properties:
+ *       name:
+ *         type: string
+ *       lastname:
+ *         type: string
+ *       email:
+ *         type: string
+ *       password:
+ *         type: string
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   refreshTokenDto:
  *     properties:
  *       token:
  *         type: string

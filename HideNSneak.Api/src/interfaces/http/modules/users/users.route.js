@@ -11,15 +11,21 @@ const services = require('../../../../app/index');
  *     tags:
  *       - Users
  *     description: Get a list of users
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           type: array
+ *           items:
+ *             $ref: '#/definitions/userDto'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.get('/', async (req, res) => {
   try {
@@ -37,15 +43,27 @@ router.get('/', async (req, res) => {
  *     tags:
  *       - Users
  *     description: Get specific user
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: User's ID
+ *         type: string
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           $ref: '#/definitions/userDto'
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.get('/:id', async (req, res) => {
   try {
@@ -68,15 +86,29 @@ router.get('/:id', async (req, res) => {
  *     tags:
  *       - Users
  *     description: Create user
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: User's Entity
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/userDto'
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           $ref: '#/definitions/userDto'
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.post(
   '/',
@@ -109,15 +141,32 @@ router.post(
  *     tags:
  *       - Users
  *     description: Update user
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: User's ID to update
+ *         type: string
+ *       - name: body
+ *         description: User's Entity
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/userDto'
+ *     security:
+ *       - JWT: []
  *     responses:
- *       200:
+ *       204:
  *         description: Success
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.put(
   '/:id',
@@ -160,15 +209,25 @@ router.put(
  *     tags:
  *       - Users
  *     description: Delete user
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: User's ID
+ *         type: string
+ *     security:
+ *       - JWT: []
  *     responses:
- *       200:
+ *       204:
  *         description: Success
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.delete('/:id', async (req, res) => {
   try {
