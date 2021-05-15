@@ -21,11 +21,25 @@ const pusher = new Pusher({
  *     tags:
  *       - Locations
  *     description: Report new location
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: Report new location
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/locationDto'
  *     security:
  *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *       400:
+ *         $ref: '#/responses/BadRequest'
  */
 router.post('/ping', (req, res) => {
   // TODO
@@ -45,15 +59,21 @@ router.post('/ping', (req, res) => {
  *     tags:
  *       - Locations
  *     description: Notify clients
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           type: array
+ *           items:
+ *             $ref: '#/definitions/locationDto'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.post('/notify', (req, res) => {
   // TODO
@@ -73,15 +93,21 @@ router.post('/notify', (req, res) => {
  *     tags:
  *       - Locations
  *     description: Get a list of teammates locations
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           type: array
+ *           items:
+ *             $ref: '#/definitions/userDto'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.get('/', async (req, res) => {
   // TODO
@@ -100,15 +126,27 @@ router.get('/', async (req, res) => {
  *     tags:
  *       - Locations
  *     description: Get specific location
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Location's ID
+ *         type: string
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           $ref: '#/definitions/locationDto'
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.get('/:id', async (req, res) => {
   // TODO
@@ -132,15 +170,29 @@ router.get('/:id', async (req, res) => {
  *     tags:
  *       - Locations
  *     description: Create new location
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: body
+ *         description: Location's Entity
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/location'
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: Success
+ *         schema:
+ *           $ref: '#/definitions/locationDto'
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.post(
   '/',
@@ -175,15 +227,32 @@ router.post(
  *     tags:
  *       - Locations
  *     description: Update location
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Location's ID to update
+ *         type: string
+ *       - name: body
+ *         description: Location's Entity
+ *         in: body
+ *         required: true
+ *         type: string
+ *         schema:
+ *           $ref: '#/definitions/locationDto'
+ *     security:
+ *       - JWT: []
  *     responses:
- *       200:
+ *       204:
  *         description: Success
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.put(
   '/:id',
@@ -228,15 +297,25 @@ router.put(
  *     tags:
  *       - Locations
  *     description: Delete location
- *     security:
- *       - JWT: []
+ *     consumes:
+ *       - application/json
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Location's ID
+ *         type: string
+ *     security:
+ *       - JWT: []
  *     responses:
- *       200:
+ *       204:
  *         description: Success
+ *       401:
+ *         $ref: '#/responses/Unauthorized'
  *       400:
- *         description: Bad Request
+ *         $ref: '#/responses/BadRequest'
  */
 router.delete('/:id', async (req, res) => {
   // TODO
