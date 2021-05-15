@@ -8,6 +8,10 @@ const get = async id => {
   return await UserModel.findById(id);
 };
 
+const getByFilter = async filter => {
+  return await UserModel.findOne(filter);
+};
+
 const create = async data => {
   const newUser = new UserModel(data);
   return await newUser.save();
@@ -28,6 +32,7 @@ const remove = async id => {
 const usersRepository = {
   getAll,
   get,
+  getByFilter,
   create,
   update,
   remove

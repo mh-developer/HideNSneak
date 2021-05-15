@@ -8,6 +8,8 @@ const middlewares = require('./middlewares');
 const router = Router();
 const apiRouter = Router();
 
+middlewares.initAuthFlow();
+
 apiRouter
   .use(
     cors({
