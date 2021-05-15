@@ -3,57 +3,43 @@ const jwt = require('jsonwebtoken');
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || 'devModeSecret';
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || 'devModeRefresh';
-let refreshTokens = [];
-const users = [
-  {
-    username: 'john',
-    password: 'password123admin',
-    role: 'admin'
-  },
-  {
-    username: 'anna',
-    password: 'password123member',
-    role: 'member'
-  }
-];
 
-const login = (username, password) => {
-  // TODO: need connect with DB
-
-  const user = users.find(u => {
-    return u.username === username && u.password === password;
-  });
-
-  const accessToken = jwt.sign(
-    { username: user.username, role: user.role },
-    accessTokenSecret,
-    { expiresIn: '20m' }
-  );
-  const refreshToken = jwt.sign(
-    { username: user.username, role: user.role },
-    refreshTokenSecret
-  );
-
-  refreshTokens.push(refreshToken);
-  return { accessToken, refreshToken };
-};
-
-const register = data => {
-  // TODO
-};
-
-const logout = token => {
-  // TODO
-
-  refreshTokens = refreshTokens.filter(t => t !== token);
-};
-
-const refreshToken = user => {
-  // TODO
-  const accessToken = jwt.sign({ username: user.username }, accessTokenSecret, {
+const login = async user => {
+  const data = { id: user.id, email: user.email };
+  const accessToken = jwt.sign({ user: data }, accessTokenSecret, {
     expiresIn: '20m'
   });
-  return { accessToken };
+  const refreshTokenJwt = jwt.sign({ id: user.id }, refreshTokenSecret);
+
+  return { access_token: accessToken, refresh_token: refreshTokenJwt };
+};
+
+const register = async data => {
+  return await unitOfWork.users.create(data);
+};
+
+const logout = async oldRefreshToken => {
+  // TODO: remove saved refresh token
+  return new Promise((resolve, reject) => {
+    resolve(true);
+  });
+};
+
+const refreshToken = (user, oldRefreshToken) => {
+  // TODO: refresh token should be saved and verified from db
+
+  jwt.verify(oldRefreshToken, refreshTokenSecret, (err, token) => {
+    if (err) {
+      throw new Error('Forbidden');
+    }
+    const data = { id: user.id, email: user.email };
+    const accessToken = jwt.sign({ user: data }, accessTokenSecret, {
+      expiresIn: '20m'
+    });
+    const refreshTokenJwt = jwt.sign({ id: user.id }, refreshTokenSecret);
+
+    return { access_token: accessToken, refresh_token: refreshTokenJwt };
+  });
 };
 
 const usersService = {

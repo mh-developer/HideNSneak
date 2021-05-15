@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const Status = require('http-status');
+const passport = require('passport');
 const services = require('../../../../app/index');
 
 /**
@@ -19,20 +19,34 @@ const services = require('../../../../app/index');
  *       400:
  *         description: Bad Request
  */
-router.post('/login', (req, res) => {
-  try {
-    const { username, password } = req.body;
+router.post('/login', async (req, res, next) => {
+  passport.authenticate('login', async (err, user, info) => {
+    try {
+      console.log(user, err, info);
+      if (err || !user) {
+        return res
+          .status(Status.BAD_REQUEST)
+          .json('Wrong username or password.');
+      }
 
-    const result = services.authService.login(username, password);
+      req.login(user, { session: false }, async error => {
+        if (error)
+          return res
+            .status(Status.BAD_REQUEST)
+            .json('Wrong username or password.');
 
-    if (result) {
-      res.status(Status.OK).json(result);
-    } else {
-      res.status(Status.BAD_REQUEST).send('Username or password incorrect');
+        const result = await services.authService.login(user);
+
+        if (result) {
+          res.status(Status.OK).json(result);
+        } else {
+          res.status(Status.BAD_REQUEST).json('Wrong username or password.');
+        }
+      });
+    } catch (error) {
+      return next(error);
     }
-  } catch (e) {
-    res.status(Status.BAD_REQUEST).send('Username or password incorrect');
-  }
+  })(req, res, next);
 });
 
 /**
@@ -50,16 +64,21 @@ router.post('/login', (req, res) => {
  *       400:
  *         description: Bad Request
  */
-router.post('/register', (req, res) => {
-  // TODO
-  try {
-    const data = req.body;
-    const result = services.authService.register(data);
-    res.status(Status.OK).json(result);
-  } catch (error) {
-    res.status(Status.BAD_REQUEST).json();
+router.post(
+  '/register',
+  passport.authenticate('register', { session: false }),
+  async (req, res) => {
+    try {
+      const result = await services.authService.login(req.user);
+      res.status(Status.OK).json({
+        user: req.user,
+        token: result
+      });
+    } catch (error) {
+      res.status(Status.BAD_REQUEST).json();
+    }
   }
-});
+);
 
 /**
  * @swagger
@@ -76,7 +95,7 @@ router.post('/register', (req, res) => {
  *       400:
  *         description: Bad Request
  */
-router.post('/token', (req, res) => {
+router.post('/token', async (req, res) => {
   try {
     const { token } = req.body;
 
@@ -84,19 +103,12 @@ router.post('/token', (req, res) => {
       return res.status(Status.UNAUTHORIZED).json();
     }
 
-    if (!refreshTokens.includes(token)) {
-      return res.status(Status.FORBIDDEN).json();
-    }
-
-    jwt.verify(token, refreshTokenSecret, (err, user) => {
-      if (err) {
-        return res.status(Status.FORBIDDEN).json();
-      }
-
-      const result = services.authService.refreshToken(token);
-
+    const result = await services.authService.refreshToken(req.user, token);
+    if (result) {
       res.status(Status.OK).json(result);
-    });
+    } else {
+      res.status(Status.BAD_REQUEST).json();
+    }
   } catch (e) {
     res.status(Status.BAD_REQUEST).json();
   }
@@ -117,12 +129,16 @@ router.post('/token', (req, res) => {
  *       400:
  *         description: Bad Request
  */
-router.post('/logout', (req, res) => {
+router.post('/logout', async (req, res) => {
   try {
     const { token } = req.body;
-    const result = services.authService.logout(token);
-
-    res.status(Status.OK).send('Logout successful');
+    const result = await services.authService.logout(token);
+    if (result) {
+      req.logout();
+      res.status(Status.OK).json();
+    } else {
+      res.status(Status.BAD_REQUEST).json();
+    }
   } catch (e) {
     res.status(Status.BAD_REQUEST).json();
   }
