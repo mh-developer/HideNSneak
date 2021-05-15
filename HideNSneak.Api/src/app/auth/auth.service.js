@@ -18,7 +18,7 @@ const register = async data => {
   return await unitOfWork.users.create(data);
 };
 
-const logout = async refreshToken => {
+const logout = async oldRefreshToken => {
   // TODO: remove saved refresh token
   return new Promise((resolve, reject) => {
     resolve(true);
