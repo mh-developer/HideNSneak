@@ -48,7 +48,7 @@ router.post('/ping', (req, res) => {
     lat,
     lng
   };
-  pusher.trigger('location', 'ping', data);
+  services.locationsService.ping(data);
   res.status(Status.OK).json(data);
 });
 
@@ -82,7 +82,7 @@ router.post('/notify', (req, res) => {
     lat,
     lng
   };
-  pusher.trigger('geofence', 'exit', data);
+  services.locationsService.notify(data);
   res.status(Status.OK).json(data);
 });
 
