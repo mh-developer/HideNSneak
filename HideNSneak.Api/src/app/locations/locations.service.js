@@ -20,12 +20,12 @@ const remove = async id => {
   return await unitOfWork.locations.remove(id);
 };
 
-const ping = () => {
-  // TODO
+const ping = async data => {
+  return await unitOfWork.pusher.ping(data);
 };
 
-const notify = id => {
-  // TODO
+const notify = async data => {
+  return await unitOfWork.pusher.notify(data);
 };
 
 const locationsService = {
