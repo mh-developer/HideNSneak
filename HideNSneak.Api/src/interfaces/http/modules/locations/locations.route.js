@@ -175,7 +175,7 @@ router.get('/:id', async (req, res) => {
  *     security:
  *       - JWT: []
  *     responses:
- *       200:
+ *       201:
  *         description: Success
  *         schema:
  *           $ref: '#/definitions/locationDto'
