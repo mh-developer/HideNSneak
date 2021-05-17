@@ -7,7 +7,7 @@ const users = require('./repositories/users.repository');
 if (process.env.NODE_ENV === 'production') {
   databaseInstance();
 } else if (process.env.NODE_ENV === 'development') {
-  databaseInstance(process.env.DB_CONNECTION_STRING);
+  databaseInstance(process.env.DB_CONNECTION_STRING_DEV);
 }
 
 const pusher = Pusher(pusherInstance);
