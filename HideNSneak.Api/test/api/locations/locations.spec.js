@@ -2,15 +2,20 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../../../src/app');
 const LocationModel = require('../../../src/domain/locations/location.model');
+const UserModel = require('../../../src/domain/users/users.model');
 const { v4 } = require('uuid');
 
 let connection;
+let token;
 const BASE_URI = `/api/v1`;
 
 describe('Test the locations path for GET method', () => {
   test('It should response the GET method for all locations', async () => {
     // Act
-    const response = await request(app).get(`${BASE_URI}/locations`).send();
+    const response = await request(app)
+      .get(`${BASE_URI}/locations`)
+      .set('Authorization', `${token}`)
+      .send();
 
     // Assert
     expect(response.statusCode).toBe(200);
@@ -24,6 +29,7 @@ describe('Test the locations path for GET method', () => {
     // Act
     const response = await request(app)
       .get(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -37,6 +43,7 @@ describe('Test the locations path for GET method', () => {
     // Act
     const response = await request(app)
       .get(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -57,6 +64,7 @@ describe('Test the locations path for POST method', () => {
     // Act
     const response = await request(app)
       .post(`${BASE_URI}/locations`)
+      .set('Authorization', `${token}`)
       .send(newLocation);
 
     // Assert
@@ -75,6 +83,7 @@ describe('Test the locations path for POST method', () => {
     // Act
     const response = await request(app)
       .post(`${BASE_URI}/locations`)
+      .set('Authorization', `${token}`)
       .send(notValidNewLocation);
 
     // Assert
@@ -98,6 +107,7 @@ describe('Test the locations path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send(updateLocation);
 
     // Assert
@@ -112,6 +122,7 @@ describe('Test the locations path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send(location);
 
     // Assert
@@ -127,6 +138,7 @@ describe('Test the locations path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send(location);
 
     // Assert
@@ -142,6 +154,7 @@ describe('Test the locations path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send(location);
 
     // Assert
@@ -158,6 +171,7 @@ describe('Test the locations path for DELETE method', () => {
     // Act
     const response = await request(app)
       .delete(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -171,6 +185,7 @@ describe('Test the locations path for DELETE method', () => {
     // Act
     const response = await request(app)
       .delete(`${BASE_URI}/locations/${param}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -184,6 +199,15 @@ beforeAll(async () => {
     useUnifiedTopology: true
   });
   connection = mongoose.connection;
+
+  const newUser = new UserModel(getUser());
+  await newUser.save();
+
+  const credentials = getCredentials();
+  const response = await request(app)
+    .post(`${BASE_URI}/auth/login`)
+    .send(credentials);
+  token = `${response.body.schema} ${response.body.access_token}`;
 });
 
 beforeEach(async () => {
@@ -223,3 +247,15 @@ const getLocations = () => [
     timestamp: Date.now()
   }
 ];
+
+const getUser = () => ({
+  name: 'Johnny',
+  lastname: 'Makaroni',
+  email: 'johnny.makaroni@gmail.com',
+  password: 'fakePassword'
+});
+
+const getCredentials = () => ({
+  email: 'johnny.makaroni@gmail.com',
+  password: 'fakePassword'
+});

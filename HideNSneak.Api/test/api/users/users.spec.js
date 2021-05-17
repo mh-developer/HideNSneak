@@ -4,12 +4,16 @@ const app = require('../../../src/app');
 const UserModel = require('../../../src/domain/users/users.model');
 
 let connection;
+let token;
 const BASE_URI = `/api/v1`;
 
 describe('Test the users path for GET method', () => {
   test('It should response the GET method for all users', async () => {
     // Act
-    const response = await request(app).get(`${BASE_URI}/users`).send();
+    const response = await request(app)
+      .get(`${BASE_URI}/users`)
+      .set('Authorization', `${token}`)
+      .send();
 
     // Assert
     expect(response.statusCode).toBe(200);
@@ -22,6 +26,7 @@ describe('Test the users path for GET method', () => {
     // Act
     const response = await request(app)
       .get(`${BASE_URI}/users/${user._id}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -35,6 +40,7 @@ describe('Test the users path for GET method', () => {
     // Act
     const response = await request(app)
       .get(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -53,7 +59,10 @@ describe('Test the users path for POST method', () => {
     };
 
     // Act
-    const response = await request(app).post(`${BASE_URI}/users`).send(newUser);
+    const response = await request(app)
+      .post(`${BASE_URI}/users`)
+      .set('Authorization', `${token}`)
+      .send(newUser);
 
     // Assert
     expect(response.statusCode).toBe(201);
@@ -71,6 +80,7 @@ describe('Test the users path for POST method', () => {
     // Act
     const response = await request(app)
       .post(`${BASE_URI}/users`)
+      .set('Authorization', `${token}`)
       .send(notValidNewUser);
 
     // Assert
@@ -94,6 +104,7 @@ describe('Test the users path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send(updateUser);
 
     // Assert
@@ -108,6 +119,7 @@ describe('Test the users path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send(user);
 
     // Assert
@@ -123,6 +135,7 @@ describe('Test the users path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send(user);
 
     // Assert
@@ -135,6 +148,7 @@ describe('Test the users path for PUT method', () => {
     // Act
     const response2 = await request(app)
       .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send(user);
 
     // Assert
@@ -147,6 +161,7 @@ describe('Test the users path for PUT method', () => {
     // Act
     const response3 = await request(app)
       .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send(user);
 
     // Assert
@@ -159,6 +174,7 @@ describe('Test the users path for PUT method', () => {
     // Act
     const response4 = await request(app)
       .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send(user);
 
     // Assert
@@ -174,6 +190,7 @@ describe('Test the users path for PUT method', () => {
     // Act
     const response = await request(app)
       .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send(user);
 
     // Assert
@@ -189,6 +206,7 @@ describe('Test the users path for DELETE method', () => {
     // Act
     const response = await request(app)
       .delete(`${BASE_URI}/users/${user._id}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -202,6 +220,7 @@ describe('Test the users path for DELETE method', () => {
     // Act
     const response = await request(app)
       .delete(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
       .send();
 
     // Assert
@@ -223,6 +242,12 @@ beforeEach(async () => {
     const newUser = new UserModel(user);
     await newUser.save();
   }
+
+  const credentials = getCredentials();
+  const response = await request(app)
+    .post(`${BASE_URI}/auth/login`)
+    .send(credentials);
+  token = `${response.body.schema} ${response.body.access_token}`;
 });
 
 afterEach(async () => {
@@ -260,3 +285,8 @@ const getUsers = () => [
     password: 'fakePassword'
   }
 ];
+
+const getCredentials = () => ({
+  email: 'johnny.makaroni@gmail.com',
+  password: 'fakePassword'
+});
