@@ -15,7 +15,7 @@ module.exports = (unitOfWork = require('../../infra/unit-of-work')) => {
     return {
       access_token: accessToken,
       refresh_token: refreshTokenJwt,
-      scheme: 'Bearer'
+      schema: 'Bearer'
     };
   };
 
@@ -46,7 +46,7 @@ module.exports = (unitOfWork = require('../../infra/unit-of-work')) => {
       return {
         access_token: accessToken,
         refresh_token: refreshTokenJwt,
-        scheme: 'Bearer'
+        schema: 'Bearer'
       };
     });
   };

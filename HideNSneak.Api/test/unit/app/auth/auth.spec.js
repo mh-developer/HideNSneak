@@ -16,8 +16,8 @@ describe('test auth service', () => {
     expect(data).toBeDefined();
     expect(data).toHaveProperty('access_token');
     expect(data).toHaveProperty('refresh_token');
-    expect(data).toHaveProperty('scheme');
-    expect(data.scheme).toEqual('Bearer');
+    expect(data).toHaveProperty('schema');
+    expect(data.schema).toEqual('Bearer');
   });
 });
 
