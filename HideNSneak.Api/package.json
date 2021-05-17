@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
-    "test": "cross-env NODE_ENV=test jest --coverage",
+    "test": "cross-env NODE_ENV=test jest --coverage --runInBand",
     "dev": "cross-env NODE_ENV=development nodemon ./bin/www"
   },
   "jest": {
