@@ -3,6 +3,7 @@ const pusherInstance = require('./config/pusher.config');
 const databaseInstance = require('./config/db.config');
 const locations = require('./repositories/locations.repository');
 const users = require('./repositories/users.repository');
+const rooms = require('./repositories/rooms.repository');
 
 if (process.env.NODE_ENV === 'production') {
   databaseInstance();
@@ -15,7 +16,8 @@ const pusher = Pusher(pusherInstance);
 const unitOfWork = {
   locations,
   users,
-  pusher
+  pusher,
+  rooms
 };
 
 module.exports = unitOfWork;
