@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 
-module.exports = () => {
-  const mongoDB = process.env.DB_CONNECTION_STRING;
-
-  mongoose.connect(mongoDB, {
+module.exports = (connectionString = process.env.DB_CONNECTION_STRING) => {
+  mongoose.connect(connectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
