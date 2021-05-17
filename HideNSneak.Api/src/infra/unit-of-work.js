@@ -1,8 +1,8 @@
-const databaseInstance = require('./db.config');
+const Pusher = require('./pusher');
+const pusherInstance = require('./config/pusher.config');
+const databaseInstance = require('./config/db.config');
 const locations = require('./repositories/locations.repository');
 const users = require('./repositories/users.repository');
-const Pusher = require('./pusher');
-const pusherInstance = require('./pusher.config');
 
 if (process.env.NODE_ENV === 'production') {
   databaseInstance();
