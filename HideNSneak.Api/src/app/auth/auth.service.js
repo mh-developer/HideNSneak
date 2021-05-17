@@ -42,11 +42,11 @@ const refreshToken = (user, oldRefreshToken) => {
   });
 };
 
-const usersService = {
+const authService = {
   login,
   register,
   logout,
   refreshToken
 };
 
-module.exports = usersService;
+module.exports = authService;
