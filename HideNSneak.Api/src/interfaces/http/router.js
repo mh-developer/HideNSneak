@@ -30,6 +30,7 @@ apiRouter.use('/health', modules.health);
 apiRouter.use('/auth', modules.auth);
 apiRouter.use('/locations', middlewares.requiredAuth, modules.locations);
 apiRouter.use('/users', middlewares.requiredAuth, modules.users);
+apiRouter.use('/rooms' /* , middlewares.requiredAuth */, modules.rooms);
 
 router.use('/api/v1', apiRouter);
 router.use(swagger());
