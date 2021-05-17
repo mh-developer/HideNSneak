@@ -40,7 +40,7 @@ describe('test users service', () => {
 
     // Assert
     expect(data).toBeDefined();
-    expect(data.Name).toEqual('fakeName');
+    expect(data.name).toEqual('fakeName');
   });
 });
 
