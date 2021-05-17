@@ -1,6 +1,7 @@
 const dbConnection = require('./db.config');
 const locations = require('./repositories/locations.repository');
 const users = require('./repositories/users.repository');
+const rooms = require('./repositories/rooms.repository');
 const Pusher = require('./pusher');
 const pusherInstance = require('./pusher.config');
 
@@ -11,7 +12,8 @@ const pusher = Pusher(pusherInstance);
 const unitOfWork = {
   locations,
   users,
-  pusher
+  pusher,
+  rooms
 };
 
 module.exports = unitOfWork;
