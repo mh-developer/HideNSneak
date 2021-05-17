@@ -12,7 +12,11 @@ module.exports = (unitOfWork = require('../../infra/unit-of-work')) => {
     });
     const refreshTokenJwt = jwt.sign({ id: user.id }, refreshTokenSecret);
 
-    return { access_token: accessToken, refresh_token: refreshTokenJwt };
+    return {
+      access_token: accessToken,
+      refresh_token: refreshTokenJwt,
+      scheme: 'Bearer'
+    };
   };
 
   const register = async data => {
@@ -39,7 +43,11 @@ module.exports = (unitOfWork = require('../../infra/unit-of-work')) => {
       });
       const refreshTokenJwt = jwt.sign({ id: user.id }, refreshTokenSecret);
 
-      return { access_token: accessToken, refresh_token: refreshTokenJwt };
+      return {
+        access_token: accessToken,
+        refresh_token: refreshTokenJwt,
+        scheme: 'Bearer'
+      };
     });
   };
 
