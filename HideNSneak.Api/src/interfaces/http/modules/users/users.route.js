@@ -101,7 +101,7 @@ router.get('/:id', async (req, res) => {
  *     security:
  *       - JWT: []
  *     responses:
- *       200:
+ *       201:
  *         description: Success
  *         schema:
  *           $ref: '#/definitions/userDto'
@@ -127,7 +127,7 @@ router.post(
   async (req, res) => {
     try {
       const user = await services.usersService.create(req.body);
-      res.status(201).json(user);
+      res.status(Status.CREATED).json(user);
     } catch (error) {
       res.status(Status.BAD_REQUEST).json(error);
     }
