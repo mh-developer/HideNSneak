@@ -1,4 +1,4 @@
-const Pusher = _pusher => {
+module.exports = _pusher => {
   const ping = async data => {
     _pusher.trigger('location', 'ping', data);
   };
@@ -12,5 +12,3 @@ const Pusher = _pusher => {
     notify
   };
 };
-
-module.exports = Pusher;
