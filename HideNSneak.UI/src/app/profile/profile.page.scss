@@ -1,0 +1,284 @@
+ion-toolbar {
+  --background: #f3f3f3;;
+  
+}
+ion-content.md.hydrated {
+    --background: #f3f3f3;
+}
+ion-item.item.md.item-lines-none.in-list.ion-activatable.ion-focusable.hydrated.item-label {
+    --background: #f3f3f3;
+}
+ion-item.item-interactive.item-select.item-has-value.item.md.in-list.ion-activatable.ion-focusable.hydrated.item-label {
+    --background: #f3f3f3;
+}
+
+ion-item.item-interactive.item-input.item.md.in-list.ion-focusable.hydrated.item-label.item-label-floating {
+    --background: #f3f3f3;
+}
+ion-item.item.md.in-list.ion-activatable.ion-focusable.hydrated.item-label.item-interactive.item-datetime.item-has-placeholder {
+    --background: #f3f3f3;
+}
+.searchbar-input-container.sc-ion-searchbar-md {
+    border-bottom: 1px solid;
+}
+ion-searchbar.sc-ion-searchbar-md-h.sc-ion-searchbar-md-s.md.searchbar-left-aligned.hydrated {
+    --box-shadow: none;
+    --background: none;
+    border-bottom: 1px solid;
+}
+.acc{
+    margin-left: 5%;
+}
+.clr{
+    color: #636363;
+}
+.centr{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 50%;
+}
+.cen{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 85%;
+}
+.centr2{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 30%;
+}
+.toptitle{
+  text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    position: absolute;
+    margin-top: -10%;
+    margin-left: 44%;
+}
+
+/* Show background if class is active */
+.show-background {
+    border-style: none;
+    background: var(--ion-color-primary);
+}
+.centerimg{
+        margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 67%;
+}
+
+/* Remove bottom border on md */
+.header-md::after {
+    background-image: none;
+}
+
+/* Remove bottom border on ios */
+.header-ios ion-toolbar:last-child {
+    --border-width: 0;
+}
+.nodata{
+	width: 95%;
+}
+
+.headericon{
+	transform: rotate(180deg);
+    width: 21px;
+    float: right;
+    margin-right: 5%;
+    margin-top: -11%;
+}
+
+.headerimg{
+	margin-top: -55px;
+	width: 100%;
+}
+.title{
+    color: black;
+    text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 17px;
+    padding: 0;
+    margin: 0;
+}
+
+.icondata{
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+
+.detail{
+     font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 17px;
+}
+.detail0{
+     font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 26px;
+    text-align: center;
+}
+.detail01{
+     font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 26px;
+   
+}
+.detail11{
+     font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+   font-size: 17px;
+    color: gray;
+   
+}
+.seg{
+	 color: black;
+    text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+}
+.data{
+    color: black;
+    text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    
+    font-size: 14px;
+}
+.lst{
+	width: 94%;
+	margin-left: 10px;
+    background: #f3f3f3;
+}
+
+.tit{
+   font-size: 24px;
+    font-family: "Nunito Sans", sans-serif;
+    color: black;
+    font-weight: bold;
+}
+.parasmall{
+    font-size: 17px;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+ion-button.btn1.md.button.button-full.button-round.button-solid.ion-activatable.ion-focusable.hydrated {
+--background:linear-gradient(-90deg,#00eacb,#00b6ff);
+    color: #fff;
+    transition: 0.3s all ease-out;
+}
+ion-button.btn2.md.button.button-full.button-round.button-solid.ion-activatable.ion-focusable.hydrated {
+--background: linear-gradient(-90deg,#ffc500,#f95da0);
+    color: #fff;
+    transition: 0.3s all ease-out;
+}	
+ion-button.btn3.md.button.button-full.button-round.button-solid.ion-activatable.ion-focusable.hydrated {
+--background: linear-gradient(-90deg,#c5bfbf,#aba1a1);
+    color: #fff;
+    transition: 0.3s all ease-out;
+}
+ion-radio-group.md.hydrated {
+    display: flex;
+}
+ion-radio.face.md.in-item.interactive.hydrated.radio-checked {
+    --color-checked: #f95da0;
+}
+ion-radio.online.md.in-item.interactive.hydrated.radio-checked {
+    --color-checked: #00eacb;
+}
+
+ion-checkbox.md.in-item.interactive.hydrated.checkbox-checked {
+    /* color: red; */
+    --background-checked: #f95da0;
+    --border-color-checked: #f95da0;
+}
+
+.im{
+  font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+     font-size: 14px;
+    margin-left: 4%; 
+}
+.info{
+   width: 17%;
+    margin-left: 67%;
+    margin-top: 43%;
+}
+.infoicon{
+    color: black;
+    font-size: 25px;
+}
+
+.round{
+    background: rgba(0,234,203,.1);
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+}
+.round2{
+    background: rgba(249,93,160,.1);
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+}
+.total{
+    color: #00eacb;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 36%;
+    font-family: "Nunito Sans", sans-serif;
+}
+.total2{
+    color: #f95da0;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 36%;
+    font-family: "Nunito Sans", sans-serif;
+}
+.numbr{
+    margin-top: 40%;
+    font-size: 20px;
+    font-weight: bold;
+    background: -webkit-linear-gradient(#00eacb,#00b6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.numbr2{
+    margin-top: 40%;
+    font-size: 20px;
+    font-weight: bold;
+    background: -webkit-linear-gradient(#ffc500,#f95da0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+ion-item.itm.item.md.in-list.ion-focusable.hydrated.item-label.item-label-floating.item-interactive.item-input {
+    --background: #f3f3f3;
+}
+
+:host{
+
+	ion-segment{
+	 
+      padding: 0.7rem;
+      margin: 0;
+    --indicator-color:red;
+}
+ion-segment-button.cre.md.in-segment.segment-button-checked.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated {
+    --indicator-color:linear-gradient(-90deg,#00eacb,#00b6ff);
+    
+}
+ion-segment-button.joi.md.in-segment.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated.segment-button-checked {
+    --indicator-color:linear-gradient(-90deg,#ffc500,#f95da0);
+   
+}
+}
