@@ -63,14 +63,22 @@ build-development-frontend:
 test-backend:
   stage: Test
   image: node:lts-alpine
+  services:
+    - mongo
+  variables:
+    DB_CONNECTION_STRING_TEST: 'mongodb://mongo/HideNSneakTest'
+    NODE_ENV: test
   script:
+    - cat ${API_ENV_TEST} > ${CI_PROJECT_DIR}/HideNSneak.Api/.env
     - cd ./HideNSneak.Api
     - npm install
     - npm run test
-  cache:
-    key: "${CI_JOB_NAME}"
+  coverage:
+    '/lcon.info/'
+  allow_failure: true
+  artifacts:
     paths:
-      - HideNSneak.Api/test-report.xml
+      - HideNSneak.Api/coverage/lcov.info
   only:
     - merge_requests
     - master
@@ -87,6 +95,7 @@ sonarcloud-check:
       - .sonar/cache
   script:
     - sonar-scanner
+  needs: ['test-backend']
   allow_failure: true
   only:
     - merge_requests
