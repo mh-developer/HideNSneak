@@ -1,18 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Pusher = require('pusher');
 const Status = require('http-status');
 const locationMapper = require('./location.mapper');
 const services = require('../../../../app/index');
-
-// TODO: move this logic to service layer
-const pusher = new Pusher({
-  appId: process.env.PUSHER_APP_ID,
-  key: process.env.PUSHER_KEY,
-  secret: process.env.PUSHER_SECRET,
-  cluster: process.env.PUSHER_CLUSTER,
-  useTLS: true
-});
 
 /**
  * @swagger
@@ -185,7 +175,7 @@ router.get('/:id', async (req, res) => {
  *     security:
  *       - JWT: []
  *     responses:
- *       200:
+ *       201:
  *         description: Success
  *         schema:
  *           $ref: '#/definitions/locationDto'
