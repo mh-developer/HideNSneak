@@ -30,7 +30,78 @@ const services = require('../../../../app/index');
 router.get('/', async (req, res) => {
   try {
     const rooms = await services.roomsService.getAll();
+    console.log(req.user.id);
     res.status(Status.OK).json(rooms);
+  } catch (error) {
+    res.status(Status.BAD_REQUEST).json(error);
+  }
+});
+
+/**
+ * @swagger
+ * /api/v1/rooms/join/{joinCode}:
+ *   get:
+ *     tags:
+ *       - Rooms
+ *     description: Joins a room
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - JWT: []
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         $ref: '#/responses/BadRequest'
+ */
+router.get('/join/:code', async (req, res) => {
+  try {
+    room = await services.roomsService.join({
+      userId: req.user?.id,
+      joinCode: req.params.code
+    });
+    if (room) {
+      res.status(Status.OK).json();
+    } else {
+      res.status(Status.NOT_FOUND).json(`Room ${id} not found.`);
+    }
+  } catch (error) {
+    res.status(Status.BAD_REQUEST).json(error);
+  }
+});
+
+/**
+ * @swagger
+ * /api/v1/rooms/quit/{joinCode}:
+ *   get:
+ *     tags:
+ *       - Rooms
+ *     description: Joins a room
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     security:
+ *       - JWT: []
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         $ref: '#/responses/BadRequest'
+ */
+router.get('/quit/:code', async (req, res) => {
+  try {
+    room = await services.roomsService.quit({
+      userId: req.user?.id,
+      joinCode: req.params.code
+    });
+    if (room) {
+      res.status(Status.OK).json();
+    } else {
+      res.status(Status.NOT_FOUND).json(`Room ${id} not found.`);
+    }
   } catch (error) {
     res.status(Status.BAD_REQUEST).json(error);
   }
@@ -114,6 +185,8 @@ router.post(
   '/',
   async (req, res, next) => {
     try {
+      req.body.owner = req.user.id;
+      req.body.currentPlayers = [req.user.id];
       const { error } = await roomMapper.validateAsync(req.body);
       if (error) {
         res.status(Status.BAD_REQUEST).json('Model validation error');

@@ -13,7 +13,11 @@
       "/node_modules/"
     ],
     "collectCoverage": true,
-    "coverageReporters": ["lcov", "json", "html"]
+    "coverageReporters": [
+      "lcov",
+      "json",
+      "html"
+    ]
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
