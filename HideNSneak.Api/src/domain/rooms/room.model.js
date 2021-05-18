@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const RoomSchema = new Schema({
   id: { type: Schema.Types.ObjectId, required: true, auto: true },
   name: { type: String },
+  owner: { type: Schema.Types.ObjectId },
   maxPlayers: { type: Number },
+  joinCode: { type: String },
   currentPlayers: { type: Schema.Types.Array },
   timestamp: { type: Date, default: Date.now }
 });
