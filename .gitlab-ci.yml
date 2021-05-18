@@ -7,6 +7,7 @@ variables:
 stages:
   - Build
   - Test
+  - Analysis
   - Deploy
 
 build-backend:
@@ -16,6 +17,7 @@ build-backend:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
+    - cat ${API_ENV} > ${CI_PROJECT_DIR}/HideNSneak.Api/.env
     - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-api" ./HideNSneak.Api
     - docker push "$CI_REGISTRY_IMAGE:latest-api"
   only:
@@ -28,6 +30,7 @@ build-development-backend:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
+    - cat ${API_ENV_DEV} > ${CI_PROJECT_DIR}/HideNSneak.Api/.env
     - docker build --pull -t "$CI_REGISTRY_IMAGE:latest-development-api" ./HideNSneak.Api
     - docker push "$CI_REGISTRY_IMAGE:latest-development-api"
   only:
@@ -57,8 +60,32 @@ build-development-frontend:
   only:
     - development
 
-sonarcloud-check:
+test-backend:
   stage: Test
+  image: node:lts-alpine
+  services:
+    - mongo
+  variables:
+    DB_CONNECTION_STRING_TEST: 'mongodb://mongo/HideNSneakTest'
+    NODE_ENV: test
+  script:
+    - cat ${API_ENV_TEST} > ${CI_PROJECT_DIR}/HideNSneak.Api/.env
+    - cd ./HideNSneak.Api
+    - npm install
+    - npm run test
+  coverage:
+    '/lcon.info/'
+  allow_failure: true
+  artifacts:
+    paths:
+      - HideNSneak.Api/coverage/lcov.info
+  only:
+    - merge_requests
+    - master
+    - development
+
+sonarcloud-check:
+  stage: Analysis
   image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
@@ -68,6 +95,7 @@ sonarcloud-check:
       - .sonar/cache
   script:
     - sonar-scanner
+  needs: ['test-backend']
   allow_failure: true
   only:
     - merge_requests
