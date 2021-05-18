@@ -17,7 +17,9 @@ const Joi = require('joi');
 const roomMapper = Joi.object({
   id: Joi.string(),
   name: Joi.string().required(),
-  maxPlayers: Joi.number().required()
+  owner: Joi.string().required(),
+  maxPlayers: Joi.number().required(),
+  currentPlayers: Joi.array().required()
 });
 
 module.exports = roomMapper;
