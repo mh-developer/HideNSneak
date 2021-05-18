@@ -9,6 +9,7 @@ import { ModalController,AlertController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  pepperoni: string;
   email: string;
   pass: string;
   dataa:any;

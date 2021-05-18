@@ -14,6 +14,8 @@ export class Tab1Page {
   latitude: number = 46.554650;
   longitude: number = 15.645881;
   zoom: number = 6;
+  styles: any;
+
   constructor(public router: Router, public popoverController: PopoverController) {
     this.tab = 'create';
     this.tab2 = 'all';

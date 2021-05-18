@@ -12,4 +12,5 @@ export class DropdownPage implements OnInit {
   ngOnInit() {
   }
 
+  share(){}
 }
