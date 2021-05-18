@@ -4,41 +4,35 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
+        redirectTo: '/login',
+        pathMatch: 'full',
+    },
+    {
+        path: '',
         loadChildren: () =>
-            import('./login/login.module').then((m) => m.LoginPageModule),
+            import('./auth/auth.module').then((m) => m.AuthModule),
     },
     {
         path: '',
         loadChildren: () =>
             import('./tabs/tabs.module').then((m) => m.TabsPageModule),
     },
-
     {
-        path: 'signup',
-        loadChildren: () =>
-            import('./signup/signup.module').then((m) => m.SignupPageModule),
-    },
-    {
-        path: 'forget',
-        loadChildren: () =>
-            import('./forget/forget.module').then((m) => m.ForgetPageModule),
-    },
-    {
-        path: 'profile',
+        path: '',
         loadChildren: () =>
             import('./profile/profile.module').then((m) => m.ProfilePageModule),
     },
     {
-        path: 'home',
+        path: '',
         loadChildren: () =>
-            import('./home/home.module').then((m) => m.HomePageModule),
-    },
-    {
-        path: 'dropdown',
-        loadChildren: () =>
-            import('./dropdown/dropdown.module').then(
+            import('./shared/dropdown/dropdown.module').then(
                 (m) => m.DropdownPageModule
             ),
+    },
+    {
+        path: '**',
+        redirectTo: '/tabs/tab1',
+        pathMatch: 'full',
     },
 ];
 

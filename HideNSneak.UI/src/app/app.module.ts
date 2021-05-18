@@ -8,17 +8,12 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
     imports: [
         BrowserModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyDH9f22f9ww7MET1bBk1isp2gG-6tDnnXE',
-            libraries: ['places']
-          }),
         IonicModule.forRoot(),
         AppRoutingModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
@@ -27,7 +22,8 @@ import { AgmCoreModule } from '@agm/core';
     ],
     providers: [
         Geolocation,
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

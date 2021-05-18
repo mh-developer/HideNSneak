@@ -16,7 +16,9 @@
     "coverageReporters": [
       "lcov",
       "json",
-      "html"
+      "html",
+      "text",
+      "clover"
     ]
   },
   "dependencies": {

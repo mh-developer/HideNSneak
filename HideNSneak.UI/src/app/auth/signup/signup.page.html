@@ -1,0 +1,66 @@
+<ion-content class="ion-padding">
+    <img src="assets/imgs/logo.png" class="logo" />
+    <p class="logintop"><span class="spn">Register</span> to get started.</p>
+    <ion-item>
+        <ion-label position="floating" class="labl">First Name</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating" class="labl">Last Name</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating" class="labl">Email</ion-label>
+        <ion-input type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating" class="labl">Phone</ion-label>
+        <ion-input type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating" class="labl">Password</ion-label>
+        <ion-input type="password"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating" class="labl">Confirm Password</ion-label>
+        <ion-input type="password"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+        <ion-label class="labl">Country</ion-label>
+        <ion-select value="Pakistan" okText="Okay" cancelText="Dismiss">
+            <ion-select-option value="brown">Slovenia</ion-select-option>
+            <ion-select-option value="blonde">Austria</ion-select-option>
+            <ion-select-option value="black">Germany</ion-select-option>
+            <ion-select-option value="red">USA</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-row>
+        <ion-col class="remembr">
+            <ion-item lines="none">
+                <ion-toggle [(ngModel)]="pepperoni"></ion-toggle>
+                <ion-label class="terms"
+                    >I agree to the
+                    <span class="undr"
+                        >this game Terms of Service</span
+                    ></ion-label
+                >
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-button shape="round" expand="full">REGISTER</ion-button>
+
+    <p class="logintop">Alternatively,register in with:</p>
+    <div class="cntr">
+        <img
+            class="zocial"
+            src="https://img.icons8.com/color/48/000000/google-logo.png"
+        />&nbsp;&nbsp;&nbsp;
+        <img
+            class="zocial1"
+            src="https://img.icons8.com/fluent/48/000000/facebook-new.png"
+        />
+    </div>
+    <p class="registop" (click)="login()">
+        <span class="spn">Already have an account?</span>Log in!
+    </p>
+</ion-content>
