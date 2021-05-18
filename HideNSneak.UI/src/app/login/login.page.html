@@ -1,0 +1,37 @@
+<ion-content class="ion-padding">
+  <img src="assets/imgs/logo.png" class="logo">
+  <p class="logintop"><span class="spn">Log</span> in to Start playing.</p>
+  <ion-item>
+    <ion-label position="floating" class="labl">Email</ion-label>
+    <ion-input [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating" class="labl">Password</ion-label>
+    <ion-input [(ngModel)]="pass"></ion-input>
+  </ion-item>
+
+  <ion-row>
+    <ion-col class="remembr">
+
+      <ion-item lines="none">
+        <ion-toggle [(ngModel)]="pepperoni"></ion-toggle>
+        <ion-label>Remember Me</ion-label>
+      </ion-item>
+
+    </ion-col>
+    <ion-col>
+
+      <ion-item lines="none">
+        <p class="forget" (click)="forget()">Forget Password?</p>
+      </ion-item>
+
+    </ion-col>
+  </ion-row>
+  <ion-button shape="round" expand="full" (click)="home()">LOG IN</ion-button>
+  <p class="logintop2">New user? <span class="spn2" (click)="signup()">Register!</span></p>
+  <p class="logintop">Alternatively,log in with:</p>
+  <div class="cntr">
+    <img class="zocial" src="https://img.icons8.com/color/48/000000/google-logo.png" />&nbsp;
+    <img class="zocial1" src="https://img.icons8.com/fluent/48/000000/facebook-new.png" />
+  </div>
+</ion-content>

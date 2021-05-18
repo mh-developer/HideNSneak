@@ -1,0 +1,228 @@
+ion-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+}
+ion-content.md.hydrated {
+    --background: #ecebeb;;
+
+}
+
+agm-map {
+    height: 584px;
+}
+
+.mapcrd{
+    position: absolute;
+    /* margin-top: 4%; */
+    z-index: 4;
+    width: 96%;
+
+}
+.tit{
+    font-weight: bold;
+    font-size: 17px;
+    color: black;
+    margin-bottom: 0;
+}
+.playercrd{
+    border-radius: 20px;
+    padding: 2%;
+    background: linear-gradient(
+136deg
+, #a77bc0, #36abe0);
+}
+.lev{
+    font-size: 12px;
+    margin: 0px;
+    font-weight: bold;
+    margin-top: 4px;
+    color: #c7c7c7;
+}
+
+.dp{
+    border-radius: 50%;
+    width: 65px;
+    margin-left: auto;
+    display: block;
+    margin-right: auto;
+    margin-top: 4%;
+}
+.crdp{
+    font-weight: bold;
+    color: black;
+    font-size: 14px;
+}
+.pin{
+    margin-right: 15%;
+    float: right;
+    margin-top: 14%;
+    color: red;
+    font-size: 30px;
+}
+.menu{
+    margin-right: 15%;
+    float: right;
+    margin-top: 14%;
+    font-size: 30px;
+}
+.crd{
+    margin: 0;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-bottom: 4%;
+}
+.money{
+    float: right;
+     font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    color: #696868;
+    font-weight: bold;
+}
+.code{
+     font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+    color: #696868;
+    font-weight: bold;
+}
+.righticon{
+    font-size: 30px;
+    color: black;
+}
+.time{
+    float: right;
+    margin: 0;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 13px;
+    color: #696868;
+    font-weight: bold;
+}
+.meta{
+    float: right;
+    margin: 0;
+     font-family: "Nunito Sans", sans-serif;
+    font-size: 15px;
+    color: #696868;
+    font-weight: bold;
+}
+.barper{
+    margin: 0;
+     font-family: "Nunito Sans", sans-serif;
+    font-size: 15px;
+    color: #696868;
+    font-weight: bolder;
+    margin-top: -21%;
+}
+
+.toptitle{
+  text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    position: absolute;
+    margin-top: -10%;
+    margin-left: 37%;
+}
+
+.tab_container1{
+        margin-left: -2%;
+    margin-right: -2%;
+}
+
+
+/* Show background if class is active */
+.show-background {
+    border-style: none;
+    background: var(--ion-color-primary);
+}
+
+/* Remove bottom border on md */
+.header-md::after {
+    background-image: none;
+}
+
+/* Remove bottom border on ios */
+.header-ios ion-toolbar:last-child {
+    --border-width: 0;
+}
+.nodata{
+	width: 66%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.headericon{
+	transform: rotate(180deg);
+    width: 21px;
+    float: right;
+    margin-right: 5%;
+    margin-top: -31%;
+}
+
+.headerimg{
+	margin-top: -55px;
+    width: 100%;
+    height: 200px;
+}
+.title{
+    color: black;
+    text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 17px;
+    padding: 0;
+    margin: 0;
+}
+.seg{
+	 color: black;
+    text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+}
+.data{
+    color: black;
+    text-align: center;
+    font-family: "Nunito Sans", sans-serif;
+    
+    font-size: 14px;
+}
+.lst{
+	width: 94%;
+	margin-left: 10px;
+    background: #f3f3f3;
+}
+
+ion-button.btn1.md.button.button-full.button-round.button-solid.ion-activatable.ion-focusable.hydrated {
+--background: linear-gradient(-90deg,#a77bc0 10%,#00b6ff,#00ecce);
+    color: #fff;
+    transition: 0.3s all ease-out;
+}
+ion-button.btn2.md.button.button-full.button-round.button-solid.ion-activatable.ion-focusable.hydrated {
+--background: linear-gradient(-90deg,#ffc500 2%,#f95da0 65%,#a77bc0);
+    color: #fff;
+    transition: 0.3s all ease-out;
+}	
+
+
+
+
+:host{
+
+	ion-segment{
+	 
+     
+    --indicator-color:red;
+}
+ion-segment-button.cre.md.in-segment.segment-button-checked.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated {
+    --indicator-color: linear-gradient(-90deg,#a77bc0 10%,#00b6ff,#00ecce);
+     padding: 0px;
+     
+}
+ion-segment-button.joi.md.in-segment.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated.segment-button-checked {
+    --indicator-color:linear-gradient(-90deg,#ffc500 2%,#f95da0 65%,#a77bc0);
+    padding: 0px;
+    
+}
+}
