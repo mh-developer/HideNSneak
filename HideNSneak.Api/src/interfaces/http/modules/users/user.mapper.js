@@ -18,7 +18,8 @@ const userMapper = Joi.object({
   id: Joi.string(),
   name: Joi.string().required(),
   lastname: Joi.string().required(),
-  email: Joi.string().required()
+  email: Joi.string().required(),
+  password: Joi.string().required()
 });
 
 module.exports = userMapper;

@@ -18,7 +18,7 @@ const Status = require('http-status');
  *         description: Internal Server Error
  */
 router.get('/', (req, res) => {
-  res.status(Status.OK).send('Awyee, API Works!!!');
+  res.status(Status.OK).json({ status: 'Awyee, API Works!!!' });
 });
 
 module.exports = router;

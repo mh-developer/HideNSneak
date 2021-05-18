@@ -1,195 +1,292 @@
 const request = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../../../src/app');
+const UserModel = require('../../../src/domain/users/users.model');
 
-const rootPath = '/api/v1';
-let dataHolder = null;
-
-beforeEach(async () => {
-  try {
-    const newUser = {
-      id: null,
-      firstname: 'Čupo',
-      surname: 'Moting',
-      email: 'cupo.moting@mail.com'
-    };
-    const data = await request(app).post(`${rootPath}/users`).send(newUser);
-    dataHolder = data;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-afterEach(async () => {
-  try {
-    await request(app).delete(`${rootPath}/users/${dataHolder.id}`);
-  } catch (error) {
-    console.log(error);
-  }
-});
+let connection;
+let token;
+const BASE_URI = `/api/v1`;
 
 describe('Test the users path for GET method', () => {
   test('It should response the GET method for all users', async () => {
-    try {
-      const response = await request(app).get(`${rootPath}/users`);
-      expect(response.statusCode).toBe(200);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Act
+    const response = await request(app)
+      .get(`${BASE_URI}/users`)
+      .set('Authorization', `${token}`)
+      .send();
+
+    // Assert
+    expect(response.statusCode).toBe(200);
   });
 
   test('It should response the GET method for specific user', async () => {
-    try {
-      const param = dataHolder.id;
-      const response = await request(app).get(`${rootPath}/users/${param}`);
-      expect(response.statusCode).toBe(200);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    const user = await UserModel.findOne({ lastname: 'Makaroni' });
+
+    // Act
+    const response = await request(app)
+      .get(`${BASE_URI}/users/${user._id}`)
+      .set('Authorization', `${token}`)
+      .send();
+
+    // Assert
+    expect(response.statusCode).toBe(200);
   });
 
   test('It should response ERROR for the GET method for wrong param', async () => {
-    try {
-      const param = Number.MAX_SAFE_INTEGER;
-      const response = await request(app).get(`${rootPath}/users/${param}`);
-      expect(response.statusCode).toBe(400);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    const param = 'fakeParam';
+
+    // Act
+    const response = await request(app)
+      .get(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send();
+
+    // Assert
+    expect(response.statusCode).toBe(400);
   });
 });
 
 describe('Test the users path for POST method', () => {
   test('It should response the POST method for created user', async () => {
-    try {
-      const newUser = {
-        id: null,
-        firstname: 'Čupo',
-        surname: 'Moting',
-        email: 'cupo.moting@mail.com'
-      };
-      const response = await request(app)
-        .post(`${rootPath}/users`)
-        .send(newUser);
-      expect(response.statusCode).toBe(201);
+    // Arrange
+    const newUser = {
+      name: 'Čupo',
+      lastname: 'Moting',
+      email: 'cupo.moting@mail.com',
+      password: 'fakePassword'
+    };
 
-      if (response.statusCode == 201) {
-        await request(app).delete(`${rootPath}/users/${response.body.id}`);
-      }
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Act
+    const response = await request(app)
+      .post(`${BASE_URI}/users`)
+      .set('Authorization', `${token}`)
+      .send(newUser);
+
+    // Assert
+    expect(response.statusCode).toBe(201);
   });
 
-  test('It should response ERROR for the POST', async () => {
-    try {
-      const notValidNewUser = {
-        id: null,
-        firstname: null,
-        // missing surname
-        email: 'cupo.moting@mail.com'
-      };
-      const response = await request(app)
-        .post(`${rootPath}/users`)
-        .send(notValidNewUser);
-      expect(response.statusCode).toBe(400);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+  test('It should response ERROR creating user', async () => {
+    // Arrange
+    const notValidNewUser = {
+      name: 'Čupo',
+      // missing lastname
+      email: 'cupo.moting@mail.com',
+      password: 'fakePassword'
+    };
+
+    // Act
+    const response = await request(app)
+      .post(`${BASE_URI}/users`)
+      .set('Authorization', `${token}`)
+      .send(notValidNewUser);
+
+    // Assert
+    expect(response.statusCode).toBe(400);
   });
 });
 
 describe('Test the users path for PUT method', () => {
   test('It should response the PUT method for specific user', async () => {
-    try {
-      const param = dataHolder.id;
-      dataHolder.firstname = 'Moto';
-      const response = await request(app)
-        .put(`${rootPath}/users/${param}`)
-        .send(dataHolder);
-      expect(response.statusCode).toBe(204);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    const user = await UserModel.findOne({ lastname: 'Makaroni' });
+    const param = user._id;
+    const updateUser = {
+      id: user._id,
+      name: user.name,
+      lastname: 'Moto',
+      email: user.email,
+      password: user.password
+    };
+
+    // Act
+    const response = await request(app)
+      .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send(updateUser);
+
+    // Assert
+    expect(response.statusCode).toBe(204);
   });
 
   test('It should response param validation ERROR for the PUT method', async () => {
-    try {
-      const param = Number.MAX_SAFE_INTEGER;
-      const response = await request(app)
-        .put(`${rootPath}/users/${param}`)
-        .send(dataHolder);
-      expect(response.statusCode).toBe(400);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    const user = await UserModel.findOne({ lastname: 'Makaroni' });
+    const param = 'fakeParam';
+
+    // Act
+    const response = await request(app)
+      .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send(user);
+
+    // Assert
+    expect(response.statusCode).toBe(400);
   });
 
   test('It should response model validation ERROR for the PUT method', async () => {
-    try {
-      const param = dataHolder.id;
-      dataHolder.id = null;
-      const response = await request(app)
-        .put(`${rootPath}/users/${param}`)
-        .send(dataHolder);
-      expect(response.statusCode).toBe(400);
+    // Arrange
+    const user = await UserModel.findOne({ lastname: 'Makaroni' });
+    const param = user._id;
+    user.id = 'fakeParam';
 
-      dataHolder.id = param;
-      dataHolder.firstname = null;
-      const response2 = await request(app)
-        .put(`${rootPath}/users/${param}`)
-        .send(dataHolder);
-      expect(response2.statusCode).toBe(400);
+    // Act
+    const response = await request(app)
+      .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send(user);
 
-      dataHolder.firstname = 'ime';
-      dataHolder.surname = null;
-      const response3 = await request(app)
-        .put(`${rootPath}/users/${param}`)
-        .send(dataHolder);
-      expect(response3.statusCode).toBe(400);
+    // Assert
+    expect(response.statusCode).toBe(400);
 
-      dataHolder.surname = 'priimek';
-      dataHolder.email = null;
-      const response4 = await request(app)
-        .put(`${rootPath}/users/${param}`)
-        .send(dataHolder);
-      expect(response4.statusCode).toBe(400);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    user.id = param;
+    user.name = null;
+
+    // Act
+    const response2 = await request(app)
+      .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send(user);
+
+    // Assert
+    expect(response2.statusCode).toBe(400);
+
+    // Arrange
+    user.name = 'fakeName';
+    user.lastname = null;
+
+    // Act
+    const response3 = await request(app)
+      .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send(user);
+
+    // Assert
+    expect(response3.statusCode).toBe(400);
+
+    // Arrange
+    user.lastname = 'fakeLastname';
+    user.email = null;
+
+    // Act
+    const response4 = await request(app)
+      .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send(user);
+
+    // Assert
+    expect(response4.statusCode).toBe(400);
   });
 
   test('It should response not found ERROR for the PUT method', async () => {
-    try {
-      const param = Number.MAX_SAFE_INTEGER;
-      dataHolder.id = param;
-      const response = await request(app)
-        .put(`${rootPath}/users/${param}`)
-        .send(dataHolder);
-      expect(response.statusCode).toBe(404);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    const user = await UserModel.findOne({ lastname: 'Makaroni' });
+    const param = 'fakeParam';
+    user.id = 'fakeParam';
+
+    // Act
+    const response = await request(app)
+      .put(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send(user);
+
+    // Assert
+    expect(response.statusCode).toBe(400);
   });
 });
 
 describe('Test the users path for DELETE method', () => {
   test('It should response success DELETE', async () => {
-    try {
-      const param = dataHolder.id;
-      const response = await request(app).delete(`${rootPath}/users/${param}`);
-      expect(response.statusCode).toBe(204);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    const user = await UserModel.findOne({ lastname: 'Makaroni' });
+
+    // Act
+    const response = await request(app)
+      .delete(`${BASE_URI}/users/${user._id}`)
+      .set('Authorization', `${token}`)
+      .send();
+
+    // Assert
+    expect(response.statusCode).toBe(204);
   });
 
   test('It should response ERROR not found for DELETE method', async () => {
-    try {
-      const param = Number.MAX_SAFE_INTEGER;
-      const response = await request(app).delete(`${rootPath}/users/${param}`);
-      expect(response.statusCode).toBe(404);
-    } catch (error) {
-      expect(error).not.toBeUndefined();
-    }
+    // Arrange
+    const param = 'fakeParam';
+
+    // Act
+    const response = await request(app)
+      .delete(`${BASE_URI}/users/${param}`)
+      .set('Authorization', `${token}`)
+      .send();
+
+    // Assert
+    expect(response.statusCode).toBe(400);
   });
+});
+
+beforeAll(async () => {
+  await mongoose.connect(process.env.DB_CONNECTION_STRING_TEST, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+  connection = mongoose.connection;
+});
+
+beforeEach(async () => {
+  const initUsers = getUsers();
+  for (const user of initUsers) {
+    const newUser = new UserModel(user);
+    await newUser.save();
+  }
+
+  const credentials = getCredentials();
+  const response = await request(app)
+    .post(`${BASE_URI}/auth/login`)
+    .send(credentials);
+  token = `${response.body.schema} ${response.body.access_token}`;
+});
+
+afterEach(async () => {
+  await UserModel.deleteMany({});
+});
+
+afterAll(async () => {
+  await UserModel.deleteMany({});
+  await connection.close();
+});
+
+const getUsers = () => [
+  {
+    name: 'Johnny',
+    lastname: 'Makaroni',
+    email: 'johnny.makaroni@gmail.com',
+    password: 'fakePassword'
+  },
+  {
+    name: 'Cristiano',
+    lastname: 'Penaldo',
+    email: 'cristiano.penaldo@gmail.com',
+    password: 'fakePassword'
+  },
+  {
+    name: 'Lionel',
+    lastname: 'Lessi',
+    email: 'lionel.lessi@gmail.com',
+    password: 'fakePassword'
+  },
+  {
+    name: 'Arturo',
+    lastname: 'Zidar',
+    email: 'arturo.zidar@gmail.com',
+    password: 'fakePassword'
+  }
+];
+
+const getCredentials = () => ({
+  email: 'johnny.makaroni@gmail.com',
+  password: 'fakePassword'
 });

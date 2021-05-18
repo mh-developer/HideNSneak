@@ -32,7 +32,6 @@ const services = require('../../../../app/index');
 router.post('/login', async (req, res, next) => {
   passport.authenticate('login', async (err, user, info) => {
     try {
-      console.log(user, err, info);
       if (err || !user) {
         return res
           .status(Status.BAD_REQUEST)

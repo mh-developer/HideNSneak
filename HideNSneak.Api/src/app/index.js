@@ -4,8 +4,8 @@ const authService = require('./auth/auth.service');
 const roomsService = require('./rooms/rooms.service');
 
 module.exports = {
-  locationsService,
-  usersService,
-  authService,
-  roomsService
+  locationsService: locationsService(),
+  usersService: usersService(),
+  authService: authService(),
+  roomsService: roomsService()
 };
