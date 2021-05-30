@@ -1,16 +1,9 @@
 ion-toolbar {
     --background: #f3f3f3;
 }
-ion-content.md.hydrated {
+
+ion-content {
     --background: #f3f3f3;
-}
-ion-progress-bar.md.progress-bar-determinate.hydrated {
-    height: 65%;
-    --background: #eaeaea;
-    --progress-background: linear-gradient(-90deg, #00eacb, #00b6ff);
-}
-agm-map {
-    height: 381px;
 }
 
 .tit {
@@ -19,11 +12,13 @@ agm-map {
     color: black;
     margin-bottom: 0;
 }
+
 .playercrd {
     border-radius: 20px;
     padding: 2%;
     background: linear-gradient(136deg, #a77bc0, #36abe0);
 }
+
 .lev {
     font-size: 12px;
     margin: 0px;
