@@ -30,7 +30,6 @@ const services = require('../../../../app/index');
 router.get('/', async (req, res) => {
   try {
     const rooms = await services.roomsService.getAll();
-    console.log(req.user.id);
     res.status(Status.OK).json(rooms);
   } catch (error) {
     res.status(Status.BAD_REQUEST).json(error);

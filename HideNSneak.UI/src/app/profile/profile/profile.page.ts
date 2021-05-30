@@ -1,52 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { User } from '../../shared/models/user.model';
+import { ProfileService } from '../shared/profile.service';
+import { AuthService } from '../../auth/shared/auth.service';
+import { ModalController } from '@ionic/angular';
+import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
 
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
-    tab: string;
-    tab2: string;
-    tab3: string;
-    constructor() {
-        this.tab = 'create';
-        this.tab2 = 'bank';
-        this.tab3 = 'faq';
-    }
-    ngOnInit() {}
+export class ProfilePage implements OnInit, OnDestroy {
+    public tab: string = 'profile';
+    public user: User = {} as User;
 
-    somethingClicked: boolean = false;
-    somethingClicked2: boolean = true;
-    somethingClickedper: boolean = false;
-    somethingClickedper2: boolean = true;
-    clickfaq: boolean = false;
-    pressfaq: boolean = true;
-    hideOnSomethingClicked() {
-        this.somethingClicked = !this.somethingClicked;
-        this.somethingClicked2 = false;
-    }
-    hideOnSomethingClicked2() {
-        this.somethingClickedper2 = !this.somethingClickedper2;
-        this.somethingClickedper = false;
-    }
-    hideOnSomethingClickedper() {
-        this.somethingClickedper = !this.somethingClickedper;
-        this.somethingClickedper2 = false;
-    }
-    hideOnSomethingClickedper2() {
-        this.somethingClickedper2 = !this.somethingClickedper2;
-        this.somethingClickedper = false;
+    private unsubscribe$ = new Subject<void>();
+
+    constructor(
+        private profileService: ProfileService,
+        private authService: AuthService,
+        public modalController: ModalController
+    ) {}
+
+    ngOnInit() {
+        this.loadProfileData();
     }
 
-    faq() {
-        this.clickfaq = !this.clickfaq;
-        this.pressfaq = false;
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
-    faq1() {
-        console.log('clic');
-        this.pressfaq = !this.pressfaq;
-        this.clickfaq = false;
+    public loadProfileData() {
+        const userId = this.authService.getUserId();
+        this.profileService
+            .getUser(userId)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((data) => {
+                this.user = data;
+            });
+    }
+
+    public async presentModal() {
+        const modal = await this.modalController.create({
+            component: ProfileEditComponent,
+            swipeToClose: true,
+            componentProps: {
+                userId: this.authService.getUserId(),
+                user: this.user,
+            },
+        });
+        return await modal.present();
     }
 }
