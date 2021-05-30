@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../../core/guards/auth.guard';
-import { Tab1Page } from './tab1.page';
+import { AuthGuard } from '../core/guards/auth.guard';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
     {
-        path: '',
-        component: Tab1Page,
+        path: 'home',
+        component: HomeComponent,
         canActivate: [AuthGuard],
     },
 ];
@@ -15,4 +15,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class Tab1PageRoutingModule {}
+export class GameRoutingModule {}

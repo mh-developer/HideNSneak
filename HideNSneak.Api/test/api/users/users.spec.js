@@ -48,46 +48,6 @@ describe('Test the users path for GET method', () => {
   });
 });
 
-describe('Test the users path for POST method', () => {
-  test('It should response the POST method for created user', async () => {
-    // Arrange
-    const newUser = {
-      name: 'Čupo',
-      lastname: 'Moting',
-      email: 'cupo.moting@mail.com',
-      password: 'fakePassword'
-    };
-
-    // Act
-    const response = await request(app)
-      .post(`${BASE_URI}/users`)
-      .set('Authorization', `${token}`)
-      .send(newUser);
-
-    // Assert
-    expect(response.statusCode).toBe(201);
-  });
-
-  test('It should response ERROR creating user', async () => {
-    // Arrange
-    const notValidNewUser = {
-      name: 'Čupo',
-      // missing lastname
-      email: 'cupo.moting@mail.com',
-      password: 'fakePassword'
-    };
-
-    // Act
-    const response = await request(app)
-      .post(`${BASE_URI}/users`)
-      .set('Authorization', `${token}`)
-      .send(notValidNewUser);
-
-    // Assert
-    expect(response.statusCode).toBe(400);
-  });
-});
-
 describe('Test the users path for PUT method', () => {
   test('It should response the PUT method for specific user', async () => {
     // Arrange
@@ -97,8 +57,7 @@ describe('Test the users path for PUT method', () => {
       id: user._id,
       name: user.name,
       lastname: 'Moto',
-      email: user.email,
-      password: user.password
+      email: user.email
     };
 
     // Act

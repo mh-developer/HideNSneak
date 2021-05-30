@@ -1,12 +1,12 @@
+import { RoomListComponent } from './room-list/room-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../../core/guards/auth.guard';
-import { Tab2Page } from './tab2.page';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
     {
-        path: '',
-        component: Tab2Page,
+        path: 'rooms',
+        component: RoomListComponent,
         canActivate: [AuthGuard],
     },
 ];
@@ -15,4 +15,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class Tab2PageRoutingModule {}
+export class RoomsRoutingModule {}
