@@ -1,10 +1,11 @@
+import { AuthGuard } from './core/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
     {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/tabs/tab1',
         pathMatch: 'full',
     },
     {
@@ -14,16 +15,19 @@ const routes: Routes = [
     },
     {
         path: '',
+        canLoad: [AuthGuard],
         loadChildren: () =>
             import('./tabs/tabs.module').then((m) => m.TabsPageModule),
     },
     {
         path: '',
+        canLoad: [AuthGuard],
         loadChildren: () =>
             import('./profile/profile.module').then((m) => m.ProfilePageModule),
     },
     {
         path: '',
+        canLoad: [AuthGuard],
         loadChildren: () =>
             import('./shared/dropdown/dropdown.module').then(
                 (m) => m.DropdownPageModule

@@ -10,10 +10,15 @@ const apiRouter = Router();
 
 middlewares.initAuthFlow();
 
-apiRouter
+router
   .use(
     cors({
-      origin: [`${process.env.ORIGINS || '*'}`],
+      origin: [
+        'http://localhost:4200',
+        'http://localhost:8100',
+        'http://localhost:8200',
+        'https://hidensneak.web.app'
+      ],
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: [
         'Content-Type',
