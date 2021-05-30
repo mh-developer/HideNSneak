@@ -22,7 +22,9 @@ export class AuthService {
         .asObservable()
         .pipe(distinctUntilChanged());
 
-    public isAuthenticatedSubject = new BehaviorSubject<boolean>(!!this.jwtService.getToken());
+    public isAuthenticatedSubject = new BehaviorSubject<boolean>(
+        !!this.jwtService.getToken()
+    );
 
     constructor(
         private router: Router,
@@ -77,7 +79,11 @@ export class AuthService {
             .pipe(
                 take(1),
                 map((data) => {
-                    this.jwtService.saveToken(data);
+                    if (type === 'register') {
+                        this.jwtService.saveToken(data.token);
+                    } else {
+                        this.jwtService.saveToken(data);
+                    }
                     this.isAuthenticatedSubject.next(true);
                     this.populate();
                     return this.getUserId();
