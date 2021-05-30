@@ -50,7 +50,6 @@
                             "outputHashing": "all",
                             "sourceMap": false,
                             "namedChunks": false,
-                            "aot": true,
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
@@ -63,9 +62,6 @@
                             ],
                             "serviceWorker": true,
                             "ngswConfigPath": "ngsw-config.json"
-                        },
-                        "ci": {
-                            "progress": false
                         }
                     }
                 },
@@ -77,9 +73,6 @@
                     "configurations": {
                         "production": {
                             "browserTarget": "app:build:production"
-                        },
-                        "ci": {
-                            "progress": false
                         }
                     }
                 },
