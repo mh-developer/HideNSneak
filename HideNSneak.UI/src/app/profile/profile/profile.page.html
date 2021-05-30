@@ -6,69 +6,31 @@
 
 <ion-content fullscreen>
     <ion-segment [(ngModel)]="tab">
-        <ion-segment-button value="create" class="cre">
+        <ion-segment-button value="profile" class="joi">
             <p class="seg">Account</p>
         </ion-segment-button>
-        <ion-segment-button value="join" class="joi">
-            <p class="seg">Personal</p>
-        </ion-segment-button>
-        <!-- <ion-segment-button value="pay" class="joi">
-            <p class="seg">Payment</p>
-        </ion-segment-button>
-        <ion-segment-button value="help" class="joi">
-            <p class="seg">Help</p>
-        </ion-segment-button> -->
     </ion-segment>
 
     <div class="tab_container" [ngSwitch]="tab">
-        <!-- About Start -->
-        <ion-list no-lines *ngSwitchCase="'create'" class="lst">
+        <ion-list no-lines *ngSwitchCase="'profile'" class="lst">
             <div class="acc">
+                <p class="detail clr">First name</p>
+                <p class="detail">{{ user?.name }}</p>
+
+                <p class="detail clr">Last name</p>
+                <p class="detail">{{ user?.lastname }}</p>
+
                 <p class="detail clr">Email</p>
-                <p class="detail">hideNSeek@gmail.com</p>
-
-                <p class="detail clr">Password</p>
-                <p class="detail">●●●●●●●●●●●</p>
-
-                <p class="detail clr">Country</p>
-                <p class="detail">Slovenia</p>
+                <p class="detail">{{ user?.email }}</p>
             </div>
-            <img src="assets/imgs/profile.png" class="centr" />
-        </ion-list>
-        <ion-list no-lines *ngSwitchCase="'join'" class="lst">
-            <img src="assets/imgs/personal.svg" class="centr2" />
-            <div class="acc">
-                <p class="detail clr">First Name</p>
-                <p class="detail">Janez</p>
-
-                <p class="detail clr">Last Name</p>
-                <p class="detail">Novak</p>
-
-                <p class="detail clr">Phone Number</p>
-                <p class="detail">070433111</p>
-
-                <p class="detail clr">Date of Birth</p>
-                <p class="detail">09-01-1910</p>
-
-                <p class="detail clr">State</p>
-                <p class="detail">Slovenia</p>
-
-                <p class="detail clr">Address Line 1</p>
-                <p class="detail">Maribor</p>
-
-                <p class="detail clr">City</p>
-                <p class="detail">Maribor</p>
-
-                <p class="detail clr">Postal Code</p>
-                <p class="detail">2000</p>
-            </div>
-            <ion-button
-                shape="round"
-                expand="full"
-                class="btn1"
-                (click)="hideOnSomethingClickedper()"
-                >EDIT</ion-button
-            >
         </ion-list>
     </div>
+
+    <img src="assets/imgs/profile.png" class="centr" />
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="presentModal()">
+            <ion-icon name="create"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
