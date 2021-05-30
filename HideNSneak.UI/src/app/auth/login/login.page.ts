@@ -14,7 +14,6 @@ import { AuthService } from '../shared/auth.service';
 export class LoginPage implements OnInit, OnDestroy {
     private unsubscribe$ = new Subject<void>();
 
-    public invalidLogin: boolean;
     public loading: boolean = false;
     public authForm: FormGroup;
 
@@ -46,11 +45,11 @@ export class LoginPage implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(
                 (res) => {
-                    this.invalidLogin = false;
-                    this.router.navigateByUrl('/tabs/tab1', { replaceUrl: true });
+                    this.router.navigateByUrl('/tabs/tab1', {
+                        replaceUrl: true,
+                    });
                 },
                 (err) => {
-                    this.invalidLogin = true;
                     this.loading = false;
                     this.showError(err);
                 },
