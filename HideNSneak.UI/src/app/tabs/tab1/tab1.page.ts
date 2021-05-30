@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { DropdownPage } from '../../shared/dropdown/dropdown/dropdown.page';
+import { AuthService } from '../../auth/shared/auth.service';
 
 @Component({
     selector: 'app-tab1',
@@ -19,7 +20,8 @@ export class Tab1Page {
 
     constructor(
         public router: Router,
-        public popoverController: PopoverController
+        public popoverController: PopoverController,
+        private authService: AuthService
     ) {
         this.tab = 'create';
         this.tab2 = 'all';
@@ -36,5 +38,10 @@ export class Tab1Page {
 
         const { role } = await popover.onDidDismiss();
         console.log('onDidDismiss resolved with role', role);
+    }
+
+    logout() {
+        this.router.navigateByUrl('/login', { replaceUrl: true });
+        this.authService.purgeAuth();
     }
 }

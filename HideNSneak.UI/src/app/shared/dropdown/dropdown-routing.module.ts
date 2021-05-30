@@ -4,7 +4,7 @@ import { DropdownPage } from './dropdown/dropdown.page';
 
 const routes: Routes = [
     {
-        path: '/dropdown',
+        path: 'dropdown',
         component: DropdownPage,
     },
 ];

@@ -47,7 +47,7 @@ export class LoginPage implements OnInit, OnDestroy {
             .subscribe(
                 (res) => {
                     this.invalidLogin = false;
-                    this.router.navigateByUrl('/tabs');
+                    this.router.navigateByUrl('/tabs/tab1', { replaceUrl: true });
                 },
                 (err) => {
                     this.invalidLogin = true;
@@ -61,11 +61,11 @@ export class LoginPage implements OnInit, OnDestroy {
     }
 
     public signup() {
-        this.router.navigateByUrl('/signup');
+        this.router.navigateByUrl('/signup', { replaceUrl: true });
     }
 
     public forget() {
-        this.router.navigateByUrl('/forget');
+        this.router.navigateByUrl('/forget', { replaceUrl: true });
     }
 
     private async showError(err) {

@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { distinctUntilChanged, isEmpty, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import {
+    catchError,
+    distinctUntilChanged,
+    map,
+    switchMap,
+    take,
+} from 'rxjs/operators';
 import { ApiService } from '../../core/api/api.service';
 import { JwtService } from '../../core/jwt/jwt.service';
 import { User } from '../../shared/models/user.model';
@@ -14,12 +22,10 @@ export class AuthService {
         .asObservable()
         .pipe(distinctUntilChanged());
 
-    private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
-    public isAuthenticated = this.isAuthenticatedSubject
-        .asObservable()
-        .pipe(isEmpty());
+    public isAuthenticatedSubject = new BehaviorSubject<boolean>(!!this.jwtService.getToken());
 
     constructor(
+        private router: Router,
         private apiService: ApiService,
         private jwtService: JwtService
     ) {}
@@ -29,12 +35,15 @@ export class AuthService {
 
         if (getToken) {
             const userid = this.jwtService.getDecodedTokenUserId(getToken);
-            this.apiService.get(`/api/v1/users/${userid}`).subscribe(
-                (data) => {
-                    this.setAuth(data);
-                },
-                (err) => this.purgeAuth()
-            );
+            this.apiService
+                .get(`/api/v1/users/${userid}`)
+                .pipe(take(1))
+                .subscribe(
+                    (data) => {
+                        this.setAuth(data);
+                    },
+                    (err) => this.purgeAuth()
+                );
         } else {
             this.purgeAuth();
         }
@@ -66,11 +75,50 @@ export class AuthService {
         return this.apiService
             .post('/api/v1/auth' + route, { ...credentials })
             .pipe(
+                take(1),
                 map((data) => {
                     this.jwtService.saveToken(data);
+                    this.isAuthenticatedSubject.next(true);
                     this.populate();
                     return this.getUserId();
                 })
             );
+    }
+
+    public IsValid(): Observable<boolean> {
+        const token = this.jwtService.getToken();
+        if (!!token) {
+            const helper = new JwtHelperService();
+            const isExpired = helper.isTokenExpired(token);
+            if (isExpired) {
+                return of(false);
+            }
+
+            const userId = this.jwtService.getDecodedTokenUserId(token);
+            if (!!!userId) {
+                return of(false);
+            }
+        } else {
+            return of(false);
+        }
+        return this.isAuthenticatedSubject.asObservable().pipe(
+            take(1),
+            switchMap((isAuth) => {
+                if (isAuth) {
+                    return of(true);
+                } else {
+                    this.goToLogin();
+                    return of(false);
+                }
+            }),
+            catchError((err) => {
+                this.goToLogin();
+                return of(false);
+            })
+        );
+    }
+
+    private goToLogin() {
+        this.router.navigateByUrl('/login', { replaceUrl: true });
     }
 }
