@@ -1,4 +1,3 @@
-import { AuthService } from 'src/app/auth/shared/auth.service';
 import { Injectable } from '@angular/core';
 import {
     CanActivate,
@@ -12,6 +11,7 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { AuthService } from '../../auth/shared/auth.service';
 
 @Injectable({
     providedIn: 'root',
