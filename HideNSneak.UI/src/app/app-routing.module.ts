@@ -5,7 +5,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/home',
         pathMatch: 'full',
     },
     {
@@ -17,13 +17,9 @@ const routes: Routes = [
         path: '',
         canLoad: [AuthGuard],
         loadChildren: () =>
-            import('./tabs/tabs.module').then((m) => m.TabsPageModule),
-    },
-    {
-        path: '',
-        canLoad: [AuthGuard],
-        loadChildren: () =>
-            import('./profile/profile.module').then((m) => m.ProfilePageModule),
+            import('./navigation/navigation.module').then(
+                (m) => m.NavigationModule
+            ),
     },
     {
         path: '',
@@ -35,7 +31,7 @@ const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/home',
         pathMatch: 'full',
     },
 ];

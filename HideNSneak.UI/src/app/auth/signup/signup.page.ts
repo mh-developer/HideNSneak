@@ -46,7 +46,7 @@ export class SignupPage implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(
                 (res) => {
-                    this.router.navigateByUrl('/tabs/tab1', {
+                    this.router.navigateByUrl('/home', {
                         replaceUrl: true,
                     });
                 },

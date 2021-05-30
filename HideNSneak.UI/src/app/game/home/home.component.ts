@@ -5,11 +5,11 @@ import { DropdownPage } from '../../shared/dropdown/dropdown/dropdown.page';
 import { AuthService } from '../../auth/shared/auth.service';
 
 @Component({
-    selector: 'app-tab1',
-    templateUrl: 'tab1.page.html',
-    styleUrls: ['tab1.page.scss'],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
 })
-export class Tab1Page {
+export class HomeComponent {
     tab: string;
     tab2: string;
     title: string = 'HideNSeek project';
