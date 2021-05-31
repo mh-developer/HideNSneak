@@ -1,0 +1,52 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Room lobby</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">Cancel</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen id="lobby-modal">
+    <img src="assets/imgs/createfacetut.png" class="img-size mt-5" />
+
+    <hr class="line-color" />
+
+    <h1 class="ion-text-center">{{ room?.name }}</h1>
+
+    <ion-list no-lines class="lst">
+        <ion-list-header>
+            <ion-label>
+                <h1>Players in lobby</h1>
+            </ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let player of roomPlayers">
+            <ion-label>
+                <small>Full Name</small>
+                <p class="detail">{{ player?.name }} {{ player?.lastname }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+
+    <ion-button
+        *ngIf="isRoomOwner"
+        class="mt-4 mb-5 lst"
+        shape="round"
+        expand="full"
+        (click)="startGame()"
+    >
+        Start game
+    </ion-button>
+
+    <ion-button
+        *ngIf="isAlreadyJoined"
+        class="mt-4 mb-5 lst"
+        color="danger"
+        shape="round"
+        expand="full"
+        (click)="quit()"
+    >
+        Quit now
+    </ion-button>
+</ion-content>

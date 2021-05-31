@@ -1,0 +1,93 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Room details</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">Cancel</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen id="details-modal">
+    <img src="assets/imgs/profile.png" class="img-size mt-5" />
+
+    <hr class="line-color" />
+
+    <div>
+        <h1 class="ion-text-center">{{ room?.name }}</h1>
+
+        <ion-list no-lines class="lst">
+            <ion-list-header>
+                <ion-label>
+                    <h1>Details</h1>
+                </ion-label>
+            </ion-list-header>
+            <ion-item>
+                <ion-label>
+                    <small>Name</small>
+                    <p class="detail">{{ room?.name }}</p>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <small>Max players</small>
+                    <p class="detail">{{ room?.maxPlayers }}</p>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <small>Join Code</small>
+                    <p class="detail">{{ room?.joinCode }}</p>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+
+        <ion-list no-lines class="lst">
+            <ion-list-header>
+                <ion-label>
+                    <h1>Players in lobby</h1>
+                </ion-label>
+            </ion-list-header>
+            <ion-item *ngFor="let player of roomPlayers">
+                <ion-label>
+                    <small>Full Name</small>
+                    <p class="detail">
+                        {{ player?.name }} {{ player?.lastname }}
+                    </p>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+
+        <ion-button
+            *ngIf="!isAlreadyJoined"
+            class="mt-4 mb-5 lst"
+            shape="round"
+            expand="full"
+            (click)="join()"
+        >
+            Join now
+        </ion-button>
+
+        <ion-button
+            *ngIf="isAlreadyJoined"
+            class="mt-4 mb-5 lst"
+            color="danger"
+            shape="round"
+            expand="full"
+            (click)="quit()"
+        >
+            Quit now
+        </ion-button>
+
+        <ion-button
+            *ngIf="isRoomOwner"
+            class="mt-4 mb-5 lst"
+            color="danger"
+            shape="round"
+            expand="full"
+            (click)="remove()"
+        >
+            Delete Room
+        </ion-button>
+    </div>
+</ion-content>

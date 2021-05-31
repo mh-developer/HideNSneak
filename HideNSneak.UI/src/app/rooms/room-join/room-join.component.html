@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Join room</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">Cancel</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen id="join-modal">
+    <img src="assets/imgs/createfacetut.png" class="img-size mt-5" />
+
+    <hr class="line-color" />
+
+    <form
+        role="form"
+        [formGroup]="joinRoomForm"
+        (submit)="join()"
+        class="container-form"
+    >
+        <ion-item>
+            <ion-label position="floating" class="labl">
+                Enter room code to join
+            </ion-label>
+            <ion-input type="text" formControlName="code" required></ion-input>
+        </ion-item>
+
+        <ion-button class="mt-4" type="submit" shape="round" expand="full">
+            Join
+        </ion-button>
+    </form>
+</ion-content>
