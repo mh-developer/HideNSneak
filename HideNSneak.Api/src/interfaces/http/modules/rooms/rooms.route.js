@@ -57,12 +57,12 @@ router.get('/', async (req, res) => {
  */
 router.get('/join/:code', async (req, res) => {
   try {
-    room = await services.roomsService.join({
+    const room = await services.roomsService.join({
       userId: req.user?.id,
       joinCode: req.params.code
     });
     if (room) {
-      res.status(Status.OK).json();
+      res.status(Status.OK).json(room);
     } else {
       res.status(Status.NOT_FOUND).json(`Room ${id} not found.`);
     }
