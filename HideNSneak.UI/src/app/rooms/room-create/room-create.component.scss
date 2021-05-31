@@ -1,0 +1,46 @@
+#create-modal {
+    --background: #f3f3f3;
+
+    .img-size {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: 50%;
+    }
+
+    .m {
+        &t-5 {
+            margin-top: 25px !important;
+        }
+        &t-4 {
+            margin-top: 15px !important;
+        }
+        &t-3 {
+            margin-top: 10px !important;
+        }
+        &t-2 {
+            margin-top: 5px !important;
+        }
+        &t-1 {
+            margin-top: 2px !important;
+        }
+        &t-0 {
+            margin-top: 0px !important;
+        }
+    }
+
+    .line-color {
+        background-color: #ffc500;
+        border: 1px solid #ffc500;
+        border-radius: 35px;
+        margin: 20px 35px 15px 35px;
+    }
+
+    .container-form {
+        padding: 25px;
+    }
+
+    ion-item {
+        border-radius: 10px;
+    }
+}

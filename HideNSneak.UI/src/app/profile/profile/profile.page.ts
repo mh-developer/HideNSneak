@@ -21,7 +21,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     constructor(
         private profileService: ProfileService,
         private authService: AuthService,
-        public modalController: ModalController
+        private modalController: ModalController
     ) {}
 
     ngOnInit() {
@@ -52,6 +52,10 @@ export class ProfilePage implements OnInit, OnDestroy {
                 user: this.user,
             },
         });
-        return await modal.present();
+        await modal.present();
+
+        await modal.onDidDismiss();
+
+        this.loadProfileData();
     }
 }
