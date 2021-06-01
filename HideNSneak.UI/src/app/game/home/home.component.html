@@ -25,15 +25,6 @@
                     <button (click)="logout()">Logout</button>
                 </ion-row>
             </ion-card>
-            <agm-map
-                [latitude]="latitude"
-                [longitude]="longitude"
-                [styles]="styles"
-                [zoom]="zoom"
-            >
-                <agm-marker [latitude]="latitude" [longitude]="longitude">
-                </agm-marker>
-            </agm-map>
         </ion-list>
         <ion-list no-lines *ngSwitchCase="'join'" class="lst">
             <ion-card class="playercrd">
