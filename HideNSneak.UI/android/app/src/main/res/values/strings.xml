@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">HideNSneak.UI</string>
+    <string name="title_activity_main">HideNSneak.UI</string>
+    <string name="package_name">web.app.hidensneak</string>
+    <string name="custom_url_scheme">web.app.hidensneak</string>
+</resources>
