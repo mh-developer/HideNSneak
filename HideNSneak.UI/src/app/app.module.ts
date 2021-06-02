@@ -21,9 +21,7 @@ import { SharedModule } from './shared/shared.module';
             enabled: environment.production,
         }),
     ],
-    providers: [
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    ],
+    providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from '../../shared/models/user.model';
@@ -19,6 +20,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     private unsubscribe$ = new Subject<void>();
 
     constructor(
+        private router: Router,
         private profileService: ProfileService,
         private authService: AuthService,
         private modalController: ModalController
@@ -43,6 +45,11 @@ export class ProfilePage implements OnInit, OnDestroy {
             });
     }
 
+    public logout() {
+        this.router.navigateByUrl('/login', { replaceUrl: true });
+        this.authService.purgeAuth();
+    }
+
     public async presentModal() {
         const modal = await this.modalController.create({
             component: ProfileEditComponent,
@@ -57,5 +64,12 @@ export class ProfilePage implements OnInit, OnDestroy {
         await modal.onDidDismiss();
 
         this.loadProfileData();
+    }
+
+    public doRefresh(event) {
+        setTimeout(() => {
+            this.loadProfileData();
+            event.target.complete();
+        }, 1000);
     }
 }
