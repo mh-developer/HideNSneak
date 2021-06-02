@@ -13,12 +13,7 @@ middlewares.initAuthFlow();
 router
   .use(
     cors({
-      origin: [
-        'http://localhost:4200',
-        'http://localhost:8100',
-        'http://localhost:8200',
-        'https://hidensneak.web.app'
-      ],
+      origin: [`${process.env.ORIGINS}` || '*'],
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: [
         'Content-Type',
