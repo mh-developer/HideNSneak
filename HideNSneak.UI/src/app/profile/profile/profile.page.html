@@ -10,6 +10,10 @@
             <p class="seg">Account</p>
         </ion-segment-button>
     </ion-segment>
+    
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
     <div class="tab_container" [ngSwitch]="tab">
         <ion-list no-lines *ngSwitchCase="'profile'" class="lst">
@@ -24,6 +28,15 @@
                 <p class="detail">{{ user?.email }}</p>
             </div>
         </ion-list>
+
+        <ion-button
+            class="ion-padding"
+            shape="round"
+            expand="full"
+            (click)="logout()"
+        >
+            Logout
+        </ion-button>
     </div>
 
     <img src="assets/imgs/profile.png" class="centr" alt="Profile cover" />

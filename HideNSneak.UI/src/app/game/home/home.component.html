@@ -1,30 +1,34 @@
 <ion-content>
     <ion-segment [(ngModel)]="tab">
-        <ion-segment-button value="create" class="cre">
+        <ion-segment-button value="game" class="cre">
             <p class="seg">Game Track</p>
         </ion-segment-button>
-        <ion-segment-button value="join" class="joi">
-            <p class="seg">Active Player</p>
+        <ion-segment-button value="settings" class="joi">
+            <p class="seg">Game Settings</p>
         </ion-segment-button>
     </ion-segment>
 
     <div class="tab_container" [ngSwitch]="tab">
-        <!-- About Start -->
-        <ion-list no-lines *ngSwitchCase="'create'" class="lst">
-            <!-- <ion-card class="mapcrd">
-                <ion-row>
-                    <ion-col size="2">
-                        <ion-icon name="navigate-circle" class="pin"></ion-icon>
-                    </ion-col>
-                    <ion-col>
-                        <p class="crdp">Some Detail</p>
-                    </ion-col>
-                    <ion-col size="2" (click)="dropdown($event)">
-                        <ion-icon name="menu" class="menu"></ion-icon>
-                    </ion-col>
-                    <button (click)="logout()">Logout</button>
-                </ion-row>
-            </ion-card> -->
+        <div *ngSwitchCase="'game'">
+            <agm-map
+                [latitude]="latitude"
+                [longitude]="longitude"
+                [zoom]="zoom"
+            >
+                <agm-marker
+                    [latitude]="latitude"
+                    [longitude]="longitude"
+                ></agm-marker>
+                <agm-circle
+                    [latitude]="latitude"
+                    [longitude]="longitude"
+                    [radius]="radius"
+                    [fillColor]="'#1FBAD6'"
+                ></agm-circle>
+            </agm-map>
+        </div>
+
+        <ion-list no-lines *ngSwitchCase="'settings'" class="lst">
             <ion-button (click)="geoInformation()" expand="block">
                 Get Location
             </ion-button>
@@ -35,12 +39,12 @@
 
             <ion-item>
                 <ion-label>Latitue</ion-label>
-                <ion-badge color="secondary">{{ lat }}</ion-badge>
+                <ion-badge color="secondary">{{ latitude }}</ion-badge>
             </ion-item>
 
             <ion-item>
                 <ion-label>Longitude</ion-label>
-                <ion-badge color="tertiary">{{ long }}</ion-badge>
+                <ion-badge color="tertiary">{{ longitude }}</ion-badge>
             </ion-item>
 
             <ion-item>
@@ -55,70 +59,11 @@
                 <ion-label><strong>Accuracy</strong></ion-label>
                 <ion-badge>{{ accuracy }}</ion-badge>
             </ion-item>
-        </ion-list>
-        <ion-list no-lines *ngSwitchCase="'join'" class="lst">
-            <ion-card class="playercrd">
-                <ion-row>
-                    <ion-col size="4">
-                        <img
-                            src="assets/imgs/man-1.jpg"
-                            class="dp"
-                            alt="Ninja sneaker"
-                        />
-                    </ion-col>
-                    <ion-col>
-                        <p class="tit">xXxYourMom69</p>
-                        <p class="lev">Level: 80</p>
-                    </ion-col>
-                </ion-row>
-            </ion-card>
-            <ion-card class="playercrd">
-                <ion-row>
-                    <ion-col size="4">
-                        <img
-                            src="assets/imgs/man-1.jpg"
-                            class="dp"
-                            alt="Ninja sneaker"
-                        />
-                    </ion-col>
-                    <ion-col>
-                        <p class="tit">TheDude</p>
-                        <p class="lev">Level: 10</p>
-                    </ion-col>
-                </ion-row>
-            </ion-card>
-            <ion-card class="playercrd">
-                <ion-row>
-                    <ion-col size="4">
-                        <img
-                            src="assets/imgs/man-1.jpg"
-                            class="dp"
-                            alt="Ninja sneaker"
-                        />
-                    </ion-col>
-                    <ion-col>
-                        <p class="tit">Mikasa332</p>
-                        <p class="lev">Level: 43</p>
-                    </ion-col>
-                </ion-row>
-            </ion-card>
-            <ion-card class="playercrd">
-                <ion-row>
-                    <ion-col size="4">
-                        <img
-                            src="assets/imgs/man-1.jpg"
-                            class="dp"
-                            alt="Ninja sneaker"
-                        />
-                    </ion-col>
-                    <ion-col>
-                        <p class="tit">Makaronar1002</p>
-                        <p class="lev">Level: 80</p>
-                    </ion-col>
-                </ion-row>
-            </ion-card>
-        </ion-list>
 
-        <button (click)="logout()">Logout</button>
+            <ion-item>
+                <ion-label><strong>Radius</strong></ion-label>
+                <ion-badge>{{ radius }}</ion-badge>
+            </ion-item>
+        </ion-list>
     </div>
 </ion-content>
