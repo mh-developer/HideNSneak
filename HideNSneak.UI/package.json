@@ -13,10 +13,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ionic:add:android": "ionic capacitor add android",
-    "ionic:build:android": "ionic capacitor build android",
-    "ionic:copy:android": "ionic capacitor copy android",
-    "ionic:run:android": "ionic capacitor run android -l --external",
+    "ionic:rm:android": "ionic cordova platform rm android",
+    "ionic:add:android": "ionic cordova platform add android@latest",
+    "ionic:run:android": "ionic cordova run android -l",
     "info": "ionic info"
   },
   "private": true,
@@ -32,6 +31,9 @@
     "@capacitor/android": "3.0.0",
     "@capacitor/core": "^3.0.0",
     "@capacitor/ios": "^3.0.0",
+    "@ionic-native/core": "^5.33.1",
+    "@ionic-native/geolocation": "^5.33.1",
+    "@ionic-native/native-geocoder": "^5.33.1",
     "@ionic/angular": "^5.6.8",
     "@ionic/pwa-elements": "^3.0.2",
     "rxjs": "^6.6.7",
@@ -52,6 +54,16 @@
     "@types/jasminewd2": "^2.0.9",
     "@types/node": "^12.20.13",
     "codelyzer": "^6.0.2",
+    "cordova-android": "^9.1.0",
+    "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-geolocation": "^4.1.0",
+    "cordova-plugin-ionic-keyboard": "^2.0.5",
+    "cordova-plugin-ionic-webview": "^4.0.0",
+    "cordova-plugin-nativegeocoder": "^3.4.1",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-whitelist": "^1.3.3",
     "jasmine-core": "^3.6.0",
     "jasmine-spec-reporter": "^5.0.2",
     "karma": "^6.3.2",
@@ -65,5 +77,24 @@
     "tslint": "^6.1.3",
     "typescript": "^4.2.4"
   },
-  "description": "HideNSneak real world game"
+  "description": "HideNSneak real world game",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-geolocation": {
+        "GPS_REQUIRED": "true"
+      },
+      "cordova-plugin-nativegeocoder": {}
+    },
+    "platforms": [
+      "android"
+    ]
+  }
 }

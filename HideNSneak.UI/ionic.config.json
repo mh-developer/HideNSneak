@@ -1,7 +1,6 @@
 {
-  "name": "HideNSneak.UI",
+  "name": "HideNSneak",
   "integrations": {
-    "capacitor": {},
     "cordova": {}
   },
   "type": "angular"
