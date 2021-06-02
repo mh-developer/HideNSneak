@@ -11,7 +11,7 @@
     <div class="tab_container" [ngSwitch]="tab">
         <!-- About Start -->
         <ion-list no-lines *ngSwitchCase="'create'" class="lst">
-            <ion-card class="mapcrd">
+            <!-- <ion-card class="mapcrd">
                 <ion-row>
                     <ion-col size="2">
                         <ion-icon name="navigate-circle" class="pin"></ion-icon>
@@ -24,13 +24,47 @@
                     </ion-col>
                     <button (click)="logout()">Logout</button>
                 </ion-row>
-            </ion-card>
+            </ion-card> -->
+            <ion-button (click)="geoInformation()" expand="block">
+                Get Location
+            </ion-button>
+
+            <ion-item>
+                <strong>Location Information</strong>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Latitue</ion-label>
+                <ion-badge color="secondary">{{ lat }}</ion-badge>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Longitude</ion-label>
+                <ion-badge color="tertiary">{{ long }}</ion-badge>
+            </ion-item>
+
+            <ion-item>
+                <strong>Address</strong>
+            </ion-item>
+
+            <ion-item>
+                {{ address }}
+            </ion-item>
+
+            <ion-item>
+                <ion-label><strong>Accuracy</strong></ion-label>
+                <ion-badge>{{ accuracy }}</ion-badge>
+            </ion-item>
         </ion-list>
         <ion-list no-lines *ngSwitchCase="'join'" class="lst">
             <ion-card class="playercrd">
                 <ion-row>
                     <ion-col size="4">
-                        <img src="assets/imgs/man-1.jpg" class="dp" alt="Ninja sneaker" />
+                        <img
+                            src="assets/imgs/man-1.jpg"
+                            class="dp"
+                            alt="Ninja sneaker"
+                        />
                     </ion-col>
                     <ion-col>
                         <p class="tit">xXxYourMom69</p>
@@ -41,7 +75,11 @@
             <ion-card class="playercrd">
                 <ion-row>
                     <ion-col size="4">
-                        <img src="assets/imgs/man-1.jpg" class="dp" alt="Ninja sneaker" />
+                        <img
+                            src="assets/imgs/man-1.jpg"
+                            class="dp"
+                            alt="Ninja sneaker"
+                        />
                     </ion-col>
                     <ion-col>
                         <p class="tit">TheDude</p>
@@ -52,7 +90,11 @@
             <ion-card class="playercrd">
                 <ion-row>
                     <ion-col size="4">
-                        <img src="assets/imgs/man-1.jpg" class="dp" alt="Ninja sneaker" />
+                        <img
+                            src="assets/imgs/man-1.jpg"
+                            class="dp"
+                            alt="Ninja sneaker"
+                        />
                     </ion-col>
                     <ion-col>
                         <p class="tit">Mikasa332</p>
@@ -63,7 +105,11 @@
             <ion-card class="playercrd">
                 <ion-row>
                     <ion-col size="4">
-                        <img src="assets/imgs/man-1.jpg" class="dp" alt="Ninja sneaker" />
+                        <img
+                            src="assets/imgs/man-1.jpg"
+                            class="dp"
+                            alt="Ninja sneaker"
+                        />
                     </ion-col>
                     <ion-col>
                         <p class="tit">Makaronar1002</p>
@@ -72,5 +118,7 @@
                 </ion-row>
             </ion-card>
         </ion-list>
+
+        <button (click)="logout()">Logout</button>
     </div>
 </ion-content>
