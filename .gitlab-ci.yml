@@ -142,3 +142,21 @@ deploy-ui:
   only:
     - master
     - development
+
+deploy-android-apk:
+  stage: Deploy
+  image: beevelop/ionic:latest
+  script:
+    - cd ./HideNSneak.UI
+    - npm install
+    - npm run ionic:rm:android
+    - npm run ionic:add:android
+    - npm run ionic:prepare:android
+    - npm run ionic:build:android
+  artifacts:
+    paths:
+      - HideNSneak.UI/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+  only:
+    - merge_requests
+    - master
+    - development
