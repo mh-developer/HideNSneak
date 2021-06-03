@@ -7,7 +7,7 @@ const Joi = require('joi');
  *     properties:
  *       email:
  *         type: string
- *       password
+ *       password:
  *         type: string
  */
 const loginDto = Joi.object({
