@@ -38,15 +38,15 @@ export class RoomsService {
         );
     }
 
-    public createRoom(data: Room): Observable<Room> {
-        return this.apiService.post(`/api/v1/rooms/`, data).pipe(
+    public createRoom(room: Room): Observable<Room> {
+        return this.apiService.post(`/api/v1/rooms/`, room).pipe(
             take(1),
             map((data) => data)
         );
     }
 
-    public updateRoom(roomId: string, data: Room): Observable<Room> {
-        return this.apiService.put(`/api/v1/rooms/${roomId}`, data).pipe(
+    public updateRoom(roomId: string, room: Room): Observable<Room> {
+        return this.apiService.put(`/api/v1/rooms/${roomId}`, room).pipe(
             take(1),
             map((data) => data)
         );

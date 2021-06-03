@@ -24,8 +24,8 @@ export class ProfileService {
         );
     }
 
-    public updateUser(userId: string, data: User): Observable<User> {
-        return this.apiService.put(`/api/v1/users/${userId}`, data).pipe(
+    public updateUser(userId: string, user: User): Observable<User> {
+        return this.apiService.put(`/api/v1/users/${userId}`, user).pipe(
             take(1),
             map((data) => data)
         );
