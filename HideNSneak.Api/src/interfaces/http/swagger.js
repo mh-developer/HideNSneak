@@ -27,7 +27,7 @@ module.exports = () => {
 
   const options = {
     swaggerDefinition: swaggerDefinition,
-    apis: ['./src/interfaces/http/modules/**/*.js']
+    apis: ['./src/interfaces/http/modules/**/*.js', './src/domain/**/*.js']
   };
 
   const swaggerSpec = swaggerJsdoc(options);
