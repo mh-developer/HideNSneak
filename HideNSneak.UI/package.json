@@ -18,6 +18,11 @@
     "ionic:prepare:android": "ionic cordova prepare android",
     "ionic:build:android": "ionic cordova build android --prod",
     "ionic:run:android": "ionic cordova run android -l",
+    "ionic:rm:browser": "ionic cordova platform rm browser",
+    "ionic:add:browser": "ionic cordova platform add browser",
+    "ionic:prepare:browser": "ionic cordova prepare browser",
+    "ionic:build:browser": "ionic cordova build browser --prod",
+    "ionic:run:browser": "ionic cordova run browser -l --prod",
     "info": "ionic info"
   },
   "private": true,
@@ -59,6 +64,7 @@
     "@types/node": "^12.20.13",
     "codelyzer": "^6.0.2",
     "cordova-android": "^9.1.0",
+    "cordova-browser": "^6.0.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-geolocation": "^4.1.0",
@@ -98,7 +104,8 @@
       "cordova-plugin-nativegeocoder": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }
