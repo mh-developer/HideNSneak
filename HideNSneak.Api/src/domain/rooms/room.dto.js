@@ -9,12 +9,14 @@ const Joi = require('joi');
  *         type: string
  *       name:
  *         type: string
- *       lastname:
+ *       owner:
  *         type: string
- *       email:
- *         type: string
+ *       maxPlayers:
+ *         type: number
+ *       currentPlayers:
+ *         type: []
  */
-const roomMapper = Joi.object({
+const roomDto = Joi.object({
   id: Joi.string(),
   name: Joi.string().required(),
   owner: Joi.string().required(),
@@ -22,4 +24,4 @@ const roomMapper = Joi.object({
   currentPlayers: Joi.array().required()
 });
 
-module.exports = roomMapper;
+module.exports = roomDto;

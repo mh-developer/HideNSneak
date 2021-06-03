@@ -87,7 +87,7 @@ export class RoomDetailsComponent implements OnInit, OnChanges {
 
     public remove() {
         this.roomsService
-            .deleteRoom(this.room._id)
+            .deleteRoom(this.room.id)
             .pipe(take(1))
             .subscribe(
                 (res) => {
