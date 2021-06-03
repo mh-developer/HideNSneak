@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Status = require('http-status');
-const locationMapper = require('./location.mapper');
+const locationMapper = require('../../../../domain/locations/location.mapper');
+const locationDto = require('../../../../domain/locations/location.dto');
 const services = require('../../../../app/index');
 
 /**
@@ -103,7 +104,13 @@ router.get('/', async (req, res) => {
   // TODO
   try {
     const locations = await services.locationsService.getAll();
-    res.status(Status.OK).json(locations);
+    res
+      .status(Status.OK)
+      .json(
+        locations.map(location =>
+          locationMapper.locationToLocationDto(location)
+        )
+      );
   } catch (error) {
     res.status(Status.BAD_REQUEST).json(error);
   }
@@ -144,7 +151,9 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params,
       location = await services.locationsService.get(id);
     if (location) {
-      res.status(Status.OK).json(location);
+      res
+        .status(Status.OK)
+        .json(locationMapper.locationToLocationDto(location));
     } else {
       res.status(Status.NOT_FOUND).json(`Location ${id} not found.`);
     }
@@ -189,7 +198,7 @@ router.post(
   async (req, res, next) => {
     // TODO
     try {
-      const { error } = await locationMapper.validateAsync(req.body);
+      const { error } = await locationDto.validateAsync(req.body);
       if (error) {
         res.status(Status.BAD_REQUEST).json('Model validation error');
       } else {
@@ -202,8 +211,12 @@ router.post(
   async (req, res) => {
     // TODO
     try {
-      const location = await services.locationsService.create(req.body);
-      res.status(Status.CREATED).json(location);
+      const location = await services.locationsService.create(
+        locationMapper.locationDtoToLocation(req.body)
+      );
+      res
+        .status(Status.CREATED)
+        .json(locationMapper.locationToLocationDto(location));
     } catch (error) {
       res.status(Status.BAD_REQUEST).json(error);
     }
@@ -249,7 +262,7 @@ router.put(
   async (req, res, next) => {
     // TODO
     try {
-      const { error } = await locationMapper.validateAsync(req.body);
+      const { error } = await locationDto.validateAsync(req.body);
       if (error) {
         res.status(Status.BAD_REQUEST).json('Model validation error');
       } else if (req.params.id != req.body.id) {
@@ -269,7 +282,10 @@ router.put(
       const { id } = req.params,
         location = await services.locationsService.get(id);
       if (location) {
-        await services.locationsService.update(id, req.body);
+        await services.locationsService.update(
+          id,
+          locationMapper.locationDtoToLocation(req.body)
+        );
         res.status(Status.NO_CONTENT).json();
       } else {
         res.status(Status.NOT_FOUND).json(`Location ${id} not found.`);

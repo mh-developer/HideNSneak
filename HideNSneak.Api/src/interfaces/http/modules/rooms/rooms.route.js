@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Status = require('http-status');
-const roomMapper = require('./room.mapper');
+const roomMapper = require('../../../../domain/rooms/room.mapper');
+const roomDto = require('../../../../domain/rooms/room.dto');
 const services = require('../../../../app/index');
 
 /**
@@ -30,7 +31,9 @@ const services = require('../../../../app/index');
 router.get('/', async (req, res) => {
   try {
     const rooms = await services.roomsService.getAll();
-    res.status(Status.OK).json(rooms);
+    res
+      .status(Status.OK)
+      .json(rooms.map(room => roomMapper.roomToRoomDto(room)));
   } catch (error) {
     res.status(Status.BAD_REQUEST).json(error);
   }
@@ -62,7 +65,7 @@ router.get('/join/:code', async (req, res) => {
       joinCode: req.params.code
     });
     if (room) {
-      res.status(Status.OK).json(room);
+      res.status(Status.OK).json(roomMapper.roomToRoomDto(room));
     } else {
       res.status(Status.NOT_FOUND).json(`Room ${id} not found.`);
     }
@@ -97,7 +100,7 @@ router.get('/quit/:code', async (req, res) => {
       joinCode: req.params.code
     });
     if (room) {
-      res.status(Status.OK).json(room);
+      res.status(Status.OK).json(roomMapper.roomToRoomDto(room));
     } else {
       res.status(Status.NOT_FOUND).json(`Room ${id} not found.`);
     }
@@ -140,7 +143,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params,
       room = await services.roomsService.get(id);
     if (room) {
-      res.status(Status.OK).json(room);
+      res.status(Status.OK).json(roomMapper.roomToRoomDto(room));
     } else {
       res.status(Status.NOT_FOUND).json(`Room ${id} not found.`);
     }
@@ -171,7 +174,7 @@ router.get('/:id', async (req, res) => {
  *     security:
  *       - JWT: []
  *     responses:
- *       200:
+ *       201:
  *         description: Success
  *         schema:
  *           $ref: '#/definitions/roomDto'
@@ -186,7 +189,7 @@ router.post(
     try {
       req.body.owner = req.user.id;
       req.body.currentPlayers = [req.user.id];
-      const { error } = await roomMapper.validateAsync(req.body);
+      const { error } = await roomDto.validateAsync(req.body);
       if (error) {
         res.status(Status.BAD_REQUEST).json('Model validation error');
       } else {
@@ -198,8 +201,10 @@ router.post(
   },
   async (req, res) => {
     try {
-      const room = await services.roomsService.create(req.body);
-      res.status(201).json(room);
+      const room = await services.roomsService.create(
+        roomMapper.roomDtoToRoom(req.body)
+      );
+      res.status(Status.CREATED).json(roomMapper.roomToRoomDto(room));
     } catch (error) {
       res.status(Status.BAD_REQUEST).json(error);
     }
@@ -244,7 +249,7 @@ router.put(
   '/:id',
   async (req, res, next) => {
     try {
-      const { error } = await roomMapper.validateAsync(req.body);
+      const { error } = await roomDto.validateAsync(req.body);
       if (error) {
         res.status(Status.BAD_REQUEST).json('Model validation error');
       } else if (req.params.id != req.body.id) {
@@ -263,7 +268,10 @@ router.put(
       const { id } = req.params,
         room = await services.roomsService.get(id);
       if (room) {
-        await services.roomsService.update(id, req.body);
+        await services.roomsService.update(
+          id,
+          roomMapper.roomDtoToRoom(req.body)
+        );
         res.status(Status.NO_CONTENT).json();
       } else {
         res.status(Status.NOT_FOUND).json(`Room ${id} not found.`);

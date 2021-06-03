@@ -16,7 +16,7 @@ const Joi = require('joi');
  *       timestamp:
  *         type: string
  */
-const locationMapper = Joi.object({
+const locationDto = Joi.object({
   id: Joi.string(),
   userId: Joi.string(),
   lng: Joi.string().required(),
@@ -24,4 +24,4 @@ const locationMapper = Joi.object({
   timestamp: Joi.date().timestamp().required()
 });
 
-module.exports = locationMapper;
+module.exports = locationDto;
