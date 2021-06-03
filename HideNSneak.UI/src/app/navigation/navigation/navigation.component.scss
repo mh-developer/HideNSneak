@@ -1,0 +1,22 @@
+ion-tab-bar {
+    --background: #487cd8;
+}
+
+.title {
+    color: #cec9c9;
+
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 12px;
+}
+
+ion-tab-button {
+    --color: #cec9c9;
+}
+
+ion-tab-button[aria-selected="true"] {
+    //box-shadow: 0 4px 0 0 #f95da0 inset;
+    --color-selected: white;
+    ion-label {
+        color: white;
+    }
+}

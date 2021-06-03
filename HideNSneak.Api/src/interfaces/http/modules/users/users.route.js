@@ -81,61 +81,6 @@ router.get('/:id', async (req, res) => {
 
 /**
  * @swagger
- * /api/v1/users/:
- *   post:
- *     tags:
- *       - Users
- *     description: Create user
- *     consumes:
- *       - application/json
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: body
- *         description: User's Entity
- *         in: body
- *         required: true
- *         type: string
- *         schema:
- *           $ref: '#/definitions/userDto'
- *     security:
- *       - JWT: []
- *     responses:
- *       201:
- *         description: Success
- *         schema:
- *           $ref: '#/definitions/userDto'
- *       401:
- *         $ref: '#/responses/Unauthorized'
- *       400:
- *         $ref: '#/responses/BadRequest'
- */
-router.post(
-  '/',
-  async (req, res, next) => {
-    try {
-      const { error } = await userMapper.validateAsync(req.body);
-      if (error) {
-        res.status(Status.BAD_REQUEST).json('Model validation error');
-      } else {
-        next();
-      }
-    } catch (error) {
-      res.status(Status.BAD_REQUEST).json(error);
-    }
-  },
-  async (req, res) => {
-    try {
-      const user = await services.usersService.create(req.body);
-      res.status(Status.CREATED).json(user);
-    } catch (error) {
-      res.status(Status.BAD_REQUEST).json(error);
-    }
-  }
-);
-
-/**
- * @swagger
  * /api/v1/users/{id}:
  *   put:
  *     tags:

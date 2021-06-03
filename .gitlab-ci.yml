@@ -132,13 +132,33 @@ deploy-development-api:
 
 deploy-ui:
   stage: Deploy
-  image: node:lts-alpine
+  image: beevelop/ionic:latest
   script:
     - cd ./HideNSneak.UI
     - npm install
     - npm install -g firebase-tools
-    - npm run build:ionic
+    - npm run ionic:rm:browser
+    - npm run ionic:add:browser
+    - npm run ionic:build:browser
     - firebase deploy --only hosting:hidensneak --token "$FIREBASE_TOKEN"
   only:
+    - master
+    - development
+
+deploy-android-apk:
+  stage: Deploy
+  image: beevelop/ionic:latest
+  script:
+    - cd ./HideNSneak.UI
+    - npm install
+    - npm run ionic:rm:android
+    - npm run ionic:add:android
+    - npm run ionic:prepare:android
+    - npm run ionic:build:android
+  artifacts:
+    paths:
+      - HideNSneak.UI/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+  only:
+    - merge_requests
     - master
     - development

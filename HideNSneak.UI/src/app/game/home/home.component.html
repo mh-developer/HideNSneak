@@ -1,0 +1,58 @@
+<ion-content>
+    <ion-segment [(ngModel)]="tab">
+        <ion-segment-button value="game" class="cre">
+            <p class="seg">Game Track</p>
+        </ion-segment-button>
+        <ion-segment-button value="settings" class="joi">
+            <p class="seg">Game Settings</p>
+        </ion-segment-button>
+    </ion-segment>
+
+    <div class="tab_container" [ngSwitch]="tab">
+        <div *ngSwitchCase="'game'">
+            <app-map #map [(mapSettings)]="mapSettings"></app-map>
+        </div>
+
+        <ion-list no-lines *ngSwitchCase="'settings'" class="lst">
+            <ion-button (click)="map?.geoInformation()" expand="block">
+                Get Location
+            </ion-button>
+
+            <ion-item>
+                <strong>Location Information</strong>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Latitue</ion-label>
+                <ion-badge color="secondary">
+                    {{ mapSettings?.latitude }}
+                </ion-badge>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Longitude</ion-label>
+                <ion-badge color="tertiary">
+                    {{ mapSettings?.longitude }}
+                </ion-badge>
+            </ion-item>
+
+            <ion-item>
+                <strong>Address</strong>
+            </ion-item>
+
+            <ion-item>
+                {{ mapSettings?.address }}
+            </ion-item>
+
+            <ion-item>
+                <ion-label><strong>Accuracy</strong></ion-label>
+                <ion-badge>{{ mapSettings?.accuracy }}</ion-badge>
+            </ion-item>
+
+            <ion-item>
+                <ion-label><strong>Radius</strong></ion-label>
+                <ion-badge>{{ mapSettings?.radius }}</ion-badge>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>

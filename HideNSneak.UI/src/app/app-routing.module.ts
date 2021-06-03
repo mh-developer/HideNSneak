@@ -1,15 +1,37 @@
+import { AuthGuard } from './core/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
     {
-        path: 'home',
-        loadChildren: () =>
-            import('./home/home.module').then((m) => m.HomePageModule),
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full',
     },
     {
         path: '',
-        redirectTo: 'home',
+        loadChildren: () =>
+            import('./auth/auth.module').then((m) => m.AuthModule),
+    },
+    {
+        path: '',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+            import('./navigation/navigation.module').then(
+                (m) => m.NavigationModule
+            ),
+    },
+    {
+        path: '',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+            import('./shared/dropdown/dropdown.module').then(
+                (m) => m.DropdownPageModule
+            ),
+    },
+    {
+        path: '**',
+        redirectTo: '/home',
         pathMatch: 'full',
     },
 ];

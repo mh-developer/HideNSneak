@@ -6,11 +6,11 @@ module.exports = (unitOfWork = require('../../infra/unit-of-work')) => {
     process.env.REFRESH_TOKEN_SECRET || 'devModeRefresh';
 
   const login = async user => {
-    const data = { id: user.id, email: user.email };
+    const data = { id: user._id, email: user.email };
     const accessToken = jwt.sign({ user: data }, accessTokenSecret, {
       expiresIn: '20m'
     });
-    const refreshTokenJwt = jwt.sign({ id: user.id }, refreshTokenSecret);
+    const refreshTokenJwt = jwt.sign({ id: user._id }, refreshTokenSecret);
 
     return {
       access_token: accessToken,

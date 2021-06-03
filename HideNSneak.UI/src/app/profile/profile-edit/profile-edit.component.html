@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Edit profile</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">Cancel</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen id="profile-modal">
+    <img src="assets/imgs/personal.svg" class="img-size mt-5" alt="Profile edit cover" />
+
+    <hr class="line-color" />
+
+    <form
+        role="form"
+        [formGroup]="userForm"
+        (submit)="save()"
+        class="container-form"
+    >
+        <ion-item>
+            <ion-label position="floating" class="labl">First Name</ion-label>
+            <ion-input type="text" formControlName="name" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating" class="labl">Last Name</ion-label>
+            <ion-input
+                type="text"
+                formControlName="lastname"
+                required
+            ></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating" class="labl">Email</ion-label>
+            <ion-input
+                type="email"
+                formControlName="email"
+                required
+            ></ion-input>
+        </ion-item>
+
+        <ion-button class="mt-4" type="submit" shape="round" expand="full">
+            Save
+        </ion-button>
+    </form>
+</ion-content>

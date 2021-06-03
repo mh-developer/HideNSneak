@@ -10,10 +10,10 @@ const apiRouter = Router();
 
 middlewares.initAuthFlow();
 
-apiRouter
+router
   .use(
     cors({
-      origin: [`${process.env.ORIGINS || '*'}`],
+      origin: `${process.env.ORIGINS}` || '*',
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: [
         'Content-Type',

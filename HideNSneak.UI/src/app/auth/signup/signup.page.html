@@ -1,0 +1,42 @@
+<ion-content class="ion-padding">
+    <img src="assets/imgs/logo.png" class="logo" alt="HideNSneak logo" />
+    <p class="logintop"><span class="spn">Register</span> to get started.</p>
+
+    <form role="form" [formGroup]="authForm" (submit)="signup()">
+        <ion-item>
+            <ion-label position="floating" class="labl">First Name</ion-label>
+            <ion-input type="text" formControlName="name" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating" class="labl">Last Name</ion-label>
+            <ion-input
+                type="text"
+                formControlName="lastname"
+                required
+            ></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating" class="labl">Email</ion-label>
+            <ion-input
+                type="email"
+                formControlName="email"
+                required
+            ></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating" class="labl">Password</ion-label>
+            <ion-input
+                type="password"
+                formControlName="password"
+                required
+            ></ion-input>
+        </ion-item>
+        <ion-button type="submit" shape="round" expand="full">
+            REGISTER
+        </ion-button>
+    </form>
+
+    <p class="registop" (click)="goToLogin()">
+        <span class="spn">Already have an account?</span> Log in!
+    </p>
+</ion-content>

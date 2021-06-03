@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "hidensneak",
-    "public": "www",
+    "public": "platforms/browser/www",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {

@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title class="ion-text-center">Profile</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+    <ion-segment [(ngModel)]="tab">
+        <ion-segment-button value="profile" class="joi">
+            <p class="seg">Account</p>
+        </ion-segment-button>
+    </ion-segment>
+    
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <div class="tab_container" [ngSwitch]="tab">
+        <ion-list no-lines *ngSwitchCase="'profile'" class="lst">
+            <div class="acc">
+                <p class="detail clr">First name</p>
+                <p class="detail">{{ user?.name }}</p>
+
+                <p class="detail clr">Last name</p>
+                <p class="detail">{{ user?.lastname }}</p>
+
+                <p class="detail clr">Email</p>
+                <p class="detail">{{ user?.email }}</p>
+            </div>
+        </ion-list>
+
+        <ion-button
+            class="ion-padding"
+            shape="round"
+            expand="full"
+            (click)="logout()"
+        >
+            Logout
+        </ion-button>
+    </div>
+
+    <img src="assets/imgs/profile.png" class="centr" alt="Profile cover" />
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="presentModal()">
+            <ion-icon name="create"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

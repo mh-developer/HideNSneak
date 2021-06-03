@@ -1,0 +1,30 @@
+<ion-content class="ion-padding">
+    <img src="assets/imgs/logo.png" class="logo" alt="HideNSneak logo" />
+    <p class="logintop"><span class="spn">Log</span> in to Start playing.</p>
+
+    <form role="form" [formGroup]="authForm" (submit)="signin()">
+        <ion-item>
+            <ion-label position="floating" class="labl">Email</ion-label>
+            <ion-input type="text" formControlName="email" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating" class="labl">Password</ion-label>
+            <ion-input
+                type="password"
+                formControlName="password"
+                required
+            ></ion-input>
+        </ion-item>
+
+        <p class="forget" (click)="forget()">Forget Password?</p>
+
+        <ion-button type="submit" shape="round" expand="full">
+            LOG IN
+        </ion-button>
+    </form>
+
+    <p class="logintop2">
+        New user? <span class="spn2" (click)="signup()">Register!</span>
+    </p>
+</ion-content>
