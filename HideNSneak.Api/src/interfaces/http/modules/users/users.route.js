@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Status = require('http-status');
-const userMapper = require('./user.mapper');
+const userMapper = require('../../../../domain/users/user.mapper');
+const userDto = require('../../../../domain/users/user.dto');
 const services = require('../../../../app/index');
 
 /**
@@ -30,7 +31,9 @@ const services = require('../../../../app/index');
 router.get('/', async (req, res) => {
   try {
     const users = await services.usersService.getAll();
-    res.status(Status.OK).json(users);
+    res
+      .status(Status.OK)
+      .json(users.map(user => userMapper.userToUserDto(user)));
   } catch (error) {
     res.status(Status.BAD_REQUEST).json(error);
   }
@@ -70,7 +73,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params,
       user = await services.usersService.get(id);
     if (user) {
-      res.status(Status.OK).json(user);
+      res.status(Status.OK).json(userMapper.userToUserDto(user));
     } else {
       res.status(Status.NOT_FOUND).json(`User ${id} not found.`);
     }
@@ -117,7 +120,7 @@ router.put(
   '/:id',
   async (req, res, next) => {
     try {
-      const { error } = await userMapper.validateAsync(req.body);
+      const { error } = await userDto.validateAsync(req.body);
       if (error) {
         res.status(Status.BAD_REQUEST).json('Model validation error');
       } else if (req.params.id != req.body.id) {
@@ -136,7 +139,10 @@ router.put(
       const { id } = req.params,
         user = await services.usersService.get(id);
       if (user) {
-        await services.usersService.update(id, req.body);
+        await services.usersService.update(
+          id,
+          userMapper.userDtoToUser(req.body)
+        );
         res.status(Status.NO_CONTENT).json();
       } else {
         res.status(Status.NOT_FOUND).json(`User ${id} not found.`);

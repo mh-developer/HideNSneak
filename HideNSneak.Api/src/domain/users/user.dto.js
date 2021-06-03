@@ -14,11 +14,11 @@ const Joi = require('joi');
  *       email:
  *         type: string
  */
-const userMapper = Joi.object({
+const userDto = Joi.object({
   id: Joi.string(),
   name: Joi.string().required(),
   lastname: Joi.string().required(),
   email: Joi.string().required()
 });
 
-module.exports = userMapper;
+module.exports = userDto;
