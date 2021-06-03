@@ -23,35 +23,21 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean> {
-        return this.authService.IsValid().pipe(
-            switchMap((isAuthenticated) => {
-                if (isAuthenticated) {
-                    return of(true);
-                } else {
-                    this.router.navigateByUrl('/login', { replaceUrl: true });
-                    return of(false);
-                }
-            })
-        );
+        return this.isAuth();
     }
 
     canActivateChild(
         childRoute: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean> {
-        return this.authService.IsValid().pipe(
-            switchMap((isAuthenticated) => {
-                if (isAuthenticated) {
-                    return of(true);
-                } else {
-                    this.router.navigateByUrl('/login', { replaceUrl: true });
-                    return of(false);
-                }
-            })
-        );
+        return this.isAuth();
     }
 
     canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
+        return this.isAuth();
+    }
+
+    private isAuth() {
         return this.authService.IsValid().pipe(
             switchMap((isAuthenticated) => {
                 if (isAuthenticated) {

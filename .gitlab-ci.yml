@@ -137,7 +137,10 @@ deploy-ui:
     - cd ./HideNSneak.UI
     - npm install
     - npm install -g firebase-tools
-    - npm run build:ionic
+    - npm run ionic:rm:browser
+    - npm run ionic:add:browser
+    - npm run ionic:prepare:browser
+    - npm run ionic:build:browser
     - firebase deploy --only hosting:hidensneak --token "$FIREBASE_TOKEN"
   only:
     - master

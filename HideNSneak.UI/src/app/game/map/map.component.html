@@ -1,3 +1,18 @@
-<p>
-  map works!
-</p>
+<agm-map
+    [latitude]="mapSettings.latitude"
+    [longitude]="mapSettings.longitude"
+    [zoom]="mapSettings.zoom"
+    [disableDefaultUI]="true"
+    [usePanning]="true"
+>
+    <agm-marker
+        [latitude]="mapSettings.latitude"
+        [longitude]="mapSettings.longitude"
+    ></agm-marker>
+    <agm-circle
+        [latitude]="mapSettings.latitude"
+        [longitude]="mapSettings.longitude"
+        [radius]="mapSettings.radius"
+        [fillColor]="'#1FBAD6'"
+    ></agm-circle>
+</agm-map>

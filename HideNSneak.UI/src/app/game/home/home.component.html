@@ -10,26 +10,11 @@
 
     <div class="tab_container" [ngSwitch]="tab">
         <div *ngSwitchCase="'game'">
-            <agm-map
-                [latitude]="latitude"
-                [longitude]="longitude"
-                [zoom]="zoom"
-            >
-                <agm-marker
-                    [latitude]="latitude"
-                    [longitude]="longitude"
-                ></agm-marker>
-                <agm-circle
-                    [latitude]="latitude"
-                    [longitude]="longitude"
-                    [radius]="radius"
-                    [fillColor]="'#1FBAD6'"
-                ></agm-circle>
-            </agm-map>
+            <app-map #map [(mapSettings)]="mapSettings"></app-map>
         </div>
 
         <ion-list no-lines *ngSwitchCase="'settings'" class="lst">
-            <ion-button (click)="geoInformation()" expand="block">
+            <ion-button (click)="map?.geoInformation()" expand="block">
                 Get Location
             </ion-button>
 
@@ -39,12 +24,16 @@
 
             <ion-item>
                 <ion-label>Latitue</ion-label>
-                <ion-badge color="secondary">{{ latitude }}</ion-badge>
+                <ion-badge color="secondary">
+                    {{ mapSettings?.latitude }}
+                </ion-badge>
             </ion-item>
 
             <ion-item>
                 <ion-label>Longitude</ion-label>
-                <ion-badge color="tertiary">{{ longitude }}</ion-badge>
+                <ion-badge color="tertiary">
+                    {{ mapSettings?.longitude }}
+                </ion-badge>
             </ion-item>
 
             <ion-item>
@@ -52,17 +41,17 @@
             </ion-item>
 
             <ion-item>
-                {{ address }}
+                {{ mapSettings?.address }}
             </ion-item>
 
             <ion-item>
                 <ion-label><strong>Accuracy</strong></ion-label>
-                <ion-badge>{{ accuracy }}</ion-badge>
+                <ion-badge>{{ mapSettings?.accuracy }}</ion-badge>
             </ion-item>
 
             <ion-item>
                 <ion-label><strong>Radius</strong></ion-label>
-                <ion-badge>{{ radius }}</ion-badge>
+                <ion-badge>{{ mapSettings?.radius }}</ion-badge>
             </ion-item>
         </ion-list>
     </div>

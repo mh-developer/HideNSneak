@@ -35,7 +35,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         const req = request.clone({ setHeaders: headersConfig });
         return next.handle(req).pipe(
             tap(
-                () => {},
+                (res) => res,
                 (err: any) => {
                     if (err instanceof HttpErrorResponse) {
                         if (err.status !== 401) {

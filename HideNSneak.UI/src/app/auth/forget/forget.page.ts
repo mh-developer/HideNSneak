@@ -5,10 +5,8 @@ import { Router } from '@angular/router';
     templateUrl: './forget.page.html',
     styleUrls: ['./forget.page.scss'],
 })
-export class ForgetPage implements OnInit {
+export class ForgetPage {
     constructor(public router: Router) {}
-
-    ngOnInit() {}
 
     back() {
         this.router.navigateByUrl('');
