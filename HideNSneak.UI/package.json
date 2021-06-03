@@ -20,7 +20,7 @@
     "ionic:run:android": "ionic cordova run android -l",
     "ionic:rm:browser": "ionic cordova platform rm browser",
     "ionic:add:browser": "ionic cordova platform add browser",
-    "ionic:build:browser": "ionic cordova build browser --prod",
+    "ionic:build:browser": "ionic cordova build browser --prod --no-interactive --confirm",
     "ionic:run:browser": "ionic cordova run browser -l --prod",
     "info": "ionic info"
   },
