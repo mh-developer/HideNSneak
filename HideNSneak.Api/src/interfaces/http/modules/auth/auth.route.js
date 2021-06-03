@@ -176,32 +176,6 @@ router.post('/logout', async (req, res) => {
 /**
  * @swagger
  * definitions:
- *   loginDto:
- *     properties:
- *       email:
- *         type: string
- *       password:
- *         type: string
- */
-
-/**
- * @swagger
- * definitions:
- *   registerDto:
- *     properties:
- *       name:
- *         type: string
- *       lastname:
- *         type: string
- *       email:
- *         type: string
- *       password:
- *         type: string
- */
-
-/**
- * @swagger
- * definitions:
  *   refreshTokenDto:
  *     properties:
  *       token:

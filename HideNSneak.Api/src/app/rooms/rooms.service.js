@@ -21,17 +21,11 @@ module.exports = (unitOfWork = require('../../infra/unit-of-work')) => {
   };
 
   const join = async data => {
-    const room = await getByFilter(
-      { joinCode: data.joinCode },
-      function (err, obj) {
-        console.log(err, obj);
-      }
-    );
+    const room = await getByFilter({ joinCode: data.joinCode });
 
     if (room.currentPlayers.indexOf(data.userId) === -1) {
       room.currentPlayers.push(data.userId);
     } else {
-      console.log('User already in the room');
       return room;
     }
     room.save();
@@ -39,17 +33,11 @@ module.exports = (unitOfWork = require('../../infra/unit-of-work')) => {
   };
 
   const quit = async data => {
-    const room = await getByFilter(
-      { joinCode: data.joinCode },
-      function (err, obj) {
-        console.log(err, obj);
-      }
-    );
+    const room = await getByFilter({ joinCode: data.joinCode });
 
     if (room.currentPlayers.indexOf(data.userId) !== -1) {
       room.currentPlayers.splice(room.currentPlayers.indexOf(data.userId), 1);
     } else {
-      console.log('User is not in room');
       return room;
     }
     room.save();
