@@ -132,7 +132,7 @@ deploy-development-api:
 
 deploy-ui:
   stage: Deploy
-  image: node:lts-alpine
+  image: beevelop/ionic:latest
   script:
     - cd ./HideNSneak.UI
     - npm install

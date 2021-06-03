@@ -53,16 +53,7 @@ export class MapComponent implements OnInit {
             watch
                 .pipe(filter((p: any) => p.coords !== undefined))
                 .subscribe((data: any) => {
-                    setTimeout(() => {
-                        this.mapSettings.latitude = data.coords.latitude;
-                        this.mapSettings.longitude = data.coords.longitude;
-                        this.mapSettings.accuracy = data.coords.accuracy;
-
-                        this.cordsToAddress(
-                            this.mapSettings.latitude,
-                            this.mapSettings.longitude
-                        );
-                    }, 0);
+                    this.setLocationData(data);
                 });
         });
     }
@@ -71,16 +62,7 @@ export class MapComponent implements OnInit {
         from(this.geolocation.getCurrentPosition())
             .pipe(filter((p: any) => p.coords !== undefined))
             .subscribe((data) => {
-                setTimeout(() => {
-                    this.mapSettings.latitude = data.coords.latitude;
-                    this.mapSettings.longitude = data.coords.longitude;
-                    this.mapSettings.accuracy = data.coords.accuracy;
-
-                    this.cordsToAddress(
-                        this.mapSettings.latitude,
-                        this.mapSettings.longitude
-                    );
-                }, 0);
+                this.setLocationData(data);
             });
     }
 
@@ -111,5 +93,18 @@ export class MapComponent implements OnInit {
             if (object[val].length) address += object[val] + ', ';
         }
         return address.slice(0, -2);
+    }
+
+    private setLocationData(data) {
+        setTimeout(() => {
+            this.mapSettings.latitude = data.coords.latitude;
+            this.mapSettings.longitude = data.coords.longitude;
+            this.mapSettings.accuracy = data.coords.accuracy;
+
+            this.cordsToAddress(
+                this.mapSettings.latitude,
+                this.mapSettings.longitude
+            );
+        }, 0);
     }
 }
