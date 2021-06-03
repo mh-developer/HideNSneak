@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 @Component({
     selector: 'app-forget',
@@ -9,6 +9,6 @@ export class ForgetPage {
     constructor(public router: Router) {}
 
     back() {
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl('/login');
     }
 }
