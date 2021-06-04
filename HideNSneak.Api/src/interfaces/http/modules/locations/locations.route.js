@@ -33,9 +33,9 @@ const services = require('../../../../app/index');
  *         $ref: '#/responses/BadRequest'
  */
 router.post('/ping', (req, res) => {
-  // TODO
   const { lat, lng } = req.body;
   const data = {
+    userId: req.user?.id,
     lat,
     lng
   };
@@ -67,9 +67,9 @@ router.post('/ping', (req, res) => {
  *         $ref: '#/responses/BadRequest'
  */
 router.post('/notify', (req, res) => {
-  // TODO
   const { lat, lng } = req.body;
   const data = {
+    userId: req.user?.id,
     lat,
     lng
   };
@@ -101,7 +101,6 @@ router.post('/notify', (req, res) => {
  *         $ref: '#/responses/BadRequest'
  */
 router.get('/', async (req, res) => {
-  // TODO
   try {
     const locations = await services.locationsService.getAll();
     res
@@ -146,7 +145,6 @@ router.get('/', async (req, res) => {
  *         $ref: '#/responses/BadRequest'
  */
 router.get('/:id', async (req, res) => {
-  // TODO
   try {
     const { id } = req.params,
       location = await services.locationsService.get(id);
@@ -196,7 +194,6 @@ router.get('/:id', async (req, res) => {
 router.post(
   '/',
   async (req, res, next) => {
-    // TODO
     try {
       const { error } = await locationDto.validateAsync(req.body);
       if (error) {
@@ -209,7 +206,6 @@ router.post(
     }
   },
   async (req, res) => {
-    // TODO
     try {
       const location = await services.locationsService.create(
         locationMapper.locationDtoToLocation(req.body)
@@ -260,7 +256,6 @@ router.post(
 router.put(
   '/:id',
   async (req, res, next) => {
-    // TODO
     try {
       const { error } = await locationDto.validateAsync(req.body);
       if (error) {
@@ -277,7 +272,6 @@ router.put(
     }
   },
   async (req, res) => {
-    // TODO
     try {
       const { id } = req.params,
         location = await services.locationsService.get(id);
@@ -324,7 +318,6 @@ router.put(
  *         $ref: '#/responses/BadRequest'
  */
 router.delete('/:id', async (req, res) => {
-  // TODO
   try {
     const { id } = req.params,
       location = await services.locationsService.get(id);

@@ -44,6 +44,8 @@ export class MapComponent implements OnInit, OnDestroy {
         useLocale: true,
     };
 
+    public playersLocations: PlayerLocation[] = [];
+
     private unsubscribe$ = new Subject<void>();
 
     constructor(
@@ -62,6 +64,24 @@ export class MapComponent implements OnInit, OnDestroy {
                     this.setLocationData(data);
                 });
         });
+
+        this.gameService
+            .getPlayersLocations()
+            .bind('ping', (data: PlayerLocation) => {
+                if (
+                    this.playersLocations.some(
+                        (player: PlayerLocation) =>
+                            player.userId === data.userId
+                    )
+                ) {
+                    const playerToReplace = this.playersLocations.findIndex(
+                        (i) => i.userId === data.userId
+                    );
+
+                    this.playersLocations.splice(playerToReplace, 1);
+                }
+                this.playersLocations.push(data);
+            });
     }
 
     ngOnDestroy() {
@@ -126,9 +146,7 @@ export class MapComponent implements OnInit, OnDestroy {
             this.gameService
                 .pingLocation(location)
                 .pipe(takeUntil(this.unsubscribe$))
-                .subscribe((data) => {
-                    console.log(data);
-                });
+                .subscribe((ping) => ping);
 
             this.cordsToAddress(
                 this.mapSettings.latitude,

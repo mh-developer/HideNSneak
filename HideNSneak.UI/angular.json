@@ -36,7 +36,9 @@
                             "src/theme/variables.scss",
                             "src/global.scss"
                         ],
-                        "scripts": [],
+                        "scripts": [
+                            "node_modules/pusher-js/dist/web/pusher.min.js"
+                        ],
                         "aot": true,
                         "vendorChunk": true,
                         "extractLicenses": false,
