@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ProfileEditComponent } from './profile-edit.component';
@@ -11,7 +13,12 @@ describe('ProfileEditComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [ProfileEditComponent],
-                imports: [IonicModule.forRoot()],
+                imports: [
+                    IonicModule.forRoot(),
+                    HttpClientTestingModule,
+                    FormsModule,
+                    ReactiveFormsModule,
+                ],
             }).compileComponents();
 
             fixture = TestBed.createComponent(ProfileEditComponent);
