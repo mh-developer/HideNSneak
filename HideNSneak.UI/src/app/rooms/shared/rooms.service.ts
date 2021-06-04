@@ -25,14 +25,14 @@ export class RoomsService {
     }
 
     public joinRoom(joinCode: string): Observable<Room> {
-        return this.apiService.get(`/api/v1/rooms/join/${joinCode}`).pipe(
+        return this.apiService.post(`/api/v1/rooms/join/${joinCode}`).pipe(
             take(1),
             map((data) => data)
         );
     }
 
     public quitRoom(joinCode: string): Observable<Room> {
-        return this.apiService.get(`/api/v1/rooms/quit/${joinCode}`).pipe(
+        return this.apiService.post(`/api/v1/rooms/quit/${joinCode}`).pipe(
             take(1),
             map((data) => data)
         );

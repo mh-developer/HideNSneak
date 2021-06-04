@@ -1,3 +1,4 @@
+const usersRepository = require('../../../../src/infra/repositories/users.repository');
 const unitOfWork = require('../../../../src/infra/unit-of-work');
 const authService = require('../../../../src/app/auth/auth.service');
 const { v4 } = require('uuid');
@@ -21,9 +22,39 @@ describe('test auth service', () => {
   });
 });
 
+describe('test auth service', () => {
+  test('register new user', async () => {
+    // Arrange
+    const usersRepositoryMock = jest
+      .fn(usersRepository)
+      .mockImplementation(() => ({
+        create: getUser
+      }));
+    const unitOfWorkMock = jest.fn(unitOfWork).mockImplementation(() => ({
+      users: usersRepositoryMock()
+    }));
+    const authServiceInstance = authService(unitOfWorkMock());
+    const newUser = getRegisterUser();
+
+    // Act
+    const data = await authServiceInstance.register(newUser);
+
+    // Assert
+    expect(data).toBeDefined();
+  });
+});
+
 const getUser = () => ({
   id: v4(),
   name: 'fakeName',
   lastname: 'Makaroni',
-  email: 'johnny.makaroni@gmail.com'
+  email: 'johnny.makaroni@gmail.com',
+  password: 'fakePassword'
+});
+
+const getRegisterUser = () => ({
+  name: 'fakeName',
+  lastname: 'Makaroni',
+  email: 'johnny.makaroni@gmail.com',
+  password: 'fakePassword'
 });

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { RoomLobbyComponent } from './room-lobby.component';
@@ -11,7 +13,7 @@ describe('RoomLobbyComponent', () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [RoomLobbyComponent],
-                imports: [IonicModule.forRoot()],
+                imports: [IonicModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
             }).compileComponents();
 
             fixture = TestBed.createComponent(RoomLobbyComponent);

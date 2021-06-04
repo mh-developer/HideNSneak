@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
         radius: 500,
     } as MapSettings;
 
-    @ViewChild('map', { static: true }) map: MapComponent;
+    @ViewChild('map', { static: false }) map: MapComponent;
 
     constructor(private popoverController: PopoverController) {}
 
