@@ -10,7 +10,7 @@
     "dev": "ionic lab",
     "build:ionic": "ionic build --prod",
     "build": "ng build",
-    "test": "ng test --no-watch --code-coverage",
+    "test": "ng test --no-watch --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ionic:rm:android": "ionic cordova platform rm android",
