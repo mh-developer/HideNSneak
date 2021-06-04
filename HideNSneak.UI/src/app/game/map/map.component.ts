@@ -59,7 +59,10 @@ export class MapComponent implements OnInit, OnDestroy {
         this.platform.ready().then(() => {
             let watch = this.geolocation.watchPosition(this.options);
             watch
-                .pipe(filter((p: any) => p.coords !== undefined))
+                .pipe(
+                    filter((p: any) => p.coords !== undefined),
+                    takeUntil(this.unsubscribe$)
+                )
                 .subscribe((data: any) => {
                     this.setLocationData(data);
                 });
