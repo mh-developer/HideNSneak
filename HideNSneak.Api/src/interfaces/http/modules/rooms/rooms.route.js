@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
 /**
  * @swagger
  * /api/v1/rooms/join/{joinCode}:
- *   get:
+ *   post:
  *     tags:
  *       - Rooms
  *     description: Joins a room
@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
  *       400:
  *         $ref: '#/responses/BadRequest'
  */
-router.get('/join/:code', async (req, res) => {
+router.post('/join/:code', async (req, res) => {
   try {
     const room = await services.roomsService.join({
       userId: req.user?.id,
@@ -77,7 +77,7 @@ router.get('/join/:code', async (req, res) => {
 /**
  * @swagger
  * /api/v1/rooms/quit/{joinCode}:
- *   get:
+ *   post:
  *     tags:
  *       - Rooms
  *     description: Joins a room
@@ -93,7 +93,7 @@ router.get('/join/:code', async (req, res) => {
  *       400:
  *         $ref: '#/responses/BadRequest'
  */
-router.get('/quit/:code', async (req, res) => {
+router.post('/quit/:code', async (req, res) => {
   try {
     const room = await services.roomsService.quit({
       userId: req.user?.id,
