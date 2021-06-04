@@ -87,6 +87,7 @@ test-backend:
 test-frontend:
   stage: Test
   image: node:lts-alpine
+  variables:
     NODE_ENV: test
   script:
     - cd ./HideNSneak.UI
