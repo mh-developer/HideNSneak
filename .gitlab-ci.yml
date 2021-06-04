@@ -83,6 +83,25 @@ test-backend:
     - merge_requests
     - master
     - development
+    
+test-frontend:
+  stage: Test
+  image: node:lts-alpine
+    NODE_ENV: test
+  script:
+    - cd ./HideNSneak.UI
+    - npm install
+    - npm run test
+  coverage:
+    '/lcon.info/'
+  allow_failure: true
+  artifacts:
+    paths:
+      - HideNSneak.UI/coverage/lcov.info
+  only:
+    - merge_requests
+    - master
+    - development
 
 sonarcloud-check:
   stage: Analysis
@@ -95,7 +114,7 @@ sonarcloud-check:
       - .sonar/cache
   script:
     - sonar-scanner
-  needs: ['test-backend']
+  needs: ['test-backend', 'test-frontend']
   allow_failure: true
   only:
     - merge_requests
