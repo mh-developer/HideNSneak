@@ -90,6 +90,9 @@ test-frontend:
   variables:
     NODE_ENV: test
   script:
+    - npm cache clean -f
+    - npm install -g n
+    - n lts
     - cd ./HideNSneak.UI
     - npm install
     - npm run test
