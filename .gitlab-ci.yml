@@ -83,6 +83,29 @@ test-backend:
     - merge_requests
     - master
     - development
+    
+test-frontend:
+  stage: Test
+  image: amio/node-chrome
+  variables:
+    NODE_ENV: test
+  script:
+    - npm cache clean -f
+    - npm install -g n
+    - n lts
+    - cd ./HideNSneak.UI
+    - npm install
+    - npm run test
+  coverage:
+    '/lcon.info/'
+  allow_failure: true
+  artifacts:
+    paths:
+      - HideNSneak.UI/coverage/lcov.info
+  only:
+    - merge_requests
+    - master
+    - development
 
 sonarcloud-check:
   stage: Analysis
@@ -95,7 +118,7 @@ sonarcloud-check:
       - .sonar/cache
   script:
     - sonar-scanner
-  needs: ['test-backend']
+  needs: ['test-backend', 'test-frontend']
   allow_failure: true
   only:
     - merge_requests

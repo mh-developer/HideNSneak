@@ -19,11 +19,11 @@ export class RoomLobbyComponent implements OnInit {
     public roomPlayers: User[] = [];
 
     public get isAlreadyJoined(): boolean {
-        return this.room.currentPlayers.includes(this.authService.getUserId());
+        return this.room?.currentPlayers.includes(this.authService.getUserId());
     }
 
     public get isRoomOwner(): boolean {
-        return this.room.owner === this.authService.getUserId();
+        return this.room?.owner === this.authService.getUserId();
     }
 
     constructor(
@@ -45,7 +45,7 @@ export class RoomLobbyComponent implements OnInit {
 
     public loadRoomPlayers() {
         this.roomPlayers = [];
-        this.room.currentPlayers.forEach((userId) => {
+        this.room?.currentPlayers.forEach((userId) => {
             this.profileService
                 .getUser(userId)
                 .pipe(take(1))
