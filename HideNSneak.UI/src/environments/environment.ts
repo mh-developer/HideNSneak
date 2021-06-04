@@ -6,6 +6,10 @@ export const environment = {
     production: false,
     BASE_URL: 'http://localhost:3000',
     MAP_API_KEY: 'AIzaSyCAOeEoWx9bvSPGUyMQ_3lFFQc7HfxNYJk',
+    PUSHER: {
+        APP_KEY: '38c5832d671341061e05',
+        APP_CLUSTER: 'eu',
+    },
 };
 
 /*

@@ -6,8 +6,9 @@
     [usePanning]="true"
 >
     <agm-marker
-        [latitude]="mapSettings.latitude"
-        [longitude]="mapSettings.longitude"
+        *ngFor="let player of playersLocations"
+        [latitude]="player.lat"
+        [longitude]="player.lng"
     ></agm-marker>
     <agm-circle
         [latitude]="mapSettings.latitude"
