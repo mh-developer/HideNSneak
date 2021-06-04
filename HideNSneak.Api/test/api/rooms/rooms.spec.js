@@ -52,6 +52,44 @@ describe('Test the rooms path for GET method', () => {
 });
 
 describe('Test the rooms path for POST method', () => {
+  test('It should JOIN current user to for specific room', async () => {
+    // Arrange
+    const room = await RoomModel.findOne({ name: 'HideNSneak' });
+    const joinCode = room.joinCode;
+
+    // Act
+    const response = await request(app)
+      .post(`${BASE_URI}/rooms/join/${joinCode}`)
+      .set('Authorization', `${token}`)
+      .send();
+
+    // Assert
+    expect(response.statusCode).toBe(200);
+    expect(response.body.joinCode).toBe(joinCode);
+    expect(response.body).toHaveProperty('currentPlayers');
+    expect(response.body.currentPlayers).toBeDefined();
+  });
+});
+
+describe('Test the rooms path for POST method', () => {
+  test('It should QUIT current user to for specific room', async () => {
+    // Arrange
+    const room = await RoomModel.findOne({ name: 'HideNSneak' });
+    const joinCode = room.joinCode;
+
+    // Act
+    const response = await request(app)
+      .post(`${BASE_URI}/rooms/quit/${joinCode}`)
+      .set('Authorization', `${token}`)
+      .send();
+
+    // Assert
+    expect(response.statusCode).toBe(200);
+    expect(response.body.joinCode).toBe(joinCode);
+  });
+});
+
+describe('Test the rooms path for POST method', () => {
   test('It should response the POST method for created room', async () => {
     // Arrange
     const newRoom = {
