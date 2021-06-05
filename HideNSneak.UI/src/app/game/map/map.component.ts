@@ -8,13 +8,8 @@ import {
 } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import {
-    NativeGeocoder,
-    NativeGeocoderOptions,
-    NativeGeocoderResult,
-} from '@ionic-native/native-geocoder/ngx';
 import { filter, takeUntil } from 'rxjs/operators';
-import { from, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MapSettings } from '../shared/models/map.model';
 import { PlayerLocation } from '../shared/models/game.model';
 import { GameService } from './../shared/game.service';
@@ -39,11 +34,6 @@ export class MapComponent implements OnInit, OnDestroy {
         enableHighAccuracy: true,
     };
 
-    public nativeGeocoderOptions: NativeGeocoderOptions = {
-        maxResults: 6,
-        useLocale: true,
-    };
-
     public playersLocations: PlayerLocation[] = [];
 
     private unsubscribe$ = new Subject<void>();
@@ -51,11 +41,20 @@ export class MapComponent implements OnInit, OnDestroy {
     constructor(
         private platform: Platform,
         private geolocation: Geolocation,
-        private nativeGeocoder: NativeGeocoder,
         private gameService: GameService
     ) {}
 
     ngOnInit() {
+        this.loadRealTimeLocation();
+        this.loadPlayersLocations();
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
+
+    public loadRealTimeLocation() {
         this.platform.ready().then(() => {
             let watch = this.geolocation.watchPosition(this.options);
             watch
@@ -67,9 +66,11 @@ export class MapComponent implements OnInit, OnDestroy {
                     this.setLocationData(data);
                 });
         });
+    }
 
+    public loadPlayersLocations() {
         this.gameService
-            .getPlayersLocations()
+            .getChannel('location')
             .bind('ping', (data: PlayerLocation) => {
                 if (
                     this.playersLocations.some(
@@ -87,52 +88,27 @@ export class MapComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy() {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-    }
+    public haversine_distance(mk1, mk2) {
+        let R = 6371071; // Avg. Radius of the Earth in miles
+        let rlat1 = mk1.position.lat() * (Math.PI / 180); // Convert degrees to radians
+        let rlat2 = mk2.position.lat() * (Math.PI / 180); // Convert degrees to radians
+        let difflat = rlat2 - rlat1; // Radian difference (latitudes)
+        let difflon =
+            (mk2.position.lng() - mk1.position.lng()) * (Math.PI / 180); // Radian difference (longitudes)
 
-    public geoInformation() {
-        from(this.geolocation.getCurrentPosition())
-            .pipe(
-                filter((p: any) => p.coords !== undefined),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe((data) => {
-                this.setLocationData(data);
-            });
-    }
-
-    // reverse geocode
-    public cordsToAddress(latitude, longitude) {
-        from(
-            this.nativeGeocoder.reverseGeocode(
-                latitude,
-                longitude,
-                this.nativeGeocoderOptions
-            )
-        )
-            .pipe(
-                filter((p: any) => p.coords !== undefined),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe((response: NativeGeocoderResult[]) => {
-                this.mapSettings.address = this.createAddress(response[0]);
-            });
-    }
-
-    // Create address
-    public createAddress(addressObject) {
-        let object = [];
-        let address = '';
-        for (let key in addressObject) {
-            object.push(addressObject[key]);
-        }
-        object.reverse();
-        for (let val in object) {
-            if (object[val].length) address += object[val] + ', ';
-        }
-        return address.slice(0, -2);
+        let d =
+            2 *
+            R *
+            Math.asin(
+                Math.sqrt(
+                    Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+                        Math.cos(rlat1) *
+                            Math.cos(rlat2) *
+                            Math.sin(difflon / 2) *
+                            Math.sin(difflon / 2)
+                )
+            );
+        return d;
     }
 
     private setLocationData(data) {
@@ -150,11 +126,6 @@ export class MapComponent implements OnInit, OnDestroy {
                 .pingLocation(location)
                 .pipe(takeUntil(this.unsubscribe$))
                 .subscribe((ping) => ping);
-
-            this.cordsToAddress(
-                this.mapSettings.latitude,
-                this.mapSettings.longitude
-            );
         }, 0);
     }
 }
