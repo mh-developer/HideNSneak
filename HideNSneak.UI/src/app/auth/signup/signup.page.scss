@@ -53,3 +53,25 @@ ion-button {
         0px 4px 3px 0px rgba(0, 234, 203, 0.3),
         0px 2px 3px 0px rgba(0, 182, 255, 0.3) !important;
 }
+
+.m {
+    &r-1 {
+        margin-right: 3px;
+    }
+
+    &r-2 {
+        margin-right: 8px;
+    }
+
+    &r-3 {
+        margin-right: 13px;
+    }
+
+    &r-4 {
+        margin-right: 25px;
+    }
+
+    &r-5 {
+        margin-right: 35px;
+    }
+}
