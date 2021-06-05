@@ -208,7 +208,10 @@ router.post(
   async (req, res) => {
     try {
       const location = await services.locationsService.create(
-        locationMapper.locationDtoToLocation(req.body)
+        locationMapper.locationDtoToLocation({
+          ...req.body,
+          userId: req.user?.id
+        })
       );
       res
         .status(Status.CREATED)
@@ -257,7 +260,10 @@ router.put(
   '/:id',
   async (req, res, next) => {
     try {
-      const { error } = await locationDto.validateAsync(req.body);
+      const { error } = await locationDto.validateAsync({
+        ...req.body,
+        timestamp: new Date(req.body.timestamp)
+      });
       if (error) {
         res.status(Status.BAD_REQUEST).json('Model validation error');
       } else if (req.params.id != req.body.id) {
@@ -278,7 +284,11 @@ router.put(
       if (location) {
         await services.locationsService.update(
           id,
-          locationMapper.locationDtoToLocation(req.body)
+          locationMapper.locationDtoToLocation({
+            ...req.body,
+            userId: req.user?.id,
+            timestamp: new Date(req.body.timestamp)
+          })
         );
         res.status(Status.NO_CONTENT).json();
       } else {

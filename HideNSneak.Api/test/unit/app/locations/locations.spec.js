@@ -40,8 +40,8 @@ describe('test locations service', () => {
 
     // Assert
     expect(data).toBeDefined();
-    expect(data.lng).toEqual('46.000000');
-    expect(data.lat).toEqual('15.000000');
+    expect(data.longitude).toEqual(46.0);
+    expect(data.latitude).toEqual(15.0);
   });
 });
 
@@ -49,22 +49,22 @@ const getLocations = () => [
   {
     id: v4(),
     userId: v4(),
-    lng: '46.600000',
-    lat: '15.600000',
+    longitude: 46.6,
+    latitude: 15.6,
     timestamp: Date.now()
   },
   {
     id: v4(),
     userId: v4(),
-    lng: '46.500000',
-    lat: '15.500000',
+    longitude: 46.5,
+    latitude: 15.5,
     timestamp: Date.now()
   },
   {
     id: v4(),
     userId: v4(),
-    lng: '46.100000',
-    lat: '15.100000',
+    longitude: 46.1,
+    latitude: 15.1,
     timestamp: Date.now()
   }
 ];
@@ -72,7 +72,7 @@ const getLocations = () => [
 const getLocation = () => ({
   id: v4(),
   userId: v4(),
-  lng: '46.000000',
-  lat: '15.000000',
+  longitude: 46.0,
+  latitude: 15.0,
   timestamp: Date.now()
 });

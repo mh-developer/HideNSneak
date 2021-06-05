@@ -9,9 +9,21 @@ const Joi = require('joi');
  *         type: string
  *       userId:
  *         type: string
- *       lng:
- *         type: string
- *       lat:
+ *       longitude:
+ *         type: number
+ *       latitude:
+ *         type: number
+ *       zoom:
+ *         type: number
+ *       radius:
+ *         type: number
+ *       color:
+ *         type: object
+ *       playerRadius:
+ *         type: number
+ *       accuracy:
+ *         type: number
+ *       address:
  *         type: string
  *       timestamp:
  *         type: string
@@ -19,9 +31,15 @@ const Joi = require('joi');
 const locationDto = Joi.object({
   id: Joi.string(),
   userId: Joi.string(),
-  lng: Joi.string().required(),
-  lat: Joi.string().required(),
-  timestamp: Joi.date().timestamp().required()
+  longitude: Joi.number().required(),
+  latitude: Joi.number().required(),
+  zoom: Joi.number(),
+  radius: Joi.number(),
+  color: Joi.object(),
+  playerRadius: Joi.number(),
+  accuracy: Joi.number(),
+  address: Joi.string(),
+  timestamp: Joi.date().timestamp()
 });
 
 module.exports = locationDto;

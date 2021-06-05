@@ -10,6 +10,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { from, Subject } from 'rxjs';
 import { MapSettings } from '../shared/models/map.model';
 import { GameService } from './../shared/game.service';
+import { AuthService } from 'src/app/auth/shared/auth.service';
 
 @Component({
     selector: 'app-game-settings',
@@ -48,13 +49,12 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         private platform: Platform,
         private geolocation: Geolocation,
         private nativeGeocoder: NativeGeocoder,
+        private authService: AuthService,
         private gameService: GameService
     ) {}
 
     ngOnInit() {
-        this.platform.ready().then(() => {
-            this.geoInformation();
-        });
+        this.loadLocation();
     }
 
     ngOnDestroy() {
@@ -62,9 +62,46 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    public loadLocation() {}
+    public loadLocation() {
+        this.gameService
+            .getAllLocations()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((data) => {
+                if (data) {
+                    const location = data.find(
+                        (x) => x.userId === this.authService.getUserId()
+                    );
+                    if (location) {
+                        this.mapSettings = location;
+                        this.selectedColor = this.colorOptions.findIndex(
+                            (x) => x.key === this.mapSettings.color?.key
+                        );
+                    } else {
+                        this.platform.ready().then(() => {
+                            this.geoInformation();
+                        });
+                    }
+                }
+            });
+    }
 
-    public save() {}
+    public save() {
+        this.mapSettings.color = this.colorOptions[this.selectedColor];
+
+        if (this.mapSettings?.id) {
+            this.gameService
+                .updateLocation(this.mapSettings?.id, this.mapSettings)
+                .pipe(takeUntil(this.unsubscribe$))
+                .subscribe((data) => data);
+        } else {
+            this.gameService
+                .createLocation(this.mapSettings)
+                .pipe(takeUntil(this.unsubscribe$))
+                .subscribe((data) => {
+                    this.mapSettings = data;
+                });
+        }
+    }
 
     public geoInformation() {
         from(this.geolocation.getCurrentPosition())
