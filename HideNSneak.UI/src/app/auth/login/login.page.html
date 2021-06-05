@@ -19,7 +19,13 @@
 
         <p class="forget" (click)="forget()">Forget Password?</p>
 
-        <ion-button type="submit" shape="round" expand="full">
+        <ion-button
+            type="submit"
+            shape="round"
+            expand="full"
+            [disabled]="loading"
+        >
+            <ion-spinner *ngIf="loading" class="mr-3"></ion-spinner>
             LOG IN
         </ion-button>
     </form>
