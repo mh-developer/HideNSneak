@@ -5,7 +5,8 @@ export interface MapSettings {
     longitude: number;
     zoom: number;
     radius: number;
-    playerRadius: number;
+    color?: { ['key']: string; ['value']: string };
+    playerRadius?: number;
     accuracy?: number;
     address?: string;
 }

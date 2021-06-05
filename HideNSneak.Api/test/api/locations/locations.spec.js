@@ -23,7 +23,7 @@ describe('Test the locations path for GET method', () => {
 
   test('It should response the GET method for specific location', async () => {
     // Arrange
-    const location = await LocationModel.findOne({ lng: '46.600000' });
+    const location = await LocationModel.findOne({ longitude: 46.6 });
     const param = location._id;
 
     // Act
@@ -56,8 +56,8 @@ describe('Test the locations path for POST method', () => {
     // Arrange
     const newLocation = {
       userId: 'fakeUserId',
-      lng: '15.233000',
-      lat: '45.123000',
+      longitude: 15.233,
+      latitude: 45.123,
       timestamp: Date.now()
     };
 
@@ -76,7 +76,7 @@ describe('Test the locations path for POST method', () => {
     const notValidNewLocation = {
       userId: 'fakeUserId',
       // missing lng
-      lat: '45.123000',
+      latitude: 45.123,
       timestamp: Date.now()
     };
 
@@ -94,13 +94,13 @@ describe('Test the locations path for POST method', () => {
 describe('Test the locations path for PUT method', () => {
   test('It should response the PUT method for specific location', async () => {
     // Arrange
-    const location = await LocationModel.findOne({ lng: '46.600000' });
+    const location = await LocationModel.findOne({ longitude: 46.6 });
     const param = location._id;
     const updateLocation = {
       id: location._id,
       userId: location.userId,
-      lng: '14.424200',
-      lat: location.lat,
+      longitude: 14.4242,
+      latitude: location.latitude,
       timestamp: Date.now()
     };
 
@@ -116,7 +116,7 @@ describe('Test the locations path for PUT method', () => {
 
   test('It should response param validation ERROR for the PUT method', async () => {
     // Arrange
-    const location = await LocationModel.findOne({ lng: '46.600000' });
+    const location = await LocationModel.findOne({ longitude: 46.6 });
     const param = 'fakeLocation';
 
     // Act
@@ -131,9 +131,9 @@ describe('Test the locations path for PUT method', () => {
 
   test('It should response model validation ERROR for the PUT method', async () => {
     // Arrange
-    const location = await LocationModel.findOne({ lng: '46.600000' });
+    const location = await LocationModel.findOne({ longitude: 46.6 });
     const param = location._id;
-    location.lng = null;
+    location.longitude = null;
 
     // Act
     const response = await request(app)
@@ -147,7 +147,7 @@ describe('Test the locations path for PUT method', () => {
 
   test('It should response not found ERROR for the PUT method', async () => {
     // Arrange
-    const location = await LocationModel.findOne({ lng: '46.600000' });
+    const location = await LocationModel.findOne({ longitude: 46.6 });
     const param = 'fakeLocation';
     location.id = param;
 
@@ -165,7 +165,7 @@ describe('Test the locations path for PUT method', () => {
 describe('Test the locations path for DELETE method', () => {
   test('It should response success DELETE', async () => {
     // Arrange
-    const location = await LocationModel.findOne({ lng: '46.600000' });
+    const location = await LocationModel.findOne({ longitude: 46.6 });
     const param = location._id;
 
     // Act
@@ -230,20 +230,20 @@ afterAll(async () => {
 const getLocations = () => [
   {
     userId: v4(),
-    lng: '46.600000',
-    lat: '15.600000',
+    longitude: 46.6,
+    latitude: 15.6,
     timestamp: Date.now()
   },
   {
     userId: v4(),
-    lng: '46.500000',
-    lat: '15.500000',
+    longitude: 46.5,
+    latitude: 15.5,
     timestamp: Date.now()
   },
   {
     userId: v4(),
-    lng: '46.100000',
-    lat: '15.100000',
+    longitude: 46.1,
+    latitude: 15.1,
     timestamp: Date.now()
   }
 ];

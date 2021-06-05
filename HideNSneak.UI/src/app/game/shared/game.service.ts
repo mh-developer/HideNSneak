@@ -5,6 +5,7 @@ import { ApiService } from '../../core/api/api.service';
 import { PlayerLocation } from './models/game.model';
 import { environment } from '../../../environments/environment';
 import Pusher from 'pusher-js/with-encryption';
+import { MapSettings } from './models/map.model';
 
 @Injectable({
     providedIn: 'root',
@@ -36,5 +37,45 @@ export class GameService {
 
     public getChannel(channel: string) {
         return this.pusher.subscribe(channel);
+    }
+
+    public getAllLocations(): Observable<MapSettings[]> {
+        return this.apiService.get(`/api/v1/locations`).pipe(
+            take(1),
+            map((data) => data)
+        );
+    }
+
+    public getLocation(locationId: string): Observable<MapSettings> {
+        return this.apiService.get(`/api/v1/locations/${locationId}`).pipe(
+            take(1),
+            map((data) => data)
+        );
+    }
+
+    public createLocation(location: MapSettings): Observable<MapSettings> {
+        return this.apiService.post(`/api/v1/locations/`, location).pipe(
+            take(1),
+            map((data) => data)
+        );
+    }
+
+    public updateLocation(
+        locationId: string,
+        location: MapSettings
+    ): Observable<MapSettings> {
+        return this.apiService
+            .put(`/api/v1/locations/${locationId}`, location)
+            .pipe(
+                take(1),
+                map((data) => data)
+            );
+    }
+
+    public deleteLocation(locationId: string): Observable<MapSettings> {
+        return this.apiService.delete(`/api/v1/locations/${locationId}`).pipe(
+            take(1),
+            map((data) => data)
+        );
     }
 }

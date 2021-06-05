@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {
     NativeGeocoder,
@@ -10,6 +10,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { from, Subject } from 'rxjs';
 import { MapSettings } from '../shared/models/map.model';
 import { GameService } from './../shared/game.service';
+import { AuthService } from '../../auth/shared/auth.service';
 
 @Component({
     selector: 'app-game-settings',
@@ -48,13 +49,13 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         private platform: Platform,
         private geolocation: Geolocation,
         private nativeGeocoder: NativeGeocoder,
+        private toastController: ToastController,
+        private authService: AuthService,
         private gameService: GameService
     ) {}
 
     ngOnInit() {
-        this.platform.ready().then(() => {
-            this.geoInformation();
-        });
+        this.loadLocation();
     }
 
     ngOnDestroy() {
@@ -62,9 +63,59 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    public loadLocation() {}
+    public loadLocation() {
+        this.gameService
+            .getAllLocations()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((data) => {
+                if (data) {
+                    const location = data.find(
+                        (x) => x.userId === this.authService.getUserId()
+                    );
+                    if (location) {
+                        this.mapSettings = location;
+                        this.selectedColor = this.colorOptions.findIndex(
+                            (x) => x.key === this.mapSettings.color?.key
+                        );
+                    } else {
+                        this.platform.ready().then(() => {
+                            this.geoInformation();
+                        });
+                    }
+                }
+            });
+    }
 
-    public save() {}
+    public save() {
+        this.mapSettings.color = this.colorOptions[this.selectedColor];
+
+        if (this.mapSettings?.id) {
+            this.gameService
+                .updateLocation(this.mapSettings?.id, this.mapSettings)
+                .pipe(takeUntil(this.unsubscribe$))
+                .subscribe(
+                    (data) => {
+                        this.showSuccess();
+                    },
+                    (err) => {
+                        this.showError(err);
+                    }
+                );
+        } else {
+            this.gameService
+                .createLocation(this.mapSettings)
+                .pipe(takeUntil(this.unsubscribe$))
+                .subscribe(
+                    (data) => {
+                        this.mapSettings = data;
+                        this.showSuccess();
+                    },
+                    (err) => {
+                        this.showError(err);
+                    }
+                );
+        }
+    }
 
     public geoInformation() {
         from(this.geolocation.getCurrentPosition())
@@ -119,5 +170,23 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
             this.mapSettings.latitude,
             this.mapSettings.longitude
         );
+    }
+
+    private async showSuccess() {
+        const toast = await this.toastController.create({
+            message: 'Successful saved.',
+            duration: 1500,
+            color: 'success',
+        });
+        toast.present();
+    }
+
+    private async showError(err) {
+        const toast = await this.toastController.create({
+            message: 'Something went wrong. Please try again.',
+            duration: 3000,
+            color: 'danger',
+        });
+        toast.present();
     }
 }
