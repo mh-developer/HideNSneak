@@ -34,11 +34,7 @@ export class GameService {
         );
     }
 
-    public getPlayersLocations() {
-        return this.pusher.subscribe('location');
-    }
-
-    public whoExitZone() {
-        return this.pusher.subscribe('geofence');
+    public getChannel(channel: string) {
+        return this.pusher.subscribe(channel);
     }
 }
