@@ -4,8 +4,14 @@ const Schema = mongoose.Schema;
 const LocationSchema = new Schema({
   id: { type: Schema.Types.ObjectId, required: true, auto: true },
   userId: { type: String },
-  lng: { type: String, required: true },
-  lat: { type: String, required: true },
+  longitude: { type: Number, required: true },
+  latitude: { type: Number, required: true },
+  zoom: { type: Number },
+  radius: { type: Number },
+  color: { type: { key: String, value: String } },
+  playerRadius: { type: Number },
+  accuracy: { type: Number },
+  address: { type: String },
   timestamp: { type: Date, default: Date.now }
 });
 

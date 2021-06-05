@@ -5,9 +5,10 @@ import { MapComponent } from './map/map.component';
 import { SharedModule } from '../shared/shared.module';
 import { AgmCoreModule } from '@agm/core';
 import { environment } from './../../environments/environment';
+import { GameSettingsComponent } from './game-settings/game-settings.component';
 
 @NgModule({
-    declarations: [HomeComponent, MapComponent],
+    declarations: [HomeComponent, MapComponent, GameSettingsComponent],
     imports: [
         SharedModule,
         GameRoutingModule,

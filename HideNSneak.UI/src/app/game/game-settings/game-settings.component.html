@@ -1,0 +1,99 @@
+<div>
+    <agm-map
+        [latitude]="mapSettings.latitude"
+        [longitude]="mapSettings.longitude"
+        [zoom]="mapSettings.zoom"
+        [disableDefaultUI]="true"
+        [usePanning]="true"
+    >
+        <agm-marker
+            [latitude]="mapSettings.latitude"
+            [longitude]="mapSettings.longitude"
+            [markerDraggable]="true"
+            (dragEnd)="markerDragEnd($event)"
+        ></agm-marker>
+        <agm-circle
+            [latitude]="mapSettings.latitude"
+            [longitude]="mapSettings.longitude"
+            [radius]="mapSettings.radius"
+            [fillColor]="colorOptions[selectedColor].value"
+        ></agm-circle>
+        <agm-circle
+            [latitude]="mapSettings.latitude"
+            [longitude]="mapSettings.longitude"
+            [radius]="mapSettings.playerRadius"
+            [fillColor]="'red'"
+        ></agm-circle>
+    </agm-map>
+
+    <div class="container">
+        <ion-item>
+            <ion-label position="floating">Color Area</ion-label>
+            <ion-range
+                [(ngModel)]="selectedColor"
+                [color]="colorOptions[selectedColor].key"
+                snaps="true"
+                pin="true"
+                min="0"
+                max="7"
+                step="1"
+            ></ion-range>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Game Area</ion-label>
+            <ion-range
+                [(ngModel)]="mapSettings.radius"
+                min="250"
+                max="1500"
+                color="primary"
+                pin="true"
+            ></ion-range>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Player circle range</ion-label>
+            <ion-range
+                [(ngModel)]="mapSettings.playerRadius"
+                min="1"
+                max="250"
+                color="danger"
+                pin="true"
+            ></ion-range>
+        </ion-item>
+
+        <ion-button
+            class="ion-padding"
+            shape="round"
+            expand="full"
+            (click)="save()"
+        >
+            Save
+        </ion-button>
+
+        <ion-item class="mt-5">
+            <strong>Location Information</strong>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Latitue</ion-label>
+            <ion-badge color="secondary">
+                {{ mapSettings?.latitude }}
+            </ion-badge>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Longitude</ion-label>
+            <ion-badge color="tertiary">
+                {{ mapSettings?.longitude }}
+            </ion-badge>
+        </ion-item>
+
+        <ion-item>
+            <ion-text class="mt-3">
+                <strong>Address</strong>
+                <p>{{ mapSettings?.address }}</p>
+            </ion-text>
+        </ion-item>
+    </div>
+</div>

@@ -31,7 +31,13 @@
                 required
             ></ion-input>
         </ion-item>
-        <ion-button type="submit" shape="round" expand="full">
+        <ion-button
+            type="submit"
+            shape="round"
+            expand="full"
+            [disabled]="loading"
+        >
+            <ion-spinner *ngIf="loading" class="mr-3"></ion-spinner>
             REGISTER
         </ion-button>
     </form>
