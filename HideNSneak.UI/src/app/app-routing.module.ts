@@ -22,14 +22,6 @@ const routes: Routes = [
             ),
     },
     {
-        path: '',
-        canLoad: [AuthGuard],
-        loadChildren: () =>
-            import('./shared/dropdown/dropdown.module').then(
-                (m) => m.DropdownPageModule
-            ),
-    },
-    {
         path: '**',
         redirectTo: '/home',
         pathMatch: 'full',

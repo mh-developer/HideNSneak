@@ -88,29 +88,6 @@ export class MapComponent implements OnInit, OnDestroy {
             });
     }
 
-    public haversine_distance(mk1, mk2) {
-        let R = 6371071; // Avg. Radius of the Earth in miles
-        let rlat1 = mk1.position.lat() * (Math.PI / 180); // Convert degrees to radians
-        let rlat2 = mk2.position.lat() * (Math.PI / 180); // Convert degrees to radians
-        let difflat = rlat2 - rlat1; // Radian difference (latitudes)
-        let difflon =
-            (mk2.position.lng() - mk1.position.lng()) * (Math.PI / 180); // Radian difference (longitudes)
-
-        let d =
-            2 *
-            R *
-            Math.asin(
-                Math.sqrt(
-                    Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-                        Math.cos(rlat1) *
-                            Math.cos(rlat2) *
-                            Math.sin(difflon / 2) *
-                            Math.sin(difflon / 2)
-                )
-            );
-        return d;
-    }
-
     private setLocationData(data) {
         setTimeout(() => {
             this.mapSettings.latitude = data.coords.latitude;
