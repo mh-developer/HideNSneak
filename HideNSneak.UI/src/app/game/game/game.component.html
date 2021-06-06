@@ -1,5 +1,6 @@
 <ion-content>
     <agm-map
+        *ngIf="!isGameEnd"
         [latitude]="currentPlayerLocation?.lat"
         [longitude]="currentPlayerLocation?.lng"
         [zoom]="mapSettings.zoom"
@@ -20,10 +21,12 @@
         ></agm-circle>
 
         <agm-marker
+            *ngIf="!isEliminated"
             [latitude]="currentPlayerLocation?.lat"
             [longitude]="currentPlayerLocation?.lng"
         ></agm-marker>
         <agm-circle
+            *ngIf="!isEliminated"
             [latitude]="currentPlayerLocation?.lat"
             [longitude]="currentPlayerLocation?.lng"
             [radius]="mapSettings.playerRadius"
@@ -37,4 +40,16 @@
             [fillColor]="colorOptions[selectedColor].value"
         ></agm-circle>
     </agm-map>
+
+    <div *ngIf="isGameEnd">
+        <ion-row class="end-game ion-align-items-center">
+            <ion-col class="ion-text-center">
+                <img src="assets/imgs/logo.png" alt="HideNSneak logo" />
+                <h1>END GAME</h1>
+                <ion-button shape="round" (click)="playNewGame()">
+                    Play new game!
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </div>
 </ion-content>
