@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MapSettings } from '../shared/models/map.model';
 import { PlayerLocation, colorOptions } from '../shared/models/game.model';
@@ -27,6 +26,7 @@ export class GameComponent implements OnInit, OnDestroy {
     public get isEliminated(): boolean {
         return this.countOutOfZone > 5;
     }
+    public isGameStart: boolean = true;
     public isGameEnd: boolean = false;
 
     public selectedColor: number = 0;
@@ -38,13 +38,15 @@ export class GameComponent implements OnInit, OnDestroy {
         enableHighAccuracy: true,
     };
 
+    public seconds: number = 10;
+
+    private geosubscribe: any;
     private unsubscribe$ = new Subject<void>();
 
     constructor(
         private router: Router,
         private platform: Platform,
         private route: ActivatedRoute,
-        private geolocation: Geolocation,
         private gameService: GameService,
         private roomsService: RoomsService,
         private authService: AuthService,
@@ -56,16 +58,32 @@ export class GameComponent implements OnInit, OnDestroy {
         this.loadCurrentUserId();
         this.loadGameSettings();
         this.loadLocation();
-        this.loadRealTimeLocation();
-        this.loadPlayersLocations();
-        this.showSuccess('Game start!!!');
-        setInterval(() => {
-            this.isGameEnd = this.playersLocations.length < 1;
-            this.playersLocations = [];
-        }, 15000);
+        let countdown = setInterval(() => {
+            this.seconds--;
+            if (this.seconds === 8) this.showSuccess('READY!!!');
+            if (this.seconds === 4) this.showSuccess('STEADY!!!');
+            if (this.seconds === 1) this.showSuccess('GO!!!');
+            if (this.seconds <= 0) clearInterval(countdown);
+        }, 1000);
+        setTimeout(() => {
+            this.isGameStart = false;
+            this.showSuccess('Game start!!!');
+
+            this.loadRealTimeLocation();
+            this.loadPlayersLocations();
+            let refreshGame = setInterval(() => {
+                this.isGameEnd = this.playersLocations.length < 1;
+                this.playersLocations = [];
+                if (this.isGameEnd) {
+                    window.navigator.geolocation.clearWatch(this.geosubscribe);
+                    clearInterval(refreshGame);
+                }
+            }, 10000);
+        }, 11000);
     }
 
     ngOnDestroy() {
+        window.navigator.geolocation.clearWatch(this.geosubscribe);
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
@@ -115,13 +133,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
     public loadRealTimeLocation() {
         this.platform.ready().then(() => {
-            let watch = this.geolocation.watchPosition(this.options);
-            watch
-                .pipe(
-                    filter((p: any) => p.coords !== undefined),
-                    takeUntil(this.unsubscribe$)
-                )
-                .subscribe((data: any) => {
+            this.geosubscribe = window.navigator.geolocation.watchPosition(
+                (data) => {
                     if (
                         !this.isEliminated &&
                         !this.eliminatedPlayers.includes(this.currentUserId)
@@ -130,14 +143,17 @@ export class GameComponent implements OnInit, OnDestroy {
                     } else {
                         this.currentPlayerLocation = {} as PlayerLocation;
                     }
-                });
+                },
+                (err) => {},
+                this.options
+            );
         });
     }
 
     public loadPlayersLocations() {
         this.gameService
             .getChannel('location')
-            .bind('ping', (data: PlayerLocation) => {
+            .bind(this.room?.joinCode, (data: PlayerLocation) => {
                 if (
                     this.currentUserId !== data.userId &&
                     !this.eliminatedPlayers.includes(data.userId)
@@ -187,8 +203,10 @@ export class GameComponent implements OnInit, OnDestroy {
             this.currentPlayerLocation.lng = data.coords.longitude;
 
             let location = {
+                userId: this.currentUserId,
                 lat: this.currentPlayerLocation?.lat,
                 lng: this.currentPlayerLocation?.lng,
+                room: this.room?.joinCode,
             } as PlayerLocation;
 
             let geofanceLocation = {

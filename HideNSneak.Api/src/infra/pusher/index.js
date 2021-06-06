@@ -1,6 +1,6 @@
 module.exports = _pusher => {
   const ping = async data => {
-    _pusher.trigger('location', 'ping', data);
+    _pusher.trigger('location', data?.room || 'ping', data);
   };
 
   const notify = async data => {
