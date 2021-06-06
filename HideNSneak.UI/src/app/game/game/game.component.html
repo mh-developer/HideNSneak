@@ -1,6 +1,6 @@
 <ion-content>
     <agm-map
-        *ngIf="!isGameEnd"
+        *ngIf="!isGameEnd && !isGameStart"
         [latitude]="currentPlayerLocation?.lat"
         [longitude]="currentPlayerLocation?.lng"
         [zoom]="mapSettings.zoom"
@@ -41,12 +41,18 @@
         ></agm-circle>
     </agm-map>
 
-    <div *ngIf="isGameEnd">
+    <div *ngIf="isGameEnd || isGameStart">
         <ion-row class="end-game ion-align-items-center">
             <ion-col class="ion-text-center">
                 <img src="assets/imgs/logo.png" alt="HideNSneak logo" />
-                <h1>END GAME</h1>
-                <ion-button shape="round" (click)="playNewGame()">
+                <h1 *ngIf="isGameStart">START GAME</h1>
+                <h1 *ngIf="isGameEnd">END GAME</h1>
+                <h3 *ngIf="isGameStart">{{ seconds }}</h3>
+                <ion-button
+                    *ngIf="!isGameStart"
+                    shape="round"
+                    (click)="playNewGame()"
+                >
                     Play new game!
                 </ion-button>
             </ion-col>
