@@ -57,7 +57,9 @@ export class RoomLobbyComponent implements OnInit {
 
     public startGame() {
         this.dismiss();
-        this.router.navigateByUrl('/home', { replaceUrl: true });
+        this.router.navigateByUrl(`/game/${this.room?.id}`, {
+            replaceUrl: true,
+        });
     }
 
     public quit() {

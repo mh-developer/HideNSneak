@@ -1,0 +1,40 @@
+<ion-content>
+    <agm-map
+        [latitude]="currentPlayerLocation?.lat"
+        [longitude]="currentPlayerLocation?.lng"
+        [zoom]="mapSettings.zoom"
+        [disableDefaultUI]="true"
+        [usePanning]="true"
+    >
+        <agm-marker
+            *ngFor="let player of playersLocations"
+            [latitude]="player.lat"
+            [longitude]="player.lng"
+        ></agm-marker>
+        <agm-circle
+            *ngFor="let player of playersLocations"
+            [latitude]="player.lat"
+            [longitude]="player.lng"
+            [radius]="mapSettings.playerRadius"
+            [fillColor]="'green'"
+        ></agm-circle>
+
+        <agm-marker
+            [latitude]="currentPlayerLocation?.lat"
+            [longitude]="currentPlayerLocation?.lng"
+        ></agm-marker>
+        <agm-circle
+            [latitude]="currentPlayerLocation?.lat"
+            [longitude]="currentPlayerLocation?.lng"
+            [radius]="mapSettings.playerRadius"
+            [fillColor]="'red'"
+        ></agm-circle>
+
+        <agm-circle
+            [latitude]="mapSettings.latitude"
+            [longitude]="mapSettings.longitude"
+            [radius]="mapSettings.radius"
+            [fillColor]="colorOptions[selectedColor].value"
+        ></agm-circle>
+    </agm-map>
+</ion-content>

@@ -9,6 +9,7 @@ import {
 import { filter, takeUntil } from 'rxjs/operators';
 import { from, Subject } from 'rxjs';
 import { MapSettings } from '../shared/models/map.model';
+import { colorOptions } from '../shared/models/game.model';
 import { GameService } from './../shared/game.service';
 import { AuthService } from '../../auth/shared/auth.service';
 
@@ -26,17 +27,8 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         playerRadius: 50,
     } as MapSettings;
 
-    public selectedColor = 0;
-    public colorOptions = [
-        { key: 'primary', value: '#1FBAD6' },
-        { key: 'secondary', value: '#3dc2ff' },
-        { key: 'tertiary', value: '#5260ff' },
-        { key: 'success', value: '#2dd36f' },
-        { key: 'warning', value: '#ffc409' },
-        { key: 'light', value: '#f4f5f8' },
-        { key: 'medium', value: '#92949c' },
-        { key: 'dark', value: '#222428' },
-    ];
+    public selectedColor: number = 0;
+    public colorOptions: any[] = colorOptions;
 
     public nativeGeocoderOptions: NativeGeocoderOptions = {
         maxResults: 6,
