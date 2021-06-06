@@ -2,6 +2,7 @@ export interface PlayerLocation {
     userId: string;
     lng: number;
     lat: number;
+    room?: string;
 }
 
 export const colorOptions = [

@@ -5,8 +5,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { HttpRequestInterceptor } from '../core/interceptors/http-request.interceptor';
-import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
     declarations: [],
@@ -27,8 +25,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
         RouterModule,
     ],
     providers: [
-        NativeGeocoder,
-        Geolocation,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: HttpRequestInterceptor,

@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Platform, ToastController } from '@ionic/angular';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {
     NativeGeocoder,
     NativeGeocoderOptions,
     NativeGeocoderResult,
 } from '@ionic-native/native-geocoder/ngx';
-import { filter, takeUntil } from 'rxjs/operators';
-import { from, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { MapSettings } from '../shared/models/map.model';
 import { colorOptions } from '../shared/models/game.model';
 import { GameService } from './../shared/game.service';
@@ -17,6 +16,7 @@ import { AuthService } from '../../auth/shared/auth.service';
     selector: 'app-game-settings',
     templateUrl: './game-settings.component.html',
     styleUrls: ['./game-settings.component.scss'],
+    providers: [NativeGeocoder],
 })
 export class GameSettingsComponent implements OnInit, OnDestroy {
     public mapSettings: MapSettings = {
@@ -35,11 +35,11 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         useLocale: true,
     };
 
+    private geosubscribe: any;
     private unsubscribe$ = new Subject<void>();
 
     constructor(
         private platform: Platform,
-        private geolocation: Geolocation,
         private nativeGeocoder: NativeGeocoder,
         private toastController: ToastController,
         private authService: AuthService,
@@ -51,6 +51,7 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        window.navigator.geolocation.clearWatch(this.geosubscribe);
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
@@ -110,14 +111,11 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
     }
 
     public geoInformation() {
-        from(this.geolocation.getCurrentPosition())
-            .pipe(
-                filter((p: any) => p.coords !== undefined),
-                takeUntil(this.unsubscribe$)
-            )
-            .subscribe((data) => {
+        this.geosubscribe = window.navigator.geolocation.getCurrentPosition(
+            (data) => {
                 this.setLocationData(data);
-            });
+            }
+        );
     }
 
     public cordsToAddress(latitude, longitude) {

@@ -33,11 +33,12 @@ const services = require('../../../../app/index');
  *         $ref: '#/responses/BadRequest'
  */
 router.post('/ping', (req, res) => {
-  const { lat, lng } = req.body;
+  const { lat, lng, room } = req.body;
   const data = {
     userId: req.user?.id,
     lat,
-    lng
+    lng,
+    room
   };
   services.locationsService.ping(data);
   res.status(Status.OK).json(data);

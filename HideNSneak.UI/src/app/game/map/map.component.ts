@@ -7,8 +7,7 @@ import {
     Output,
 } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { filter, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MapSettings } from '../shared/models/map.model';
 import { PlayerLocation } from '../shared/models/game.model';
@@ -29,20 +28,17 @@ export class MapComponent implements OnInit, OnDestroy {
     @Output() public mapSettingsChange = new EventEmitter<MapSettings>();
 
     public options = {
-        timeout: 12000,
-        maximumAge: 3600,
+        timeout: 10000,
+        maximumAge: 0,
         enableHighAccuracy: true,
     };
 
     public playersLocations: PlayerLocation[] = [];
 
-    private unsubscribe$ = new Subject<void>();
+    private geosubscribe: any;
+    private unsubscribe$ = new Subject<any>();
 
-    constructor(
-        private platform: Platform,
-        private geolocation: Geolocation,
-        private gameService: GameService
-    ) {}
+    constructor(private platform: Platform, private gameService: GameService) {}
 
     ngOnInit() {
         this.loadRealTimeLocation();
@@ -50,21 +46,20 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        window.navigator.geolocation.clearWatch(this.geosubscribe);
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
 
     public loadRealTimeLocation() {
         this.platform.ready().then(() => {
-            let watch = this.geolocation.watchPosition(this.options);
-            watch
-                .pipe(
-                    filter((p: any) => p.coords !== undefined),
-                    takeUntil(this.unsubscribe$)
-                )
-                .subscribe((data: any) => {
+            this.geosubscribe = window.navigator.geolocation.watchPosition(
+                (data) => {
                     this.setLocationData(data);
-                });
+                },
+                (err) => {},
+                this.options
+            );
         });
     }
 
@@ -89,20 +84,18 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     private setLocationData(data) {
-        setTimeout(() => {
-            this.mapSettings.latitude = data.coords.latitude;
-            this.mapSettings.longitude = data.coords.longitude;
-            this.mapSettings.accuracy = data.coords.accuracy;
+        this.mapSettings.latitude = data.coords.latitude;
+        this.mapSettings.longitude = data.coords.longitude;
+        this.mapSettings.accuracy = data.coords.accuracy;
 
-            let location = {
-                lat: this.mapSettings.latitude,
-                lng: this.mapSettings.longitude,
-            } as PlayerLocation;
+        let location = {
+            lat: this.mapSettings.latitude,
+            lng: this.mapSettings.longitude,
+        } as PlayerLocation;
 
-            this.gameService
-                .pingLocation(location)
-                .pipe(takeUntil(this.unsubscribe$))
-                .subscribe((ping) => ping);
-        }, 0);
+        this.gameService
+            .pingLocation(location)
+            .pipe(take(1), takeUntil(this.unsubscribe$))
+            .subscribe((ping) => ping);
     }
 }
