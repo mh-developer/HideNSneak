@@ -196,10 +196,13 @@ export class GameComponent implements OnInit, OnDestroy {
                 lng: this.mapSettings.longitude,
             };
 
-            const distance = this.haversineDistance(location, geofanceLocation);
+            const distanceToGeofanceZone = this.haversineDistance(
+                location,
+                geofanceLocation
+            );
 
             if (
-                distance /* - this.mapSettings.playerRadius */ >
+                distanceToGeofanceZone /* - this.mapSettings.playerRadius */ >
                 this.mapSettings.radius
             ) {
                 this.countOutOfZone++;
@@ -221,12 +224,12 @@ export class GameComponent implements OnInit, OnDestroy {
             }
 
             this.playersLocations.forEach((player) => {
-                const distance = this.haversineDistance(
+                const distanceToPlayer = this.haversineDistance(
                     player,
                     this.currentPlayerLocation
                 );
 
-                if (distance < this.mapSettings.playerRadius) {
+                if (distanceToPlayer < this.mapSettings.playerRadius) {
                     if (this.currentUserId === this.room.owner) {
                         this.eliminatedPlayers.push(player.userId);
                     }
