@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit, OnDestroy {
+export class ProfilePage {
     public tab: string = 'profile';
     public user: User = {} as User;
 
@@ -26,11 +26,11 @@ export class ProfilePage implements OnInit, OnDestroy {
         private modalController: ModalController
     ) {}
 
-    ngOnInit() {
+    ionViewWillEnter() {
         this.loadProfileData();
     }
 
-    ngOnDestroy() {
+    ionViewWillLeave() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }

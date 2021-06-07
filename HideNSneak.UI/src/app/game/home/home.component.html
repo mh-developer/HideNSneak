@@ -10,7 +10,7 @@
 
     <div class="tab_container" [ngSwitch]="tab">
         <div *ngSwitchCase="'game'">
-            <app-map></app-map>
+            <app-map #map></app-map>
         </div>
 
         <div *ngSwitchCase="'settings'">

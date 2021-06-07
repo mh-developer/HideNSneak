@@ -24,12 +24,13 @@ export class MapComponent implements OnInit, OnDestroy {
         longitude: 15.645881,
         zoom: 15,
         radius: 500,
+        accuracy: 500,
     } as MapSettings;
     @Output() public mapSettingsChange = new EventEmitter<MapSettings>();
 
     public options = {
-        timeout: 10000,
-        maximumAge: 0,
+        timeout: 100,
+        maximumAge: 10,
         enableHighAccuracy: true,
     };
 
@@ -41,11 +42,19 @@ export class MapComponent implements OnInit, OnDestroy {
     constructor(private platform: Platform, private gameService: GameService) {}
 
     ngOnInit() {
+        this.onInit();
+    }
+
+    ngOnDestroy() {
+        this.onDestroy();
+    }
+
+    public onInit() {
         this.loadRealTimeLocation();
         this.loadPlayersLocations();
     }
 
-    ngOnDestroy() {
+    public onDestroy() {
         window.navigator.geolocation.clearWatch(this.geosubscribe);
         this.unsubscribe$.next();
         this.unsubscribe$.complete();

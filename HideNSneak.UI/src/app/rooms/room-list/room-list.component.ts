@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RoomsService } from './../shared/rooms.service';
@@ -15,7 +15,7 @@ import { AuthService } from '../../auth/shared/auth.service';
     templateUrl: './room-list.component.html',
     styleUrls: ['./room-list.component.scss'],
 })
-export class RoomListComponent implements OnInit, OnDestroy {
+export class RoomListComponent {
     public rooms: Room[] = [];
 
     private unsubscribe$ = new Subject<void>();
@@ -26,11 +26,11 @@ export class RoomListComponent implements OnInit, OnDestroy {
         private authService: AuthService
     ) {}
 
-    ngOnInit() {
+    ionViewWillEnter() {
         this.loadRooms();
     }
 
-    ngOnDestroy() {
+    ionViewWillLeave() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
