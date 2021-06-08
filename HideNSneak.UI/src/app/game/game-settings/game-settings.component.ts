@@ -153,9 +153,9 @@ export class GameSettingsComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
-    public markerDragEnd($event: any) {
-        this.mapSettings.latitude = $event.latLng.lat();
-        this.mapSettings.longitude = $event.latLng.lng();
+    public markerDragEnd(event: any) {
+        this.mapSettings.latitude = event?.coords?.lat;
+        this.mapSettings.longitude = event?.coords?.lng;
         this.cordsToAddress(
             this.mapSettings.latitude,
             this.mapSettings.longitude
