@@ -73,22 +73,18 @@ export class GameComponent {
             this.showSuccess('Game start!!!');
             let refreshGame = setInterval(() => {
                 if (this.isGameEnd) {
-                    window.navigator.geolocation.clearWatch(this.geosubscribe);
-                    this.unsubscribe$.next();
-                    this.unsubscribe$.complete();
+                    this.resetGame();
                     clearInterval(refreshGame);
                 }
 
                 this.isGameEnd = this.playersLocations.length < 1;
                 this.playersLocations = [];
-            }, 5000);
+            }, 3000);
         }, 12000);
     }
 
     ionViewWillLeave() {
-        window.navigator.geolocation.clearWatch(this.geosubscribe);
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
+        this.resetGame();
     }
 
     public loadCurrentUserId() {
@@ -145,11 +141,7 @@ export class GameComponent {
                             this.setLocationData(data);
                         } else {
                             this.currentPlayerLocation = {} as PlayerLocation;
-                            window.navigator.geolocation.clearWatch(
-                                this.geosubscribe
-                            );
-                            this.unsubscribe$.next();
-                            this.unsubscribe$.complete();
+                            this.resetGame();
                             this.showAlert('Eliminated', 'You are eliminated.');
                         }
                     }
@@ -236,9 +228,7 @@ export class GameComponent {
                     .pipe(takeUntil(this.unsubscribe$))
                     .subscribe((notify) => notify);
                 this.currentPlayerLocation = {} as PlayerLocation;
-                window.navigator.geolocation.clearWatch(this.geosubscribe);
-                this.unsubscribe$.next();
-                this.unsubscribe$.complete();
+                this.resetGame();
                 this.showAlert(
                     'Eliminated',
                     'You are eliminated. Out of zone.'
@@ -270,6 +260,12 @@ export class GameComponent {
         this.router.navigateByUrl(`/rooms`, {
             replaceUrl: true,
         });
+    }
+
+    public resetGame() {
+        window.navigator.geolocation.clearWatch(this.geosubscribe);
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     private async showSuccess(message: string) {
