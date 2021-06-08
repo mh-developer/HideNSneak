@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { take, takeUntil } from 'rxjs/operators';
@@ -15,16 +15,15 @@ import { AuthService } from '../../auth/shared/auth.service';
     templateUrl: './game.component.html',
     styleUrls: ['./game.component.scss'],
 })
-export class GameComponent implements OnInit, OnDestroy {
+export class GameComponent {
     public mapSettings: MapSettings = {} as MapSettings;
     public currentUserId: string;
     public room: Room = {} as Room;
     public currentPlayerLocation: PlayerLocation = {} as PlayerLocation;
     public playersLocations: PlayerLocation[] = [];
     public eliminatedPlayers: string[] = [];
-    public countOutOfZone = 0;
     public get isEliminated(): boolean {
-        return this.countOutOfZone > 5;
+        return this.eliminatedPlayers.includes(this.currentUserId);
     }
     public isGameStart: boolean = true;
     public isGameEnd: boolean = false;
@@ -54,7 +53,7 @@ export class GameComponent implements OnInit, OnDestroy {
         private alertController: AlertController
     ) {}
 
-    ngOnInit() {
+    ionViewWillEnter() {
         this.loadCurrentUserId();
         this.loadGameSettings();
         this.loadLocation();
@@ -66,23 +65,27 @@ export class GameComponent implements OnInit, OnDestroy {
             if (this.seconds <= 0) clearInterval(countdown);
         }, 1000);
         setTimeout(() => {
-            this.isGameStart = false;
-            this.showSuccess('Game start!!!');
-
             this.loadRealTimeLocation();
             this.loadPlayersLocations();
+        }, 2000);
+        setTimeout(() => {
+            this.isGameStart = false;
+            this.showSuccess('Game start!!!');
             let refreshGame = setInterval(() => {
-                this.isGameEnd = this.playersLocations.length < 1;
-                this.playersLocations = [];
                 if (this.isGameEnd) {
                     window.navigator.geolocation.clearWatch(this.geosubscribe);
+                    this.unsubscribe$.next();
+                    this.unsubscribe$.complete();
                     clearInterval(refreshGame);
                 }
-            }, 10000);
-        }, 11000);
+
+                this.isGameEnd = this.playersLocations.length < 1;
+                this.playersLocations = [];
+            }, 5000);
+        }, 12000);
     }
 
-    ngOnDestroy() {
+    ionViewWillLeave() {
         window.navigator.geolocation.clearWatch(this.geosubscribe);
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
@@ -119,7 +122,7 @@ export class GameComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 if (data) {
                     const location = data.find(
-                        (x) => x.userId === this.authService.getUserId()
+                        (x) => x.userId === this.room?.owner
                     );
                     if (location) {
                         this.mapSettings = location;
@@ -135,13 +138,20 @@ export class GameComponent implements OnInit, OnDestroy {
         this.platform.ready().then(() => {
             this.geosubscribe = window.navigator.geolocation.watchPosition(
                 (data) => {
-                    if (
-                        !this.isEliminated &&
-                        !this.eliminatedPlayers.includes(this.currentUserId)
-                    ) {
-                        this.setLocationData(data);
-                    } else {
-                        this.currentPlayerLocation = {} as PlayerLocation;
+                    if (data) {
+                        if (
+                            !this.eliminatedPlayers.includes(this.currentUserId)
+                        ) {
+                            this.setLocationData(data);
+                        } else {
+                            this.currentPlayerLocation = {} as PlayerLocation;
+                            window.navigator.geolocation.clearWatch(
+                                this.geosubscribe
+                            );
+                            this.unsubscribe$.next();
+                            this.unsubscribe$.complete();
+                            this.showAlert('Eliminated', 'You are eliminated.');
+                        }
                     }
                 },
                 (err) => {},
@@ -154,10 +164,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.gameService
             .getChannel('location')
             .bind(this.room?.joinCode, (data: PlayerLocation) => {
-                if (
-                    this.currentUserId !== data.userId &&
-                    !this.eliminatedPlayers.includes(data.userId)
-                ) {
+                if (this.currentUserId !== data.userId && data) {
                     if (
                         this.playersLocations.some(
                             (player: PlayerLocation) =>
@@ -176,7 +183,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public haversineDistance(mk1, mk2) {
-        let R = 6371071; // Avg. Radius of the Earth in miles
+        let R = 6371071; // Avg. Radius of the Earth in meters
         let rlat1 = mk1.lat * (Math.PI / 180); // Convert degrees to radians
         let rlat2 = mk2.lat * (Math.PI / 180); // Convert degrees to radians
         let difflat = rlat2 - rlat1; // Radian difference (latitudes)
@@ -198,62 +205,65 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     private setLocationData(data) {
-        setTimeout(() => {
-            this.currentPlayerLocation.lat = data.coords.latitude;
-            this.currentPlayerLocation.lng = data.coords.longitude;
+        this.currentPlayerLocation.lat = data?.coords?.latitude;
+        this.currentPlayerLocation.lng = data?.coords?.longitude;
 
-            let location = {
-                userId: this.currentUserId,
-                lat: this.currentPlayerLocation?.lat,
-                lng: this.currentPlayerLocation?.lng,
-                room: this.room?.joinCode,
-            } as PlayerLocation;
+        let location = {
+            userId: this.currentUserId,
+            lat: this.currentPlayerLocation?.lat,
+            lng: this.currentPlayerLocation?.lng,
+            room: this.room?.joinCode,
+        } as PlayerLocation;
 
-            let geofanceLocation = {
-                lat: this.mapSettings.latitude,
-                lng: this.mapSettings.longitude,
-            };
+        let geofanceLocation = {
+            lat: this.mapSettings?.latitude,
+            lng: this.mapSettings?.longitude,
+        };
 
+        if (location && geofanceLocation) {
             const distanceToGeofanceZone = this.haversineDistance(
                 location,
                 geofanceLocation
             );
 
             if (
+                !this.isGameStart &&
                 distanceToGeofanceZone /* - this.mapSettings.playerRadius */ >
-                this.mapSettings.radius
+                    this.mapSettings.radius
             ) {
-                this.countOutOfZone++;
-                if (this.isEliminated) {
-                    this.gameService
-                        .notifyOutOfZone(location)
-                        .pipe(takeUntil(this.unsubscribe$))
-                        .subscribe((notify) => notify);
-                    this.showAlert(
-                        'Eliminated',
-                        'You are eliminated. Out of zone.'
-                    );
-                }
+                this.gameService
+                    .notifyOutOfZone(location)
+                    .pipe(takeUntil(this.unsubscribe$))
+                    .subscribe((notify) => notify);
+                this.currentPlayerLocation = {} as PlayerLocation;
+                window.navigator.geolocation.clearWatch(this.geosubscribe);
+                this.unsubscribe$.next();
+                this.unsubscribe$.complete();
+                this.showAlert(
+                    'Eliminated',
+                    'You are eliminated. Out of zone.'
+                );
             } else {
                 this.gameService
                     .pingLocation(location)
                     .pipe(takeUntil(this.unsubscribe$))
                     .subscribe((ping) => ping);
             }
+            if (!this.isGameStart) {
+                this.playersLocations.forEach((player) => {
+                    const distanceToPlayer = this.haversineDistance(
+                        player,
+                        location
+                    );
 
-            this.playersLocations.forEach((player) => {
-                const distanceToPlayer = this.haversineDistance(
-                    player,
-                    this.currentPlayerLocation
-                );
-
-                if (distanceToPlayer < this.mapSettings.playerRadius) {
-                    if (this.currentUserId === this.room.owner) {
-                        this.eliminatedPlayers.push(player.userId);
+                    if (distanceToPlayer < this.mapSettings.playerRadius) {
+                        if (this.currentUserId !== this.room.owner) {
+                            this.eliminatedPlayers.push(this.currentUserId);
+                        }
                     }
-                }
-            });
-        }, 0);
+                });
+            }
+        }
     }
 
     public playNewGame() {
